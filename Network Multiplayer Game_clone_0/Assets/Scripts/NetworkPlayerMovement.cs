@@ -1,43 +1,55 @@
 using UnityEngine;
 using Mirror;
 using UnityEngine.InputSystem;
-//https://www.youtube.com/watch?v=8VVgIjWBXks
 
+//https://www.youtube.com/watch?v=8VVgIjWBXks
+[RequireComponent(typeof(CharacterController))]
 public class NetworkPlayerMovement : NetworkBehaviour
 {
-    public float moveSpeed = 5f; // Player movement speed
-    public float jumpForce = 5f; // Jump force
-    private Rigidbody rb;
+    public float moveSpeed = 5f;
+    public float gravity = -9.81f;
 
+    private CharacterController controller;
     private Vector2 moveInput;
+    private Vector3 velocity;
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody>();
+        controller = GetComponent<CharacterController>();
     }
 
-    // This method will be called by the input action
     public void OnMove(InputAction.CallbackContext context)
     {
-        if (isLocalPlayer) // Ensure the input is only handled for the local player
+        if (isLocalPlayer)
         {
-            moveInput = context.ReadValue<Vector2>(); // Get movement input (x, y)
+            moveInput = context.ReadValue<Vector2>();
         }
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
-        if (isLocalPlayer) // Only execute movement logic for the local player
+        if (isLocalPlayer)
         {
             MovePlayer();
         }
     }
 
-    // Move the player based on input
     private void MovePlayer()
     {
-        // Convert input to movement in world space
-        Vector3 moveDirection = new Vector3(moveInput.x, 0, moveInput.y);
-        rb.MovePosition(transform.position + moveDirection * moveSpeed * Time.fixedDeltaTime);
+        Vector3 move = new Vector3(moveInput.x, 0, moveInput.y);
+
+        // Convert local movement to world space
+        move = transform.TransformDirection(move);
+
+        // Apply gravity
+        if (controller.isGrounded && velocity.y < 0)
+        {
+            velocity.y = -2f; // Small downward force to keep grounded
+        }
+
+        velocity.y += gravity * Time.deltaTime;
+
+        // Move the character
+        controller.Move(move * moveSpeed * Time.deltaTime + velocity * Time.deltaTime);
     }
 }

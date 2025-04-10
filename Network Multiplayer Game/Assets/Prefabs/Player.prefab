@@ -11,14 +11,11 @@ GameObject:
   - component: {fileID: 8348745489096710473}
   - component: {fileID: 7186073441733904357}
   - component: {fileID: 6827360118004381205}
-  - component: {fileID: 623160344438735830}
   - component: {fileID: 4270387127559577172}
   - component: {fileID: 2944381119593169657}
   - component: {fileID: 2082910252004209248}
-  - component: {fileID: 1335591621505004757}
-  - component: {fileID: -805319664702791916}
-  - component: {fileID: -5509211868782370583}
-  - component: {fileID: -2531033718702271161}
+  - component: {fileID: 1234341133876942443}
+  - component: {fileID: 4718895683806414106}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -26,21 +23,25 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8348745489096710473
-Transform:
+--- !u!224 &8348745489096710473
+RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2901662000760016580}
-  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 1}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!33 &7186073441733904357
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -94,29 +95,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &623160344438735830
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2901662000760016580}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &4270387127559577172
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133,7 +111,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   moveSpeed: 5
-  jumpForce: 5
+  gravity: -9.81
 --- !u!114 &2944381119593169657
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -269,34 +247,7 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!54 &1335591621505004757
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2901662000760016580}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 112
-  m_CollisionDetection: 0
---- !u!114 &-805319664702791916
+--- !u!114 &1234341133876942443
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -305,32 +256,31 @@ MonoBehaviour:
   m_GameObject: {fileID: 2901662000760016580}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a553cb17010b2403e8523b558bffbc14, type: 3}
+  m_Script: {fileID: 11500000, guid: 8f63ea2e505fd484193fb31c5c55ca73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   syncDirection: 1
   syncMode: 0
-  syncInterval: 0
-  target: {fileID: 8348745489096710473}
-  syncPosition: 1
-  syncRotation: 1
-  syncScale: 0
-  onlySyncOnChange: 1
-  compressRotation: 1
-  interpolatePosition: 1
-  interpolateRotation: 1
-  interpolateScale: 1
-  coordinateSpace: 0
-  timelineOffset: 1
-  showGizmos: 0
-  showOverlay: 0
-  overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
-  bufferResetMultiplier: 3
+  syncInterval: 0.033333335
+  baselineRate: 1
+  unreliableRedundancy: 0
+  baselineIsDelta: 1
+  debugLog: 0
   useFixedUpdate: 0
+  target: {fileID: 8348745489096710473}
+  bufferSizeLimit: 64
+  sendRate: 30
   positionSensitivity: 0.01
   rotationSensitivity: 0.01
   scaleSensitivity: 0.01
---- !u!143 &-5509211868782370583
+  syncPosition: 1
+  syncRotation: 1
+  syncScale: 0
+  debugDraw: 0
+  showGizmos: 0
+  showOverlay: 0
+  overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
+--- !u!143 &4718895683806414106
 CharacterController:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -346,76 +296,12 @@ CharacterController:
     m_Bits: 0
   m_LayerOverridePriority: 0
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_Height: 2
   m_Radius: 0.5
   m_SlopeLimit: 45
   m_StepOffset: 0.3
-  m_SkinWidth: 0.02
-  m_MinMoveDistance: 0
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &-2531033718702271161
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2901662000760016580}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: acd5d4cdfcd42424d9d1fae8f79611e8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncDirection: 0
-  syncMode: 0
-  syncInterval: 0
-  capsuleCollider: {fileID: 623160344438735830}
-  characterController: {fileID: -5509211868782370583}
-  ControllerUIPrefab: {fileID: 644766297742565710, guid: 493615025d304c144bacfb91f6aac90e, type: 3}
-  moveKeys:
-    Forward: 119
-    Back: 115
-    StrafeLeft: 97
-    StrafeRight: 100
-    TurnLeft: 113
-    TurnRight: 101
-  flightKeys:
-    PitchDown: 273
-    PitchUp: 274
-    RollLeft: 276
-    RollRight: 275
-    AutoLevel: 108
-  optionsKeys:
-    MouseSteer: 109
-    AutoRun: 114
-    ToggleUI: 117
-  controlOptions: 12
-  maxMoveSpeed: 8
-  inputSensitivity: 2
-  inputGravity: 2
-  maxTurnSpeed: 100
-  turnAcceleration: 3
-  maxPitchSpeed: 30
-  maxPitchUpAngle: 20
-  maxPitchDownAngle: 45
-  pitchAcceleration: 3
-  maxRollSpeed: 30
-  maxRollAngle: 45
-  rollAcceleration: 3
-  runtimeData:
-    _horizontal: 0
-    _vertical: 0
-    _turnSpeed: 0
-    _pitchAngle: 0
-    _pitchSpeed: 0
-    _rollAngle: 0
-    _rollSpeed: 0
-    _animVelocity: 0
-    _animRotation: 0
-    _mouseInputX: 0
-    _mouseSensitivity: 0
-    _groundState: 0
-    _direction: {x: 0, y: 0, z: 0}
-    _velocity: {x: 0, y: 0, z: 0}
-    _controllerUI: {fileID: 0}
