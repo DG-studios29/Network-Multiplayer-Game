@@ -49,7 +49,7 @@ public class PlayerInputTemp : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        activePanel = ActivePanel.PAUSE;
+        activePanel = ActivePanel.CANNON;
     }
 
     // Update is called once per frame
@@ -68,9 +68,9 @@ public class PlayerInputTemp : MonoBehaviour
                 cannonMenu.SetActive(false);
                 playerHUD.SetActive(true);
                 SwitchToPlayer();
-                activePanel = ActivePanel.PAUSE;
+                //activePanel = ActivePanel.PAUSE;
 
-                handleEvent.ChangeFirstSelected(activePanel);
+                //handleEvent.ChangeFirstSelected(activePanel);
                 //switch maps to navigation
             }
             else
@@ -112,6 +112,9 @@ public class PlayerInputTemp : MonoBehaviour
                 pauseMenu.SetActive(true);
                 cannonMenu.SetActive(false);
                 playerHUD.SetActive(false);
+
+                activePanel = ActivePanel.PAUSE;
+                handleEvent.ChangeFirstSelected(activePanel);
             }
             else
             {
