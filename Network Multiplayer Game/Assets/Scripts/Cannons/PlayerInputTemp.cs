@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+
+public enum ActivePanel { PAUSE, CANNON };
+
 public class PlayerInputTemp : MonoBehaviour
 {
 
@@ -16,9 +19,29 @@ public class PlayerInputTemp : MonoBehaviour
     public float projectileSpeed = 10f;
 
 
+    [Header("Menu and Button Stuff")]
+    public GameObject cannonMenu;
+    public GameObject playerHUD;
+    public GameObject pauseMenu;
+
+
+    private InputSystem_Actions pInputAction;
+
+    
+
+    public ActivePanel activePanel;
+    private HandleEvent handleEvent;
+
+
+
 
     private void Awake()
     {
+
+        pInputAction = new InputSystem_Actions();
+
+        handleEvent = GameObject.FindAnyObjectByType<HandleEvent>();
+
         rb = GetComponent<Rigidbody>(); // Ensure cube has a Rigidbody component
     }
 
@@ -26,7 +49,7 @@ public class PlayerInputTemp : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        activePanel = ActivePanel.PAUSE;
     }
 
     // Update is called once per frame
@@ -36,44 +59,69 @@ public class PlayerInputTemp : MonoBehaviour
     }
 
    
-
-
-    public void MovePlayerOne(InputAction.CallbackContext ctx)
+    public void ToggleCannonMenu(InputAction.CallbackContext context)
     {
-        if (ctx.performed)
+        if (context.performed)
         {
-            Vector2 playerInput = ctx.ReadValue<Vector2>();
-            cubeDirection.x = playerInput.x;
-            cubeDirection.z = playerInput.y;
-        }
-        else if (ctx.canceled)
-        {
-            cubeDirection = Vector2.zero;
+            if (cannonMenu.activeSelf)
+            {
+                cannonMenu.SetActive(false);
+                playerHUD.SetActive(true);
+                SwitchToPlayer();
+                activePanel = ActivePanel.PAUSE;
+
+                handleEvent.ChangeFirstSelected(activePanel);
+                //switch maps to navigation
+            }
+            else
+            {
+                cannonMenu.SetActive(true);
+                playerHUD.SetActive(false);
+                SwitchToUI();
+                activePanel = ActivePanel.CANNON;
+
+                handleEvent.ChangeFirstSelected(activePanel);
+                //switch maps to navigation
+            }
         }
     }
 
-    public void JumpPlayerOne(InputAction.CallbackContext ctx)
-    {
-        if (ctx.performed && Mathf.Abs(rb.linearVelocity.y) < 0.01f)
-        {
-            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
 
-            Animator animator = GetComponent<Animator>();
-            animator.SetTrigger("Jump");
+
+
+
+    void SwitchToUI()
+    {
+        pInputAction.Player.Disable();
+        pInputAction.UI.Enable();
+    }
+
+    public void SwitchToPlayer()
+    {
+        pInputAction.Player.Enable();
+        pInputAction.UI.Disable();
+    }
+
+  
+    public void YouCantPauseOnline(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            if (!pauseMenu.activeSelf)
+            {
+                pauseMenu.SetActive(true);
+                cannonMenu.SetActive(false);
+                playerHUD.SetActive(false);
+            }
+            else
+            {
+                pauseMenu.SetActive(false);
+                playerHUD.SetActive(true);
+            }
         }
     }
 
-    public void ShootPlayerOne(InputAction.CallbackContext ctx)
-    {
-        if (ctx.performed)
-        {
-            GameObject projectile = Instantiate(projectilePrefab, shootPoint.position, Quaternion.identity);
-            Rigidbody projRb = projectile.GetComponent<Rigidbody>();
-            projRb.linearVelocity = transform.forward * projectileSpeed;
 
-            Destroy(projectile, 3f);
-        }
-    }
 
   
 }
