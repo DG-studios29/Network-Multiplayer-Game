@@ -161,7 +161,7 @@ public class PlayerInputTemp : MonoBehaviour
     }
 
 
-    public void ClearAllCannons(InputAction.CallbackContext context)
+    public void ClearAllCannons()
     {
         cannonHolder.ClearLoadedList();
     }
