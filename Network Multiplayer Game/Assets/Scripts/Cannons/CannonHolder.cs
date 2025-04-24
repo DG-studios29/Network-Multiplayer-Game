@@ -68,6 +68,9 @@ public class CannonHolder : MonoBehaviour
             if (!CheckAlreadyInList(ActiveSelectedBtn))
             {
                 loadedCannons.Add(ActiveSelectedBtn);
+                ActiveSelectedBtn.SetCannon(loadedCannons.Count + 1);
+
+                ActiveSelectedBtn = null;
             }
             else
             {
@@ -92,6 +95,9 @@ public class CannonHolder : MonoBehaviour
             if (CheckAlreadyInList(ActiveSelectedBtn))
             {
                 loadedCannons.Remove(ActiveSelectedBtn);
+                ActiveSelectedBtn.ResetCannon();
+
+                ActiveSelectedBtn = null;
             }
             else
             {
