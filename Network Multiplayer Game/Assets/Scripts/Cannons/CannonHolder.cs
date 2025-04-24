@@ -22,6 +22,9 @@ public class CannonHolder : MonoBehaviour
     private void Awake()
     {
         cSlots = new CannonSlot[6]; //create cannon slot array of six 
+
+        loadedCannons = new List<CannonSlot>();
+
     }
 
 
@@ -68,7 +71,7 @@ public class CannonHolder : MonoBehaviour
             if (!CheckAlreadyInList(ActiveSelectedBtn))
             {
                 loadedCannons.Add(ActiveSelectedBtn);
-                ActiveSelectedBtn.SetCannon(loadedCannons.Count + 1);
+                ActiveSelectedBtn.SetCannon(loadedCannons.Count); //number
 
                 ActiveSelectedBtn = null;
             }
@@ -97,6 +100,8 @@ public class CannonHolder : MonoBehaviour
                 loadedCannons.Remove(ActiveSelectedBtn);
                 ActiveSelectedBtn.ResetCannon();
 
+                UpdateLoadCount();
+
                 ActiveSelectedBtn = null;
             }
             else
@@ -107,8 +112,21 @@ public class CannonHolder : MonoBehaviour
         }
     }
 
+    private void UpdateLoadCount()
+    {
+        for(int i = 0; i < loadedCannons.Count; i++)
+        {
+            loadedCannons[i].SetCannon(i + 1);
+        }
+    }
+
     bool CheckAlreadyInList(CannonSlot checkingSlot)
     {
+        if(loadedCannons.Count == 0)
+        {
+            return false;
+        }
+
         for(int i = 0; i < loadedCannons.Count; i++)
         {
             if(checkingSlot == loadedCannons[i])
