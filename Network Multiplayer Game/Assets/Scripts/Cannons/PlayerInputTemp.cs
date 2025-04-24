@@ -23,6 +23,8 @@ public class PlayerInputTemp : MonoBehaviour
     private HandleEvent handleEvent;
 
 
+    private CannonHolder cannonHolder;
+
 
 
     private void Awake()
@@ -31,11 +33,13 @@ public class PlayerInputTemp : MonoBehaviour
         pInputAction = new InputSystem_Actions();
 
         playerInput = GetComponent<PlayerInput>();
+       
         
 
         handleEvent = GameObject.FindAnyObjectByType<HandleEvent>();
+        cannonHolder = GameObject.FindAnyObjectByType<CannonHolder>();
 
-    
+
     }
 
 
@@ -52,7 +56,28 @@ public class PlayerInputTemp : MonoBehaviour
         
     }
 
-   
+    void SwitchToUI()
+    {
+        //pInputAction.UI.Enable();
+        //pInputAction.Player.Disable();
+
+
+        playerInput.SwitchCurrentActionMap("UI");
+
+
+
+    }
+
+    public void SwitchToPlayer()
+    {
+        //pInputAction.Player.Enable();
+        //pInputAction.UI.Disable();
+
+        playerInput.SwitchCurrentActionMap("Player");
+    }
+
+
+
     public void ToggleCannonMenu(InputAction.CallbackContext context)
     {
         if (context.performed)
@@ -84,25 +109,6 @@ public class PlayerInputTemp : MonoBehaviour
 
 
 
-    void SwitchToUI()
-    {
-        //pInputAction.UI.Enable();
-        //pInputAction.Player.Disable();
-
-
-        playerInput.SwitchCurrentActionMap("UI");
-
-        
-       
-    }
-
-    public void SwitchToPlayer()
-    {
-        //pInputAction.Player.Enable();
-        //pInputAction.UI.Disable();
-
-        playerInput.SwitchCurrentActionMap("Player");
-    }
 
   
     public void AttackTest(InputAction.CallbackContext context)
@@ -137,6 +143,28 @@ public class PlayerInputTemp : MonoBehaviour
     }
 
 
+    public void LoadCannon(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            cannonHolder.AddToLoadedList();
+        }
+    }
+
+
+    public void ClearLoadedCannon(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            cannonHolder.RemoveFromLoadedList();
+        }
+    }
+
+
+    public void ClearAllCannons(InputAction.CallbackContext context)
+    {
+        cannonHolder.ClearLoadedList();
+    }
 
   
 }

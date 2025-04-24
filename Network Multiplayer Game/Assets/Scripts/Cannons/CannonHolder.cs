@@ -16,14 +16,22 @@ public class CannonHolder : MonoBehaviour
 
     private List<CannonSlot> loadedCannons; //will update itself according to our setup
 
-    
+    private CannonSlot ActiveSelectedBtn;
 
+
+    private void Awake()
+    {
+        cSlots = new CannonSlot[6]; //create cannon slot array of six 
+    }
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-      MakeCannonArray();
+        MakeCannonArray();
+        ActiveSelectedBtn = null;
+
+      
  
     }
 
@@ -45,15 +53,69 @@ public class CannonHolder : MonoBehaviour
         {
             loadedCannons.Remove(loadedCannons[0]);  //remove the first in
             //update the counts on the remaining cannons
+
+          
         }
     }
 
-    void AddToLoadedList()
+    public void AddToLoadedList()
     {
+        ActiveSelectedBtn = UseSelectedCannonBtn();
 
+        if(ActiveSelectedBtn != null)
+        {
+            //needs to check if its already in the list
+            if (!CheckAlreadyInList(ActiveSelectedBtn))
+            {
+                loadedCannons.Add(ActiveSelectedBtn);
+            }
+            else
+            {
+                Debug.Log("Already in Sequence");
+            }
+
+
+           
+        }
+        else
+        {
+            Debug.Log("Nothing has been selected");
+        }
     }
 
-    void ClearLoadedList()
+    public void RemoveFromLoadedList()
+    {
+        ActiveSelectedBtn = UseSelectedCannonBtn();
+
+        if(ActiveSelectedBtn != null)
+        {
+            if (CheckAlreadyInList(ActiveSelectedBtn))
+            {
+                loadedCannons.Remove(ActiveSelectedBtn);
+            }
+            else
+            {
+                Debug.Log("This does not exist in our list. Cant be cleared");
+            }
+           
+        }
+    }
+
+    bool CheckAlreadyInList(CannonSlot checkingSlot)
+    {
+        for(int i = 0; i < loadedCannons.Count; i++)
+        {
+            if(checkingSlot == loadedCannons[i])
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    public void ClearLoadedList()
     {
         loadedCannons.Clear();
     }
@@ -75,6 +137,37 @@ public class CannonHolder : MonoBehaviour
             cSlots[i].IndexSet(i + 1);
         }
 
+    }
+
+    //Useful for navigating to different UIs
+    private void CannonBtnsDisableAll()
+    {
+        for(int i = 0; i < cSlots.Length; i++)
+        {
+            cSlots[i].CannonDisable();
+        }
+    }
+
+    private void CannonBtnsEnableAll()
+    {
+        for (int i = 0; i < cSlots.Length; i++)
+        {
+            cSlots[i].CannonEnable();
+        }
+    }
+
+    private CannonSlot UseSelectedCannonBtn()
+    {
+        for(int i = 0; i < cSlots.Length; i++)
+        {
+            if (cSlots[i].CheckBtnSelection())
+            {
+                return cSlots[i];
+            }
+            
+        }
+
+        return null;
     }
 
 

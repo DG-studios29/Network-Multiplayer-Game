@@ -1034,6 +1034,7 @@ GameObject:
   - component: {fileID: 469413472}
   - component: {fileID: 469413471}
   - component: {fileID: 469413470}
+  - component: {fileID: 469413473}
   m_Layer: 5
   m_Name: CnButton (4)
   m_TagString: Untagged
@@ -1059,10 +1060,10 @@ RectTransform:
   - {fileID: 807636125}
   m_Father: {fileID: 1473017593}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 130, y: -650}
+  m_SizeDelta: {x: 260, y: 260}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &469413470
 MonoBehaviour:
@@ -1146,6 +1147,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 469413468}
   m_CullTransparentMesh: 1
+--- !u!114 &469413473
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 469413468}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6f3ac0066df7424791776e71604d214, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  index: 0
+  loadNo: 0
+  loadText: {fileID: 807636126}
+  thisCannonButton: {fileID: 0}
 --- !u!1 &472048781
 GameObject:
   m_ObjectHideFlags: 0
@@ -2444,10 +2461,10 @@ RectTransform:
   - {fileID: 1002136709}
   m_Father: {fileID: 1473017593}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 130, y: -130}
+  m_SizeDelta: {x: 260, y: 260}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &918618832
 MonoBehaviour:
@@ -2545,7 +2562,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   index: 0
   loadNo: 0
-  loadText: {fileID: 0}
+  loadText: {fileID: 1002136710}
+  thisCannonButton: {fileID: 918618832}
 --- !u!1 &923898702
 GameObject:
   m_ObjectHideFlags: 0
@@ -2972,7 +2990,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &987198869
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4965,6 +4983,7 @@ GameObject:
   - component: {fileID: 1473017595}
   - component: {fileID: 1473017594}
   - component: {fileID: 1473017596}
+  - component: {fileID: 1473017597}
   m_Layer: 5
   m_Name: Loading Panel
   m_TagString: Untagged
@@ -5060,6 +5079,24 @@ MonoBehaviour:
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
+--- !u!114 &1473017597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1473017592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db81ced927ef57349a204064be18ce49, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cannon1: {fileID: 918618835}
+  cannon2: {fileID: 1570816301}
+  cannon3: {fileID: 1522832234}
+  cannon4: {fileID: 2036751399}
+  cannon5: {fileID: 469413473}
+  cannon6: {fileID: 1525104900}
 --- !u!1 &1503164634
 GameObject:
   m_ObjectHideFlags: 0
@@ -5283,6 +5320,7 @@ GameObject:
   - component: {fileID: 1522832233}
   - component: {fileID: 1522832232}
   - component: {fileID: 1522832231}
+  - component: {fileID: 1522832234}
   m_Layer: 5
   m_Name: CnButton (2)
   m_TagString: Untagged
@@ -5308,10 +5346,10 @@ RectTransform:
   - {fileID: 913123475}
   m_Father: {fileID: 1473017593}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 130, y: -390}
+  m_SizeDelta: {x: 260, y: 260}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1522832231
 MonoBehaviour:
@@ -5395,6 +5433,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1522832229}
   m_CullTransparentMesh: 1
+--- !u!114 &1522832234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1522832229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6f3ac0066df7424791776e71604d214, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  index: 0
+  loadNo: 0
+  loadText: {fileID: 913123476}
+  thisCannonButton: {fileID: 0}
 --- !u!1 &1525104895
 GameObject:
   m_ObjectHideFlags: 0
@@ -5407,6 +5461,7 @@ GameObject:
   - component: {fileID: 1525104899}
   - component: {fileID: 1525104898}
   - component: {fileID: 1525104897}
+  - component: {fileID: 1525104900}
   m_Layer: 5
   m_Name: CnButton (5)
   m_TagString: Untagged
@@ -5432,10 +5487,10 @@ RectTransform:
   - {fileID: 868620106}
   m_Father: {fileID: 1473017593}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 390, y: -650}
+  m_SizeDelta: {x: 260, y: 260}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1525104897
 MonoBehaviour:
@@ -5519,6 +5574,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1525104895}
   m_CullTransparentMesh: 1
+--- !u!114 &1525104900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1525104895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6f3ac0066df7424791776e71604d214, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  index: 0
+  loadNo: 0
+  loadText: {fileID: 868620107}
+  thisCannonButton: {fileID: 0}
 --- !u!1 &1570816296
 GameObject:
   m_ObjectHideFlags: 0
@@ -5531,6 +5602,7 @@ GameObject:
   - component: {fileID: 1570816300}
   - component: {fileID: 1570816299}
   - component: {fileID: 1570816298}
+  - component: {fileID: 1570816301}
   m_Layer: 5
   m_Name: CnButton (1)
   m_TagString: Untagged
@@ -5556,10 +5628,10 @@ RectTransform:
   - {fileID: 1957806563}
   m_Father: {fileID: 1473017593}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 390, y: -130}
+  m_SizeDelta: {x: 260, y: 260}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1570816298
 MonoBehaviour:
@@ -5643,6 +5715,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1570816296}
   m_CullTransparentMesh: 1
+--- !u!114 &1570816301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1570816296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6f3ac0066df7424791776e71604d214, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  index: 0
+  loadNo: 0
+  loadText: {fileID: 1957806564}
+  thisCannonButton: {fileID: 0}
 --- !u!1 &1580860560
 GameObject:
   m_ObjectHideFlags: 0
@@ -6781,6 +6869,7 @@ GameObject:
   - component: {fileID: 2036751398}
   - component: {fileID: 2036751397}
   - component: {fileID: 2036751396}
+  - component: {fileID: 2036751399}
   m_Layer: 5
   m_Name: CnButton (3)
   m_TagString: Untagged
@@ -6806,10 +6895,10 @@ RectTransform:
   - {fileID: 2142941111}
   m_Father: {fileID: 1473017593}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 390, y: -390}
+  m_SizeDelta: {x: 260, y: 260}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2036751396
 MonoBehaviour:
@@ -6893,6 +6982,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2036751394}
   m_CullTransparentMesh: 1
+--- !u!114 &2036751399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2036751394}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6f3ac0066df7424791776e71604d214, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  index: 0
+  loadNo: 0
+  loadText: {fileID: 2142941112}
+  thisCannonButton: {fileID: 0}
 --- !u!1 &2052166995
 GameObject:
   m_ObjectHideFlags: 0
