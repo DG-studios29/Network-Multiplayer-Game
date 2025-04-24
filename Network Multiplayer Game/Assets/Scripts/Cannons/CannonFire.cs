@@ -3,7 +3,13 @@ using UnityEngine;
 public class CannonFire : MonoBehaviour
 {
 
-    [SerializeField] private int index; 
+    [SerializeField] private int index;
+
+
+    [SerializeField] private GameObject ballPrefab;
+    [SerializeField] private
+
+
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
