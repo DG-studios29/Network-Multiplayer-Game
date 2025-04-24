@@ -7,18 +7,6 @@ public enum ActivePanel { PAUSE, CANNON };
 public class PlayerInputTemp : MonoBehaviour
 {
 
-    [Header("Movement Settings")]
-    public float moveSpeedAgain = 5f;
-    public float jumpForce = 7f;
-    private Vector3 cubeDirection;
-    private Rigidbody rb;
-
-    [Header("Shooting Settings")]
-    public GameObject projectilePrefab;
-    public Transform shootPoint;
-    public float projectileSpeed = 10f;
-
-
     [Header("Menu and Button Stuff")]
     public GameObject cannonMenu;
     public GameObject playerHUD;
@@ -26,6 +14,8 @@ public class PlayerInputTemp : MonoBehaviour
 
 
     private InputSystem_Actions pInputAction;
+
+    private PlayerInput playerInput;
 
     
 
@@ -40,9 +30,12 @@ public class PlayerInputTemp : MonoBehaviour
 
         pInputAction = new InputSystem_Actions();
 
+        playerInput = GetComponent<PlayerInput>();
+        
+
         handleEvent = GameObject.FindAnyObjectByType<HandleEvent>();
 
-        rb = GetComponent<Rigidbody>(); // Ensure cube has a Rigidbody component
+    
     }
 
 
@@ -50,6 +43,7 @@ public class PlayerInputTemp : MonoBehaviour
     void Start()
     {
         activePanel = ActivePanel.CANNON;
+      
     }
 
     // Update is called once per frame
@@ -70,7 +64,7 @@ public class PlayerInputTemp : MonoBehaviour
                 SwitchToPlayer();
                 //activePanel = ActivePanel.PAUSE;
 
-                //handleEvent.ChangeFirstSelected(activePanel);
+                handleEvent.ChangeFirstSelected(activePanel);
                 //switch maps to navigation
             }
             else
@@ -80,7 +74,7 @@ public class PlayerInputTemp : MonoBehaviour
                 SwitchToUI();
                 activePanel = ActivePanel.CANNON;
 
-                handleEvent.ChangeFirstSelected(activePanel);
+                //handleEvent.ChangeFirstSelected(activePanel);
                 //switch maps to navigation
             }
         }
@@ -92,17 +86,35 @@ public class PlayerInputTemp : MonoBehaviour
 
     void SwitchToUI()
     {
-        pInputAction.Player.Disable();
-        pInputAction.UI.Enable();
+        //pInputAction.UI.Enable();
+        //pInputAction.Player.Disable();
+
+
+        playerInput.SwitchCurrentActionMap("UI");
+
+        
+       
     }
 
     public void SwitchToPlayer()
     {
-        pInputAction.Player.Enable();
-        pInputAction.UI.Disable();
+        //pInputAction.Player.Enable();
+        //pInputAction.UI.Disable();
+
+        playerInput.SwitchCurrentActionMap("Player");
     }
 
   
+    public void AttackTest(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            Debug.Log("Action on Player Action map was performed");
+        }
+    }
+
+
+
     public void YouCantPauseOnline(InputAction.CallbackContext context)
     {
         if (context.performed)
@@ -114,7 +126,7 @@ public class PlayerInputTemp : MonoBehaviour
                 playerHUD.SetActive(false);
 
                 activePanel = ActivePanel.PAUSE;
-                handleEvent.ChangeFirstSelected(activePanel);
+                //.ChangeFirstSelected(activePanel);
             }
             else
             {
