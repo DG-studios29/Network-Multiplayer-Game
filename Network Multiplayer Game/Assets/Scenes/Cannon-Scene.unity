@@ -570,11 +570,35 @@ MonoBehaviour:
     m_ActionId: 5a51ebfe-db96-4f8a-bc2c-39eabc7a126d
     m_ActionName: 'Player/Pause[/Keyboard/escape,/XInputControllerWindows/select]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 204918947}
+        m_TargetAssemblyTypeName: PlayerInputTemp, Assembly-CSharp
+        m_MethodName: LoadCannon
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: b14dedb5-6cd5-40ce-8700-147b62311224
     m_ActionName: 'UI/Load[/XInputControllerWindows/buttonWest,/Keyboard/j]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 204918947}
+        m_TargetAssemblyTypeName: PlayerInputTemp, Assembly-CSharp
+        m_MethodName: ClearLoadedCannon
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: d3cce0b1-698b-46f0-90b3-3020c5d9c906
     m_ActionName: 'UI/Clear[/Keyboard/backspace,/XInputControllerWindows/buttonEast]'
   - m_PersistentCalls:
