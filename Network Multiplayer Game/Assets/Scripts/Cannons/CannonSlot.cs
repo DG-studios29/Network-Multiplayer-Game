@@ -34,6 +34,11 @@ public class CannonSlot : MonoBehaviour, ISelectHandler, IDeselectHandler
     
     }
 
+    public int GetSlotIndex()
+    {
+        return index;
+    }
+
 
     public void ResetCannon()
     {

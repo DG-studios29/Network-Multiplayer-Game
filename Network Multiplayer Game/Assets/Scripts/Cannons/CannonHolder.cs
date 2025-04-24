@@ -18,12 +18,16 @@ public class CannonHolder : MonoBehaviour
 
     private CannonSlot ActiveSelectedBtn;
 
+    private CannonLinq cannonLinq;
+
 
     private void Awake()
     {
         cSlots = new CannonSlot[6]; //create cannon slot array of six 
 
         loadedCannons = new List<CannonSlot>();
+
+        cannonLinq = GameObject.FindAnyObjectByType<CannonLinq>();
 
     }
 
@@ -45,7 +49,7 @@ public class CannonHolder : MonoBehaviour
     }
 
 
-    void FireLoadedCannon()
+    public void FireLoadedCannon()
     {
         if(loadedCannons.Count <= 0)
         {
@@ -54,8 +58,18 @@ public class CannonHolder : MonoBehaviour
         }
         else
         {
+            Debug.Log("Called From Cannon Holder");
+
+            //call Cannon Linq
+            cannonLinq.FireCannonCalled(loadedCannons[0].GetSlotIndex());
+
+            loadedCannons[0].ResetCannon();
+
             loadedCannons.Remove(loadedCannons[0]);  //remove the first in
             //update the counts on the remaining cannons
+            UpdateLoadCount();
+
+          
 
           
         }
@@ -114,9 +128,17 @@ public class CannonHolder : MonoBehaviour
 
     private void UpdateLoadCount()
     {
-        for(int i = 0; i < loadedCannons.Count; i++)
+        if (loadedCannons.Count == 0)
         {
-            loadedCannons[i].SetCannon(i + 1);
+            ClearLoadedList();
+        }
+        else
+        {
+
+            for (int i = 0; i < loadedCannons.Count; i++)
+            {
+                loadedCannons[i].SetCannon(i + 1);
+            }
         }
     }
 

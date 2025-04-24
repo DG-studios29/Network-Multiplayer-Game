@@ -24,6 +24,7 @@ public class PlayerInputTemp : MonoBehaviour
 
 
     private CannonHolder cannonHolder;
+    private CannonLinq cannonLinq;
 
 
 
@@ -38,6 +39,7 @@ public class PlayerInputTemp : MonoBehaviour
 
         handleEvent = GameObject.FindAnyObjectByType<HandleEvent>();
         cannonHolder = GameObject.FindAnyObjectByType<CannonHolder>();
+        cannonLinq = GameObject.FindAnyObjectByType<CannonLinq>();
 
 
     }
@@ -47,6 +49,8 @@ public class PlayerInputTemp : MonoBehaviour
     void Start()
     {
         activePanel = ActivePanel.CANNON;
+
+        cannonMenu.SetActive(false);
       
     }
 
@@ -115,9 +119,13 @@ public class PlayerInputTemp : MonoBehaviour
     {
         if (context.performed)
         {
-            Debug.Log("Action on Player Action map was performed");
+           
+            cannonHolder.FireLoadedCannon();
+
+            //cannonLinq.FireCannonChain();
         }
     }
+
 
 
 

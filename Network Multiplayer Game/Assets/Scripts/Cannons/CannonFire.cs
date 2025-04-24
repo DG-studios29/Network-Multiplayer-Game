@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class CannonFire : MonoBehaviour
 {
+
+    [SerializeField] private int index; 
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -13,4 +17,21 @@ public class CannonFire : MonoBehaviour
     {
         
     }
+
+    public void SetIndex(int idx)
+    {
+        index = idx;
+    }
+
+
+    public int GetIndex()
+    {
+        return index;
+    }
+
+    public void FireProjectile()
+    {
+        Debug.Log("Look who finally made some progress " + this.name);
+    }
+
 }
