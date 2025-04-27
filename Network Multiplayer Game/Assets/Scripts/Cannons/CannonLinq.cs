@@ -14,17 +14,20 @@ public class CannonLinq : MonoBehaviour
     [SerializeField] private CannonFire cannon5;
     [SerializeField] private CannonFire cannon6;
 
-
+    [SerializeField]private List<CannonData> cannonOptions;
+    private int cannonChoice;
     //public List<CannonSlot> cSlots;
     //public List<CannonFire> cFires;
 
     private CannonHolder cannonHolder;
+    private CannonHUD cannonHUD;
 
     private void Awake()
     {
         realCannons = new CannonFire[6];
 
         cannonHolder = GameObject.FindAnyObjectByType<CannonHolder>();//Cannon GUI needs to be active at this point
+        cannonHUD = GameObject.FindAnyObjectByType<CannonHUD>();
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -42,6 +45,11 @@ public class CannonLinq : MonoBehaviour
         {
             Debug.Log("Found it");
         }
+
+        cannonHUD.SyncAmmoChange(cannonOptions[cannonChoice]);
+
+        
+
     }
 
 
@@ -65,7 +73,7 @@ public class CannonLinq : MonoBehaviour
             realCannons[i].SetIndex(i + 1);
         }
 
-
+        cannonChoice = 0;
     }
 
 
@@ -85,6 +93,31 @@ public class CannonLinq : MonoBehaviour
             }
         }
     }
+
+    public void ChangeCannonType()
+    {
+      
+        cannonChoice++;
+        if(cannonChoice > 2)
+        {
+            cannonChoice = 0;
+        }
+
+
+        foreach (CannonFire cnFire in realCannons)
+        {
+            cnFire.ChangeCannonType(cannonOptions[cannonChoice]);
+        }
+
+
+        cannonHUD.SyncAmmoChange(cannonOptions[cannonChoice]);
+
+
+    }
+
+    
+
+
 
 
 

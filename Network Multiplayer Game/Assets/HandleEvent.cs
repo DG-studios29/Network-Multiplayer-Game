@@ -61,6 +61,7 @@ public class HandleEvent : MonoBehaviour
             eSystem.firstSelectedGameObject = cannonBtn;
             Button button = eSystem.firstSelectedGameObject.GetComponent<Button>();
             button.Select();
+            button.GetComponent<CannonSlot>().SwitchSelection();
         }
     }
 

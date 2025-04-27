@@ -14,7 +14,7 @@ public class CannonHolder : MonoBehaviour
 
     private CannonSlot[] cSlots;
 
-    private List<CannonSlot> loadedCannons; //will update itself according to our setup
+    [SerializeField]private List<CannonSlot> loadedCannons; //will update itself according to our setup
 
     private CannonSlot ActiveSelectedBtn;
 
@@ -100,6 +100,7 @@ public class CannonHolder : MonoBehaviour
         else
         {
             Debug.Log("Nothing has been selected");
+            
         }
     }
 

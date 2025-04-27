@@ -100,10 +100,11 @@ public class PlayerInputTemp : MonoBehaviour
             {
                 cannonMenu.SetActive(true);
                 playerHUD.SetActive(false);
-                SwitchToUI();
                 activePanel = ActivePanel.CANNON;
+                SwitchToUI();
+                
 
-                //handleEvent.ChangeFirstSelected(activePanel);
+                handleEvent.ChangeFirstSelected(activePanel);
                 //switch maps to navigation
             }
         }
@@ -174,5 +175,13 @@ public class PlayerInputTemp : MonoBehaviour
         cannonHolder.ClearLoadedList();
     }
 
+
+    public void ChangeCannonType(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            cannonLinq.ChangeCannonType();
+        }
+    }
   
 }

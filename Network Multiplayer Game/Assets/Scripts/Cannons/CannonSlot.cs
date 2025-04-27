@@ -63,6 +63,12 @@ public class CannonSlot : MonoBehaviour, ISelectHandler, IDeselectHandler
         thisCannonButton.enabled = true;
     }
 
+    public void SwitchSelection()
+    {
+        Debug.Log("Selected btn Cannon " + index.ToString());
+        btnSelected = true;
+    }
+
     public void OnSelect(BaseEventData eventData)
     {
         Debug.Log("Selected btn Cannon " + index.ToString());
