@@ -10,7 +10,9 @@ public class CannonSlot : MonoBehaviour, ISelectHandler, IDeselectHandler
     [SerializeField] private int index; //identify our cannon
     [SerializeField] private int loadNo; //number it will be fired out in our sequence
 
+    [SerializeField] private TMP_Text indexText;
     [SerializeField]private TMP_Text loadText;
+    [SerializeField] private TMP_Text multiText;
     [SerializeField] private Button thisCannonButton;
     private bool btnSelected;
 
@@ -20,6 +22,8 @@ public class CannonSlot : MonoBehaviour, ISelectHandler, IDeselectHandler
     void Start()
     {
         thisCannonButton = GetComponent<Button>();
+        multiText.text = "";
+
     }
 
     // Update is called once per frame
@@ -31,6 +35,7 @@ public class CannonSlot : MonoBehaviour, ISelectHandler, IDeselectHandler
     public void IndexSet(int idx)
     {
         index = idx;
+        indexText.text = "Cannon #" + index.ToString();
     
     }
 
@@ -48,6 +53,7 @@ public class CannonSlot : MonoBehaviour, ISelectHandler, IDeselectHandler
     {
         loadNo = 0;
         loadText.text = "-";
+        multiText.text = "";
     }
 
     public void SetCannon(int lText)

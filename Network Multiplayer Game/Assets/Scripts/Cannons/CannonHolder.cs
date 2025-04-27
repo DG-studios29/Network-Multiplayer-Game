@@ -157,19 +157,16 @@ public class CannonHolder : MonoBehaviour
 
     bool CheckAlreadyInList(CannonSlot checkingSlot)
     {
-        if(loadedCannons.Count == 0)
+        if (loadedCannons.Count > 0)
         {
-            return false;
-        }
-
-        for(int i = 0; i < loadedCannons.Count; i++)
-        {
-            if(checkingSlot == loadedCannons[i])
+            for (int i = 0; i < loadedCannons.Count; i++)
             {
-                return true;
+                if (checkingSlot.GetSlotIndex() == loadedCannons[i].GetSlotIndex())
+                {
+                    return true;
+                }
             }
         }
-
         return false;
     }
 
