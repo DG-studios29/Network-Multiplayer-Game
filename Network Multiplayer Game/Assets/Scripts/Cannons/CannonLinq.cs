@@ -22,6 +22,8 @@ public class CannonLinq : MonoBehaviour
     private CannonHolder cannonHolder;
     private CannonHUD cannonHUD;
 
+    public CannonHolder CannonHolder => cannonHolder;
+
     private void Awake()
     {
         realCannons = new CannonFire[6];
@@ -44,6 +46,11 @@ public class CannonLinq : MonoBehaviour
         else
         {
             Debug.Log("Found it");
+        }
+
+        foreach (CannonFire cnFire in realCannons)
+        {
+            cnFire.ChangeCannonType(cannonOptions[cannonChoice]);
         }
 
         cannonHUD.SyncAmmoChange(cannonOptions[cannonChoice]);
@@ -92,6 +99,8 @@ public class CannonLinq : MonoBehaviour
                 realCannons[i].FireProjectile();
             }
         }
+
+        LinkHUD();
     }
 
     public void ChangeCannonType()
@@ -115,7 +124,10 @@ public class CannonLinq : MonoBehaviour
 
     }
 
-    
+    public void LinkHUD()
+    {
+        cannonHUD.SyncLoadDisplay();
+    }
 
 
 

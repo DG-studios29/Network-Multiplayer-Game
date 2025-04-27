@@ -88,6 +88,8 @@ public class CannonHolder : MonoBehaviour
                 ActiveSelectedBtn.SetCannon(loadedCannons.Count); //number
 
                 ActiveSelectedBtn = null;
+
+                cannonLinq.LinkHUD();
             }
             else
             {
@@ -141,6 +143,10 @@ public class CannonHolder : MonoBehaviour
                 loadedCannons[i].SetCannon(i + 1);
             }
         }
+
+        cannonLinq.LinkHUD();
+
+
     }
 
     bool CheckAlreadyInList(CannonSlot checkingSlot)
@@ -217,7 +223,10 @@ public class CannonHolder : MonoBehaviour
         return null;
     }
 
-
+    public CannonSlot LinkSlot(int i)
+    {
+        return cSlots[i];
+    }
 
 
 

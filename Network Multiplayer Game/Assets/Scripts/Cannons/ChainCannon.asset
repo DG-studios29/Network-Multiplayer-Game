@@ -16,5 +16,5 @@ MonoBehaviour:
   ballPrefab: {fileID: 3630204142601734126, guid: 1fed68ae8fe134042aa5758f58748c57, type: 3}
   launchAngle: 60
   rangeZ: 20
-  heightY: 20
+  heightY: 0
   timeTaken: 1
