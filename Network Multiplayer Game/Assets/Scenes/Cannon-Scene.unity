@@ -3719,7 +3719,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d7470e249ae05284e947aab25e04afab, type: 2}
   - {fileID: 11400000, guid: c1e509dfc7dc15c4c9d73d3caa43060b, type: 2}
   - {fileID: 11400000, guid: c3896223d51fcc0478c636ab6cfceeb2, type: 2}
-  loadTimeMax: 0
+  loadTimeMax: 2
 --- !u!1 &807636124
 GameObject:
   m_ObjectHideFlags: 0

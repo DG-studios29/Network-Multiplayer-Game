@@ -72,9 +72,11 @@ public class CannonLinq : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        loadTimer += Time.deltaTime;
+        if(cannonHolder.CountLoadedCannons() > 0)
+        {
+            loadTimer += Time.deltaTime;
 
-        
+        }
 
     }
 
