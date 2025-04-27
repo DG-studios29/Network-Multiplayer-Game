@@ -23,6 +23,13 @@ public class CannonHUD : MonoBehaviour
 
     bool linksAssigned = false;
 
+    [SerializeField] private Image loadTimeImage;
+    [SerializeField] private TMP_Text reloadText;
+
+    int loadTextMessage;
+    bool cannonsToLoad;
+
+
 
 
     private void Awake()
@@ -54,6 +61,8 @@ public class CannonHUD : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        LoadFillAmountUpdate();
+        CheckListLength();
         
     }
 
@@ -98,6 +107,48 @@ public class CannonHUD : MonoBehaviour
 
     }  
 
-  
+    private void LoadFillAmountUpdate()
+    {
+
+        if(cannonLinq.LoadTimer >= cannonLinq.LoadTimeMax)
+        {
+            loadTimeImage.fillAmount = 1;
+            if (cannonsToLoad)
+            {
+                reloadText.text = "Cannon Loaded";
+                reloadText.color = Color.green;
+            }
+        }
+        else
+        {
+            loadTimeImage.fillAmount = cannonLinq.LoadTimer / cannonLinq.LoadTimeMax;
+            if (cannonsToLoad)
+            {
+                reloadText.text = "Loading Cannon";
+                reloadText.color = Color.red;
+            }
+
+        }
+   
+    }
+
+
+    public void CheckListLength()
+    {
+        if(cannonHolder.CountLoadedCannons() > 0)
+        {
+            cannonsToLoad = true;
+            
+        }
+        else
+        {
+            cannonsToLoad = false;
+            reloadText.text = "No Cannons Loading";
+            reloadText.color = Color.yellow;
+        }
+    }
+
+
+   
 
 }

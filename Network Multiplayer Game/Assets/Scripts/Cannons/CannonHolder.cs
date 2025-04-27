@@ -56,23 +56,29 @@ public class CannonHolder : MonoBehaviour
             Debug.Log("Cannot fire anything, need to reload");
             return;
         }
-        else
+        else 
         {
-            Debug.Log("Called From Cannon Holder");
+            if (cannonLinq.CanFireCannon())
+             {
 
-            //call Cannon Linq
-            cannonLinq.FireCannonCalled(loadedCannons[0].GetSlotIndex());
+                Debug.Log("Called From Cannon Holder");
 
-            loadedCannons[0].ResetCannon();
+                //call Cannon Linq
+                cannonLinq.FireCannonCalled(loadedCannons[0].GetSlotIndex());
 
-            loadedCannons.Remove(loadedCannons[0]);  //remove the first in
-            //update the counts on the remaining cannons
-            UpdateLoadCount();
+                loadedCannons[0].ResetCannon();
 
-          
+                loadedCannons.Remove(loadedCannons[0]);  //remove the first in
+                                                         //update the counts on the remaining cannons
+                UpdateLoadCount();
+            }
+            else
+            {
+                Debug.Log("Wait on Load");
+            }
 
-          
         }
+        
     }
 
     public void AddToLoadedList()
@@ -228,7 +234,10 @@ public class CannonHolder : MonoBehaviour
         return cSlots[i];
     }
 
-
+    public int CountLoadedCannons()
+    {
+        return loadedCannons.Count;
+    }
 
 
 }

@@ -24,6 +24,14 @@ public class CannonLinq : MonoBehaviour
 
     public CannonHolder CannonHolder => cannonHolder;
 
+
+    [SerializeField]private float loadTimeMax;
+    private float loadTimer = 0;
+
+    public float LoadTimer => loadTimer;
+    public float LoadTimeMax => loadTimeMax;
+
+
     private void Awake()
     {
         realCannons = new CannonFire[6];
@@ -42,6 +50,7 @@ public class CannonLinq : MonoBehaviour
         if(cannonHolder == null)
         {
             Debug.Log("Couldnt find");
+
         }
         else
         {
@@ -63,6 +72,9 @@ public class CannonLinq : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        loadTimer += Time.deltaTime;
+
+        
 
     }
 
@@ -92,18 +104,36 @@ public class CannonLinq : MonoBehaviour
 
     public void FireCannonCalled(int callIndex)
     {
-        for(int i = 0; i < realCannons.Length; i++)
-        {
-            if(realCannons[i].GetIndex() == callIndex)
+        
+            for (int i = 0; i < realCannons.Length; i++)
             {
-                realCannons[i].FireProjectile();
+                if (realCannons[i].GetIndex() == callIndex)
+                {
+                    realCannons[i].FireProjectile();
+                }
             }
-        }
 
-        LinkHUD();
+            LinkHUD();
+            loadTimer = 0;
+     
+
     }
 
-    public void ChangeCannonType()
+    public bool CanFireCannon()
+    {
+        if (loadTimer >= loadTimeMax)
+        {
+            loadTimer = 0;
+            return true;
+        }
+        else
+        {
+            Debug.Log("Wait for load Completion");
+            return false;
+        }
+    }
+
+        public void ChangeCannonType()
     {
       
         cannonChoice++;
