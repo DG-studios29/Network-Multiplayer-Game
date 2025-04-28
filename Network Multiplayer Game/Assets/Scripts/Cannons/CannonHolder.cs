@@ -20,6 +20,8 @@ public class CannonHolder : MonoBehaviour
 
     private CannonLinq cannonLinq;
 
+    private int firstMatch = 0;
+    int firstAppear,lastAppear;
 
     private void Awake()
     {
@@ -66,7 +68,17 @@ public class CannonHolder : MonoBehaviour
                 //call Cannon Linq
                 cannonLinq.FireCannonCalled(loadedCannons[0].GetSlotIndex());
 
-                loadedCannons[0].ResetCannon();
+
+                //Case of multiples
+                if(CountMultiples(loadedCannons[0]) > 1)
+                {
+                    loadedCannons[0].TakeMulti();
+                }
+                else
+                {
+                    loadedCannons[0].ResetCannon();
+                }
+                
 
                 loadedCannons.Remove(loadedCannons[0]);  //remove the first in
                                                          //update the counts on the remaining cannons
@@ -85,30 +97,46 @@ public class CannonHolder : MonoBehaviour
     {
         ActiveSelectedBtn = UseSelectedCannonBtn();
 
-        if(ActiveSelectedBtn != null)
+        if (loadedCannons.Count < 6)
         {
-            //needs to check if its already in the list
-            if (!CheckAlreadyInList(ActiveSelectedBtn))
+
+            if (ActiveSelectedBtn != null)
             {
-                loadedCannons.Add(ActiveSelectedBtn);
-                ActiveSelectedBtn.SetCannon(loadedCannons.Count); //number
+                //needs to check if its already in the list
+                if (!CheckAlreadyInList(ActiveSelectedBtn))
+                {
+                    loadedCannons.Add(ActiveSelectedBtn);
+                    ActiveSelectedBtn.SetCannon(loadedCannons.Count); //number
 
-                ActiveSelectedBtn = null;
+                    ActiveSelectedBtn = null;
 
-                cannonLinq.LinkHUD();
+                    cannonLinq.LinkHUD();
+                }
+                else
+                {
+                    Debug.Log("Adding on top");
+                    loadedCannons.Add(ActiveSelectedBtn);
+
+                    //Get number of repetitions and set our multi text
+                    ActiveSelectedBtn.SetMultiCount(CountMultiples(ActiveSelectedBtn));
+
+                    ActiveSelectedBtn = null;
+
+                    //not sure if we'll need to sync HUD
+                }
+
+
+
             }
             else
             {
-                Debug.Log("Already in Sequence");
+                Debug.Log("Nothing has been selected");
+
             }
-
-
-           
         }
         else
         {
-            Debug.Log("Nothing has been selected");
-            
+            Debug.Log("Our List is full and we can no longer add anything");
         }
     }
 
@@ -120,12 +148,32 @@ public class CannonHolder : MonoBehaviour
         {
             if (CheckAlreadyInList(ActiveSelectedBtn))
             {
-                loadedCannons.Remove(ActiveSelectedBtn);
-                ActiveSelectedBtn.ResetCannon();
+                //needs to know if we'll clear multiples?
+                if (CountMultiples(ActiveSelectedBtn) > 1)
+                {
+                    //remove an occurance. first occurance
+                    //Remove first
 
-                UpdateLoadCount();
 
-                ActiveSelectedBtn = null;
+                    loadedCannons.Remove(loadedCannons[firstMatch]); //remove the first match in list
+
+                    ActiveSelectedBtn.SetMultiCount(CountMultiples(ActiveSelectedBtn));
+
+                    UpdateLoadCount();
+
+                    ActiveSelectedBtn = null;
+
+                }
+                else
+                {
+
+                    loadedCannons.Remove(ActiveSelectedBtn);
+                    ActiveSelectedBtn.ResetCannon();
+
+                    UpdateLoadCount();
+
+                    ActiveSelectedBtn = null;
+                }
             }
             else
             {
@@ -146,7 +194,24 @@ public class CannonHolder : MonoBehaviour
 
             for (int i = 0; i < loadedCannons.Count; i++)
             {
-                loadedCannons[i].SetCannon(i + 1);
+                //int appears = CountMultiples(loadedCannons[i]);
+
+                //check if our cannon reappears
+                if(CountMultiples(loadedCannons[i]) > 1)
+                {
+                    if (CheckAlreadyInList(loadedCannons[i]))
+                    {
+                        loadedCannons[i].FirstMatchMarked(firstMatch + 1);
+                        loadedCannons[i].SetCannon(firstMatch + 1);
+
+                    }
+                }
+                
+                else
+                {
+                    loadedCannons[i].SetCannon(i + 1);
+                }
+
             }
         }
 
@@ -155,7 +220,7 @@ public class CannonHolder : MonoBehaviour
 
     }
 
-    bool CheckAlreadyInList(CannonSlot checkingSlot)
+    private bool CheckAlreadyInList(CannonSlot checkingSlot)
     {
         if (loadedCannons.Count > 0)
         {
@@ -163,6 +228,7 @@ public class CannonHolder : MonoBehaviour
             {
                 if (checkingSlot.GetSlotIndex() == loadedCannons[i].GetSlotIndex())
                 {
+                    firstMatch = i; //first match is first index of this
                     return true;
                 }
             }
@@ -170,6 +236,27 @@ public class CannonHolder : MonoBehaviour
         return false;
     }
 
+
+    private int CountMultiples(CannonSlot checkingSlot)
+    {
+        int occurs = 0;
+        for(int i = 0; i < loadedCannons.Count; i++)
+        {
+            if(checkingSlot.GetSlotIndex() == loadedCannons[i].GetSlotIndex())
+            {
+                occurs++;
+            }
+        }
+
+        return occurs;
+    }
+    
+
+
+    public void HandleMulti()
+    {
+
+    }
 
     public void ClearLoadedList()
     {
