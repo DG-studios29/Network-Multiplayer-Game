@@ -11,11 +11,11 @@ GameObject:
   - component: {fileID: 8348745489096710473}
   - component: {fileID: 7186073441733904357}
   - component: {fileID: 6827360118004381205}
-  - component: {fileID: 4270387127559577172}
   - component: {fileID: 2944381119593169657}
   - component: {fileID: 2082910252004209248}
   - component: {fileID: 1234341133876942443}
   - component: {fileID: 4718895683806414106}
+  - component: {fileID: 7619851049513175826}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -95,23 +95,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &4270387127559577172
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2901662000760016580}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0daf3adfc08b6824f95b48c2c7dec8c9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncDirection: 0
-  syncMode: 0
-  syncInterval: 0
-  moveSpeed: 5
-  gravity: -9.81
 --- !u!114 &2944381119593169657
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -156,7 +139,7 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4270387127559577172}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: NetworkPlayerMovement, Assembly-CSharp
         m_MethodName: OnMove
         m_Mode: 0
@@ -305,3 +288,22 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7619851049513175826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2901662000760016580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a8c373e644b1b841b93acbd3c2570dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  moveSpeed: 5
+  health: 100
+  healthBar: {fileID: 0}
+  minimapIconPrefab: {fileID: 0}
