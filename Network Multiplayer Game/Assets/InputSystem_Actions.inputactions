@@ -510,13 +510,46 @@
                     "isPartOfComposite": false
                 },
                 {
-
+                    "name": "",
+                    "id": "0b158493-c64e-4aae-a79b-d0a02d5a1469",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-
+                    "id": "8732c1c5-a8f2-45cc-879f-7d7ff351df58",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "60c0e8c6-ec50-4387-a4d5-7c73ffc19794",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "Scale(factor=-1)",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Turn",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cb8c6d47-8cc1-4a55-8ef2-c684284500b9",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "Scale",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Turn",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
