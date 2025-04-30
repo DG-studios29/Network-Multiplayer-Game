@@ -198,6 +198,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Turn"",
+                    ""type"": ""Button"",
+                    ""id"": ""d2ef0671-3f16-4c3b-a941-99cadee8bed9"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -588,67 +597,45 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""86f3d82a-2dbc-4a4d-828b-df94f57dd6a1"",
-                    ""path"": ""<Gamepad>/buttonNorth"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Gamepad"",
-                    ""action"": ""Toggle Cannon Menu"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""c38bb6bd-134d-40e9-9fa1-a1247c16db44"",
-                    ""path"": ""<Keyboard>/i"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Toggle Cannon Menu"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""0c39d8c7-efb8-4ec9-bfc0-0aaa3f7e59d3"",
-                    ""path"": ""<Keyboard>/escape"",
+                    ""id"": ""b3ab1b24-1c93-4ad7-aa8d-5987da47e5a7"",
+                    ""path"": """",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Pause"",
+                    ""action"": """",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""3a166136-5619-4403-bf7d-8fc4719d537e"",
-                    ""path"": ""<Gamepad>/select"",
+                    ""id"": ""87f910d1-f69a-4556-a136-b4b92e07a2e5"",
+                    ""path"": """",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Pause"",
+                    ""action"": """",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""10cc90b9-f85d-40f3-a309-cd8c850da68d"",
-                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""id"": ""546c5224-5c60-4a32-9234-c0a88ba769d9"",
+                    ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""Scale(factor=-1)"",
                     ""groups"": """",
-                    ""action"": ""ChangeCannon"",
+                    ""action"": ""Turn"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""7db33ed4-47d2-4028-912b-39b665ce5fb2"",
-                    ""path"": ""<Keyboard>/tab"",
+                    ""id"": ""0103642f-eb30-42f7-a6a9-6073cc13c864"",
+                    ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""Scale"",
                     ""groups"": """",
-                    ""action"": ""ChangeCannon"",
+                    ""action"": ""Turn"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1352,6 +1339,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_ToggleCannonMenu = m_Player.FindAction("Toggle Cannon Menu", throwIfNotFound: true);
         m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
         m_Player_ChangeCannon = m_Player.FindAction("ChangeCannon", throwIfNotFound: true);
+        m_Player_Turn = m_Player.FindAction("Turn", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1460,6 +1448,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_ToggleCannonMenu;
     private readonly InputAction m_Player_Pause;
     private readonly InputAction m_Player_ChangeCannon;
+    private readonly InputAction m_Player_Turn;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -1519,6 +1508,10 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/ChangeCannon".
         /// </summary>
         public InputAction @ChangeCannon => m_Wrapper.m_Player_ChangeCannon;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/Turn".
+        /// </summary>
+        public InputAction @Turn => m_Wrapper.m_Player_Turn;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1581,6 +1574,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @ChangeCannon.started += instance.OnChangeCannon;
             @ChangeCannon.performed += instance.OnChangeCannon;
             @ChangeCannon.canceled += instance.OnChangeCannon;
+            @Turn.started += instance.OnTurn;
+            @Turn.performed += instance.OnTurn;
+            @Turn.canceled += instance.OnTurn;
         }
 
         /// <summary>
@@ -1628,6 +1624,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @ChangeCannon.started -= instance.OnChangeCannon;
             @ChangeCannon.performed -= instance.OnChangeCannon;
             @ChangeCannon.canceled -= instance.OnChangeCannon;
+            @Turn.started -= instance.OnTurn;
+            @Turn.performed -= instance.OnTurn;
+            @Turn.canceled -= instance.OnTurn;
         }
 
         /// <summary>
@@ -2045,6 +2044,13 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnChangeCannon(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Turn" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnTurn(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.

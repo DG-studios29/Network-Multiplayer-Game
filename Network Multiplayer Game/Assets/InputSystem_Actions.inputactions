@@ -510,13 +510,46 @@
                     "isPartOfComposite": false
                 },
                 {
-
+                    "name": "",
+                    "id": "b3ab1b24-1c93-4ad7-aa8d-5987da47e5a7",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-
+                    "id": "87f910d1-f69a-4556-a136-b4b92e07a2e5",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "546c5224-5c60-4a32-9234-c0a88ba769d9",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "Scale(factor=-1)",
+                    "groups": "",
+                    "action": "Turn",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0103642f-eb30-42f7-a6a9-6073cc13c864",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "Scale",
+                    "groups": "",
+                    "action": "Turn",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
