@@ -3,108 +3,83 @@ using UnityEngine.AI;
 
 public class KrakenAI : MonoBehaviour
 {
+    public Transform[] patrolPoints;
     public Transform player;
-    public float detectionRange = 15f;
-    public float stoppingDistance = 3f;
-    public Transform[] waypoints;
-    public float patrolWaitTime = 2f;
+    public float chaseRange = 100f;
+    public float attackRange = 5f;
+    public float attackOffset = 2f;
+    public float patrolOffset = -3f;
+    public float offsetLerpSpeed = 2f;
 
     private NavMeshAgent agent;
-    public Animator animator;
-    private int currentWaypointIndex = 0;
-    private float waitTimer = 0f;
-    private float distanceToPlayer;
+    private Animator animator;
+    private int currentPatrolIndex;
+    private bool isAttacking;
+    private bool isChasing;
 
-    private enum State { Patrol, Chase, Attack }
-    private State currentState = State.Patrol;
-
-    private void Start()
+    void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        GoToNextWaypoint();
+        animator = GetComponent<Animator>();
+        GoToNextPatrolPoint();
     }
 
-    private void Update()
+    void Update()
     {
-        distanceToPlayer = Vector3.Distance(transform.position, player.position);
+        float distance = Vector3.Distance(player.position, transform.position);
 
-        // Determine state
-        if (distanceToPlayer <= stoppingDistance + 0.5f)
+        if (distance <= attackRange)
         {
-            currentState = State.Attack;
+            isAttacking = true;
+            isChasing = false;
+            agent.SetDestination(transform.position); // Stop
         }
-        else if (distanceToPlayer <= detectionRange)
+        else if (distance <= chaseRange)
         {
-            currentState = State.Chase;
+            isAttacking = false;
+            isChasing = true;
+            agent.SetDestination(player.position);
         }
         else
         {
-            currentState = State.Patrol;
+            isAttacking = false;
+            isChasing = false;
+
+            if (!agent.pathPending && agent.remainingDistance < 0.5f)
+                GoToNextPatrolPoint();
         }
 
-        // Handle states
-        switch (currentState)
+        // Smoothly adjust base offset for breaching effect
+        float targetOffset = isAttacking ? attackOffset : patrolOffset;
+        agent.baseOffset = Mathf.Lerp(agent.baseOffset, targetOffset, Time.deltaTime * offsetLerpSpeed);
+
+        if (isAttacking)
         {
-            case State.Patrol:
-                Patrol();
-                agent.baseOffset = -14f;
-                break;
-            case State.Chase:
-                Chase();
-                agent.baseOffset = -14f;
-                break;
-            case State.Attack:
-                Attack();
-                agent.baseOffset = -7f;
-                break;
-        }
-
-        // Rotate to face movement direction
-        if (agent.velocity.sqrMagnitude > 0.01f)
-        {
-            Quaternion targetRotation = Quaternion.LookRotation(agent.velocity.normalized);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
-        }
-    }
-
-    private void Patrol()
-    {
-        agent.isStopped = false;
-        animator.SetBool("isMoving", true);
-
-        if (!agent.pathPending && agent.remainingDistance < 0.5f)
-        {
-            waitTimer += Time.deltaTime;
-
-            if (waitTimer >= patrolWaitTime)
+            // Rotate towards player smoothly
+            Vector3 direction = (player.position - transform.position).normalized;
+            direction.y = 0f; // Keep rotation flat
+            if (direction != Vector3.zero)
             {
-                currentWaypointIndex = (currentWaypointIndex + 1) % waypoints.Length;
-                GoToNextWaypoint();
-                waitTimer = 0f;
+                Quaternion lookRotation = Quaternion.LookRotation(direction);
+                transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 3f);
             }
         }
+        else if (agent.velocity.sqrMagnitude > 0.01f)
+        {
+            // Regular movement rotation
+            Quaternion look = Quaternion.LookRotation(agent.velocity.normalized);
+            transform.rotation = Quaternion.Slerp(transform.rotation, look, Time.deltaTime * 5f);
+        }
+
+        // Animator parameters
+        animator.SetBool("isChasing", isChasing);
+        animator.SetBool("isAttacking", isAttacking);
     }
 
-    private void Chase()
+    void GoToNextPatrolPoint()
     {
-        agent.isStopped = false;
-        agent.speed = 8f;
-        agent.SetDestination(player.position);
-        animator.SetBool("isMoving", true);
-        
-    }
-
-    private void Attack()
-    {
-        agent.isStopped = true;
-        transform.LookAt(player);
-        animator.SetBool("isMoving", false);
-        animator.SetTrigger("Attack"); // Assumes animation has Attack trigger
-    }
-
-    private void GoToNextWaypoint()
-    {
-        if (waypoints.Length == 0) return;
-        agent.SetDestination(waypoints[currentWaypointIndex].position);
+        if (patrolPoints.Length == 0) return;
+        currentPatrolIndex = Random.Range(0, patrolPoints.Length);
+        agent.SetDestination(patrolPoints[currentPatrolIndex].position);
     }
 }
