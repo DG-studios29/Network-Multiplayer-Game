@@ -7,7 +7,7 @@ public class SharkAI : MonoBehaviour
     public Transform player;
     public float chaseRange = 100f;
     public float attackRange = 3f;
-    public float attackOffset = 0f; // Shark rises up
+    public float attackOffset = 1.5f; // Shark rises up
     public float chaseOffset = -2f;   // Shark stays under water
     public float offsetSmoothSpeed = 2f;
 
