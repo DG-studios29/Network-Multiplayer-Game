@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 8b3a1b461699c894e8479358e8d2d7b6
+guid: 450e4f9d0c959bc4796b6e8e3f9709cb
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -204,6 +204,7 @@ ModelImporter:
       maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
+    clipAnimations: []
     isReadable: 0
   meshes:
     lODScreenPercentages: []
