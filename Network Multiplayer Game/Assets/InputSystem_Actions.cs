@@ -597,7 +597,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-<<<<<<< Updated upstream
                     ""id"": ""0b158493-c64e-4aae-a79b-d0a02d5a1469"",
                     ""path"": """",
                     ""interactions"": """",
@@ -637,25 +636,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": ""Scale"",
                     ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""Turn"",
-=======
-                    ""id"": ""61a96579-7a0c-43b2-aff3-2c47a7b14d7d"",
-                    ""path"": """",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": """",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""ea9d4358-51e1-4009-9655-8f66d73d00ff"",
-                    ""path"": """",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": """",
->>>>>>> Stashed changes
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
