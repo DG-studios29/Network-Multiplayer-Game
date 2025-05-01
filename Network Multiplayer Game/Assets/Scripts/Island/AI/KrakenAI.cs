@@ -53,20 +53,9 @@ public class KrakenAI : MonoBehaviour
         float targetOffset = isAttacking ? attackOffset : patrolOffset;
         agent.baseOffset = Mathf.Lerp(agent.baseOffset, targetOffset, Time.deltaTime * offsetLerpSpeed);
 
-        if (isAttacking)
+        // Rotate to movement direction
+        if (agent.velocity.sqrMagnitude > 0.01f)
         {
-            // Rotate towards player smoothly
-            Vector3 direction = (player.position - transform.position).normalized;
-            direction.y = 0f; // Keep rotation flat
-            if (direction != Vector3.zero)
-            {
-                Quaternion lookRotation = Quaternion.LookRotation(direction);
-                transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 3f);
-            }
-        }
-        else if (agent.velocity.sqrMagnitude > 0.01f)
-        {
-            // Regular movement rotation
             Quaternion look = Quaternion.LookRotation(agent.velocity.normalized);
             transform.rotation = Quaternion.Slerp(transform.rotation, look, Time.deltaTime * 5f);
         }

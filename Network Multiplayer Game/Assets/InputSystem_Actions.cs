@@ -207,15 +207,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Turn"",
-                    ""type"": ""Button"",
-                    ""id"": ""d2ef0671-3f16-4c3b-a941-99cadee8bed9"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -606,20 +597,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""b3ab1b24-1c93-4ad7-aa8d-5987da47e5a7"",
-                    ""path"": """",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": """",
-                    ""groups"": """",
-                    ""action"": """",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""87f910d1-f69a-4556-a136-b4b92e07a2e5"",
+                    ""id"": ""0b158493-c64e-4aae-a79b-d0a02d5a1469"",
                     ""path"": """",
                     ""interactions"": """",
                     ""processors"": """",
@@ -630,67 +608,34 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""546c5224-5c60-4a32-9234-c0a88ba769d9"",
+                    ""id"": ""8732c1c5-a8f2-45cc-879f-7d7ff351df58"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": """",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""60c0e8c6-ec50-4387-a4d5-7c73ffc19794"",
                     ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": ""Scale(factor=-1)"",
-                    ""groups"": """",
+                    ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""Turn"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""0103642f-eb30-42f7-a6a9-6073cc13c864"",
+                    ""id"": ""cb8c6d47-8cc1-4a55-8ef2-c684284500b9"",
                     ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
                     ""processors"": ""Scale"",
-                    ""groups"": """",
+                    ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""Turn"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""71305186-06e9-4ded-b64f-b156cecd8dd2"",
-                    ""path"": ""<Gamepad>/rightShoulder"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Gamepad"",
-                    ""action"": ""ChangeCannon"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""760d429f-7539-495e-8fe4-7aa13966f99e"",
-                    ""path"": ""<Keyboard>/tab"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""ChangeCannon"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""ce376114-b076-4d14-9327-8fa1a810d059"",
-                    ""path"": ""<Keyboard>/i"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Toggle Cannon Menu"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""9ef99fd0-bc04-4e57-b587-1d7e069d7749"",
-                    ""path"": ""<Gamepad>/buttonNorth"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Gamepad"",
-                    ""action"": ""Toggle Cannon Menu"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1395,7 +1340,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
         m_Player_ChangeCannon = m_Player.FindAction("ChangeCannon", throwIfNotFound: true);
         m_Player_Turn = m_Player.FindAction("Turn", throwIfNotFound: true);
-        m_Player_Turn = m_Player.FindAction("Turn", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1505,7 +1449,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Pause;
     private readonly InputAction m_Player_ChangeCannon;
     private readonly InputAction m_Player_Turn;
-    private readonly InputAction m_Player_Turn;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -1565,10 +1508,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/ChangeCannon".
         /// </summary>
         public InputAction @ChangeCannon => m_Wrapper.m_Player_ChangeCannon;
-        /// <summary>
-        /// Provides access to the underlying input action "Player/Turn".
-        /// </summary>
-        public InputAction @Turn => m_Wrapper.m_Player_Turn;
         /// <summary>
         /// Provides access to the underlying input action "Player/Turn".
         /// </summary>
