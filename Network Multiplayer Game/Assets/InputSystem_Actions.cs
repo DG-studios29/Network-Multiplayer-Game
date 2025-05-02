@@ -207,6 +207,24 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""LoadPreset"",
+                    ""type"": ""Button"",
+                    ""id"": ""53d7b6a0-d28f-4979-b309-2e0b5030fa1e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""HoldPreset"",
+                    ""type"": ""Button"",
+                    ""id"": ""0cb4d3eb-6b99-4dee-a937-87c46ab5c5b2"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -680,6 +698,50 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""ChangeCannon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9b406156-84a2-4667-9acf-a598839766dd"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""LoadPreset"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""23b24910-52af-48ed-81c4-b947807b169b"",
+                    ""path"": ""<Keyboard>/k"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""LoadPreset"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8372bb8f-deb1-4a36-a72c-ec5b78263ecb"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""HoldPreset"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5fb43695-b773-4469-8c44-109f35a7516b"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""HoldPreset"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1446,6 +1508,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
         m_Player_ChangeCannon = m_Player.FindAction("ChangeCannon", throwIfNotFound: true);
         m_Player_Turn = m_Player.FindAction("Turn", throwIfNotFound: true);
+        m_Player_LoadPreset = m_Player.FindAction("LoadPreset", throwIfNotFound: true);
+        m_Player_HoldPreset = m_Player.FindAction("HoldPreset", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1557,6 +1621,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Pause;
     private readonly InputAction m_Player_ChangeCannon;
     private readonly InputAction m_Player_Turn;
+    private readonly InputAction m_Player_LoadPreset;
+    private readonly InputAction m_Player_HoldPreset;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -1620,6 +1686,14 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/Turn".
         /// </summary>
         public InputAction @Turn => m_Wrapper.m_Player_Turn;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/LoadPreset".
+        /// </summary>
+        public InputAction @LoadPreset => m_Wrapper.m_Player_LoadPreset;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/HoldPreset".
+        /// </summary>
+        public InputAction @HoldPreset => m_Wrapper.m_Player_HoldPreset;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1685,6 +1759,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Turn.started += instance.OnTurn;
             @Turn.performed += instance.OnTurn;
             @Turn.canceled += instance.OnTurn;
+            @LoadPreset.started += instance.OnLoadPreset;
+            @LoadPreset.performed += instance.OnLoadPreset;
+            @LoadPreset.canceled += instance.OnLoadPreset;
+            @HoldPreset.started += instance.OnHoldPreset;
+            @HoldPreset.performed += instance.OnHoldPreset;
+            @HoldPreset.canceled += instance.OnHoldPreset;
         }
 
         /// <summary>
@@ -1735,6 +1815,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Turn.started -= instance.OnTurn;
             @Turn.performed -= instance.OnTurn;
             @Turn.canceled -= instance.OnTurn;
+            @LoadPreset.started -= instance.OnLoadPreset;
+            @LoadPreset.performed -= instance.OnLoadPreset;
+            @LoadPreset.canceled -= instance.OnLoadPreset;
+            @HoldPreset.started -= instance.OnHoldPreset;
+            @HoldPreset.performed -= instance.OnHoldPreset;
+            @HoldPreset.canceled -= instance.OnHoldPreset;
         }
 
         /// <summary>
@@ -2181,6 +2267,20 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnTurn(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "LoadPreset" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnLoadPreset(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "HoldPreset" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnHoldPreset(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.

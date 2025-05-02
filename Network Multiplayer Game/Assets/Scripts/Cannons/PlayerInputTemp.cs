@@ -29,6 +29,8 @@ public class PlayerInputTemp : MonoBehaviour
     private CannonLinq cannonLinq;
 
     private CanvasLoadHUD canvasLoadHUD;
+    private PresetInput presetInput;
+    private bool isPresetLoading;
 
     private void Awake()
     {
@@ -43,6 +45,7 @@ public class PlayerInputTemp : MonoBehaviour
         cannonHolder = GameObject.FindAnyObjectByType<CannonHolder>();
         cannonLinq = GameObject.FindAnyObjectByType<CannonLinq>();
         canvasLoadHUD = GameObject.FindAnyObjectByType<CanvasLoadHUD>();
+        presetInput = GameObject.FindAnyObjectByType<PresetInput>();
 
 
     }
@@ -250,4 +253,31 @@ public class PlayerInputTemp : MonoBehaviour
         handleEvent.ChangeFirstSelected(active);
     }
   
+
+    public void PresetHold(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            presetInput.HoldActivated();
+            isPresetLoading = true;
+        }
+        if (context.canceled)
+        {
+            presetInput.HoldDropped();
+            isPresetLoading = false;
+        }
+    }
+
+    public void AutoLoadPreset(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            if(isPresetLoading == true)
+            {
+                //presetInput.LoadUpPreset();
+                cannonHolder.UsePresetToLoad();
+            }
+        }
+    }
+
 }
