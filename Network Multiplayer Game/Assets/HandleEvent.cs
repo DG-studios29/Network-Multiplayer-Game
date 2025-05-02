@@ -85,7 +85,7 @@ public class HandleEvent : MonoBehaviour
             preset.SwitchSelection();
 
 
-            if (!preset.GetHighlightStatus())
+            if (!preset.GetAllHighlightStatus())
             {
                 //if no presets are selected, select the first
                 preset.HighlightActive();

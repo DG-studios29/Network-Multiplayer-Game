@@ -74,4 +74,16 @@ public class PresetsHolder : MonoBehaviour
     }
 
 
+    public PresetsBtn FindActivePreset() 
+    { 
+        foreach(PresetsBtn presets in presetsArray)
+        {
+            if (presets.GetHighlightStatus())
+            {
+                return presets;
+            }
+        }
+        return null;
+    }
+
 }

@@ -94,6 +94,10 @@ public class PlayerInputTemp : MonoBehaviour
             {
                 cannonMenu.SetActive(false);
                 playerHUD.SetActive(true);
+
+                loadingPanel.SetActive(true);
+                presetsPanel.SetActive(false);
+
                 SwitchToPlayer();
                 //activePanel = ActivePanel.PAUSE;
 
@@ -105,6 +109,10 @@ public class PlayerInputTemp : MonoBehaviour
             {
                 cannonMenu.SetActive(true);
                 playerHUD.SetActive(false);
+
+                loadingPanel.SetActive(true);
+                presetsPanel.SetActive(false);
+
                 activePanel = ActivePanel.CANNON;
                 SwitchToUI();
                 

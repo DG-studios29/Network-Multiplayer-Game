@@ -8,10 +8,14 @@ public class PresetsBtn : SelectableBtn
     [SerializeField]private PresetsHolder presetHolder;
     private bool isHighlighted = false;
 
+    private LoadPresetLoader presetLoader;
+
 
     private void Awake()
     {
         presetHolder = GetComponentInParent<PresetsHolder>();
+
+        presetLoader = GetComponentInChildren<LoadPresetLoader>();
     }
 
 
@@ -72,6 +76,19 @@ public class PresetsBtn : SelectableBtn
 
 
         return isHighlighted;
+    }
+
+
+    public bool GetAllHighlightStatus()
+    {
+        return presetHolder.CheckHighlight();
+    }
+
+
+    public LoadPresetData FindPresetData()
+    {
+
+        return presetLoader.LoadPresetData;
     }
 
 }
