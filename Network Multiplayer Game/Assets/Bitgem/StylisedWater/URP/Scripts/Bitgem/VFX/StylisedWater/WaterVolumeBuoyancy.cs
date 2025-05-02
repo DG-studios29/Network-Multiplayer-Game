@@ -64,7 +64,7 @@ public class BuoyantObject : MonoBehaviour
             // Smooth the rotation normal to prevent jittering
             smoothedNormal = Vector3.Lerp(smoothedNormal, targetNormal, Time.fixedDeltaTime * rotationSmoothSpeed);
 
-            // Optional: Clamp tilt
+            // Clamp tilt
             smoothedNormal = ClampTilt(smoothedNormal, maxTiltAngle);
 
             Quaternion targetRotation = Quaternion.FromToRotation(transform.up, smoothedNormal) * rb.rotation;
