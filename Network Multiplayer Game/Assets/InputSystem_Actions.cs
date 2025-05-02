@@ -638,6 +638,50 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""action"": ""Turn"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""46d36d1a-7096-4366-8691-33ef0a866a85"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Toggle Cannon Menu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""099d379e-88a8-419d-8672-e629ec6e556a"",
+                    ""path"": ""<Keyboard>/i"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Toggle Cannon Menu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f891cc9a-ad5b-49f6-93bd-272962c82f21"",
+                    ""path"": ""<Gamepad>/leftStickPress"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""ChangeCannon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5c8d1772-7d8b-4902-8e7e-3ac1d0b93d60"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""ChangeCannon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -757,6 +801,24 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""name"": ""Toggle Cannon Menu"",
                     ""type"": ""Button"",
                     ""id"": ""a6a1304b-f3bf-4ac1-8145-07a2a48bad69"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""OpenPresets"",
+                    ""type"": ""Button"",
+                    ""id"": ""2b847f06-89e2-432a-90e5-b3f2b4b96c15"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""OpenLoader"",
+                    ""type"": ""Button"",
+                    ""id"": ""320af6dd-e2b1-438f-b569-7da19610865b"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -1258,6 +1320,50 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""action"": ""Load"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5f0db19e-265c-4072-88dd-a1a6d04e6c45"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""OpenPresets"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4c2b4c1a-a59e-407f-809e-7cd89e8ebb87"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""OpenPresets"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c719946e-de49-4703-b67d-29ee1f871095"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""OpenLoader"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6fe8d231-0678-4952-b52a-5be6843a2bbe"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""OpenLoader"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1355,6 +1461,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_UI_TrackedDevicePosition = m_UI.FindAction("TrackedDevicePosition", throwIfNotFound: true);
         m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
         m_UI_ToggleCannonMenu = m_UI.FindAction("Toggle Cannon Menu", throwIfNotFound: true);
+        m_UI_OpenPresets = m_UI.FindAction("OpenPresets", throwIfNotFound: true);
+        m_UI_OpenLoader = m_UI.FindAction("OpenLoader", throwIfNotFound: true);
     }
 
     ~@InputSystem_Actions()
@@ -1677,6 +1785,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_TrackedDevicePosition;
     private readonly InputAction m_UI_TrackedDeviceOrientation;
     private readonly InputAction m_UI_ToggleCannonMenu;
+    private readonly InputAction m_UI_OpenPresets;
+    private readonly InputAction m_UI_OpenLoader;
     /// <summary>
     /// Provides access to input actions defined in input action map "UI".
     /// </summary>
@@ -1740,6 +1850,14 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "UI/ToggleCannonMenu".
         /// </summary>
         public InputAction @ToggleCannonMenu => m_Wrapper.m_UI_ToggleCannonMenu;
+        /// <summary>
+        /// Provides access to the underlying input action "UI/OpenPresets".
+        /// </summary>
+        public InputAction @OpenPresets => m_Wrapper.m_UI_OpenPresets;
+        /// <summary>
+        /// Provides access to the underlying input action "UI/OpenLoader".
+        /// </summary>
+        public InputAction @OpenLoader => m_Wrapper.m_UI_OpenLoader;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1805,6 +1923,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @ToggleCannonMenu.started += instance.OnToggleCannonMenu;
             @ToggleCannonMenu.performed += instance.OnToggleCannonMenu;
             @ToggleCannonMenu.canceled += instance.OnToggleCannonMenu;
+            @OpenPresets.started += instance.OnOpenPresets;
+            @OpenPresets.performed += instance.OnOpenPresets;
+            @OpenPresets.canceled += instance.OnOpenPresets;
+            @OpenLoader.started += instance.OnOpenLoader;
+            @OpenLoader.performed += instance.OnOpenLoader;
+            @OpenLoader.canceled += instance.OnOpenLoader;
         }
 
         /// <summary>
@@ -1855,6 +1979,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @ToggleCannonMenu.started -= instance.OnToggleCannonMenu;
             @ToggleCannonMenu.performed -= instance.OnToggleCannonMenu;
             @ToggleCannonMenu.canceled -= instance.OnToggleCannonMenu;
+            @OpenPresets.started -= instance.OnOpenPresets;
+            @OpenPresets.performed -= instance.OnOpenPresets;
+            @OpenPresets.canceled -= instance.OnOpenPresets;
+            @OpenLoader.started -= instance.OnOpenLoader;
+            @OpenLoader.performed -= instance.OnOpenLoader;
+            @OpenLoader.canceled -= instance.OnOpenLoader;
         }
 
         /// <summary>
@@ -2150,5 +2280,19 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnToggleCannonMenu(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "OpenPresets" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnOpenPresets(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "OpenLoader" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnOpenLoader(InputAction.CallbackContext context);
     }
 }

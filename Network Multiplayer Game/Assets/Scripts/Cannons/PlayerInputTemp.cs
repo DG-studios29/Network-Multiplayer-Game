@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 
-public enum ActivePanel { PAUSE, CANNON };
+public enum ActivePanel { PAUSE, CANNON , PRESETS};
 
 public class PlayerInputTemp : MonoBehaviour
 {
@@ -12,6 +12,8 @@ public class PlayerInputTemp : MonoBehaviour
     public GameObject playerHUD;
     public GameObject pauseMenu;
 
+    public GameObject presetsPanel;
+    public GameObject loadingPanel;
 
     private InputSystem_Actions pInputAction;
 
@@ -26,7 +28,7 @@ public class PlayerInputTemp : MonoBehaviour
     private CannonHolder cannonHolder;
     private CannonLinq cannonLinq;
 
-
+    private CanvasLoadHUD canvasLoadHUD;
 
     private void Awake()
     {
@@ -40,6 +42,7 @@ public class PlayerInputTemp : MonoBehaviour
         handleEvent = GameObject.FindAnyObjectByType<HandleEvent>();
         cannonHolder = GameObject.FindAnyObjectByType<CannonHolder>();
         cannonLinq = GameObject.FindAnyObjectByType<CannonLinq>();
+        canvasLoadHUD = GameObject.FindAnyObjectByType<CanvasLoadHUD>();
 
 
     }
@@ -51,6 +54,7 @@ public class PlayerInputTemp : MonoBehaviour
         activePanel = ActivePanel.CANNON;
 
         cannonMenu.SetActive(false);
+        presetsPanel.SetActive(false);
       
     }
 
@@ -93,6 +97,7 @@ public class PlayerInputTemp : MonoBehaviour
                 SwitchToPlayer();
                 //activePanel = ActivePanel.PAUSE;
 
+   
                 handleEvent.ChangeFirstSelected(activePanel);
                 //switch maps to navigation
             }
@@ -104,6 +109,7 @@ public class PlayerInputTemp : MonoBehaviour
                 SwitchToUI();
                 
 
+                canvasLoadHUD.ShowOpenedPanel(activePanel);
                 handleEvent.ChangeFirstSelected(activePanel);
                 //switch maps to navigation
             }
@@ -152,6 +158,47 @@ public class PlayerInputTemp : MonoBehaviour
     }
 
 
+
+
+    public void OpenPresetsMenu(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            if (loadingPanel.activeSelf)
+            {
+                loadingPanel.SetActive(false);
+                presetsPanel.SetActive(true);
+
+                activePanel = ActivePanel.PRESETS;
+               
+                handleEvent.ChangeFirstSelected(activePanel);
+
+                canvasLoadHUD.ShowOpenedPanel(activePanel);
+            }
+
+        }
+    }
+
+
+    public void OpenLoadoutMenu(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            if (presetsPanel.activeSelf)
+            {
+                loadingPanel.SetActive(true);
+                presetsPanel.SetActive(false);
+
+                activePanel = ActivePanel.CANNON;
+               
+                handleEvent.ChangeFirstSelected(activePanel);
+
+                canvasLoadHUD.ShowOpenedPanel(activePanel);
+            }
+        }
+    }
+
+
     public void LoadCannon(InputAction.CallbackContext context)
     {
         if (context.performed)
@@ -176,12 +223,23 @@ public class PlayerInputTemp : MonoBehaviour
     }
 
 
+
+
+
     public void ChangeCannonType(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
             cannonLinq.ChangeCannonType();
         }
+    }
+
+
+    public void ActivePanelSet(ActivePanel active)
+    {
+        activePanel = active;
+
+        handleEvent.ChangeFirstSelected(active);
     }
   
 }

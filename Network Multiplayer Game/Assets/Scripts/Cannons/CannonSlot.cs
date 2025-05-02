@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine.EventSystems;
 
 
-public class CannonSlot : MonoBehaviour, ISelectHandler, IDeselectHandler
+public class CannonSlot : SelectableBtn
 {
 
     [SerializeField] private int index; //identify our cannon
@@ -16,7 +16,7 @@ public class CannonSlot : MonoBehaviour, ISelectHandler, IDeselectHandler
     [SerializeField]private TMP_Text loadText;
     [SerializeField] private TMP_Text multiText;
     [SerializeField] private Button thisCannonButton;
-    private bool btnSelected;
+    //private bool btnSelected;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -116,23 +116,6 @@ public class CannonSlot : MonoBehaviour, ISelectHandler, IDeselectHandler
         thisCannonButton.enabled = true;
     }
 
-    public void SwitchSelection()
-    {
-        Debug.Log("Selected btn Cannon " + index.ToString());
-        btnSelected = true;
-    }
-
-    public void OnSelect(BaseEventData eventData)
-    {
-        Debug.Log("Selected btn Cannon " + index.ToString());
-        btnSelected = true;
-    }
-
-    public void OnDeselect(BaseEventData eventData)
-    {
-        Debug.Log("Deselected btn Cannon " + index.ToString());
-        btnSelected = false;
-    }
 
     public bool CheckBtnSelection()
     {

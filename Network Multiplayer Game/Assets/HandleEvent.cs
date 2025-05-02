@@ -9,7 +9,11 @@ public class HandleEvent : MonoBehaviour
     private EventSystem eSystem;
     public GameObject pauseBtn;
     public GameObject cannonBtn;
+    public GameObject presetsBtn;
+ 
     private PlayerInputTemp pInpTemp;
+
+
 
     private void Awake()
     {
@@ -39,6 +43,10 @@ public class HandleEvent : MonoBehaviour
         {
             CannonActive();
         }
+        else if(activePanel == ActivePanel.PRESETS)
+        {
+            PresetsActive();
+        }
     }
 
 
@@ -65,5 +73,25 @@ public class HandleEvent : MonoBehaviour
         }
     }
 
+    void PresetsActive()
+    {
+        if (eSystem.firstSelectedGameObject != null)
+        {
+            eSystem.firstSelectedGameObject = presetsBtn;
+            Button button = eSystem.firstSelectedGameObject.GetComponent<Button>();
+            button.Select();
+
+            PresetsBtn preset = button.GetComponent<PresetsBtn>();
+            preset.SwitchSelection();
+
+
+            if (!preset.GetHighlightStatus())
+            {
+                //if no presets are selected, select the first
+                preset.HighlightActive();
+            }
+
+        }
+    }
 
 }
