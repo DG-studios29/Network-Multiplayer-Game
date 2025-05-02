@@ -186,15 +186,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10e067b5565bed34bae597bf9c6fc297, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectionRange: 70
-  detectionAngle: 150
+  detectionRadius: 70
+  fieldOfView: 150
+  rotationSpeed: 5
+  fireInterval: 3
+  projectilePrefab: {fileID: 6007650139448959880, guid: 7a33fa6a62b8f2347a2d80b7cd45a308, type: 3}
+  firePoint: {fileID: 3027247584570306444}
+  fireForce: 2
   visionBlockingLayers:
     serializedVersion: 2
     m_Bits: 64
-  projectilePrefab: {fileID: 6007650139448959880, guid: 7a33fa6a62b8f2347a2d80b7cd45a308, type: 3}
-  firePoint: {fileID: 3027247584570306444}
-  fireForce: 20
-  fireCooldown: 2
 --- !u!1 &1102110271086118887
 GameObject:
   m_ObjectHideFlags: 0
@@ -496,15 +497,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10e067b5565bed34bae597bf9c6fc297, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectionRange: 70
-  detectionAngle: 150
+  detectionRadius: 70
+  fieldOfView: 150
+  rotationSpeed: 5
+  fireInterval: 3
+  projectilePrefab: {fileID: 6007650139448959880, guid: 7a33fa6a62b8f2347a2d80b7cd45a308, type: 3}
+  firePoint: {fileID: 9205808127839369859}
+  fireForce: 2
   visionBlockingLayers:
     serializedVersion: 2
     m_Bits: 64
-  projectilePrefab: {fileID: 6007650139448959880, guid: 7a33fa6a62b8f2347a2d80b7cd45a308, type: 3}
-  firePoint: {fileID: 9205808127839369859}
-  fireForce: 20
-  fireCooldown: 2
 --- !u!1 &1671150093693884757
 GameObject:
   m_ObjectHideFlags: 0
@@ -605,15 +607,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10e067b5565bed34bae597bf9c6fc297, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectionRange: 70
-  detectionAngle: 150
+  detectionRadius: 70
+  fieldOfView: 150
+  rotationSpeed: 5
+  fireInterval: 3
+  projectilePrefab: {fileID: 6007650139448959880, guid: 7a33fa6a62b8f2347a2d80b7cd45a308, type: 3}
+  firePoint: {fileID: 2970853034283675458}
+  fireForce: 2
   visionBlockingLayers:
     serializedVersion: 2
     m_Bits: 64
-  projectilePrefab: {fileID: 6007650139448959880, guid: 7a33fa6a62b8f2347a2d80b7cd45a308, type: 3}
-  firePoint: {fileID: 2970853034283675458}
-  fireForce: 20
-  fireCooldown: 2
 --- !u!1 &2624730749460475618
 GameObject:
   m_ObjectHideFlags: 0
@@ -1120,15 +1123,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10e067b5565bed34bae597bf9c6fc297, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectionRange: 70
-  detectionAngle: 150
+  detectionRadius: 70
+  fieldOfView: 150
+  rotationSpeed: 5
+  fireInterval: 3
+  projectilePrefab: {fileID: 6007650139448959880, guid: 7a33fa6a62b8f2347a2d80b7cd45a308, type: 3}
+  firePoint: {fileID: 8332563173071703196}
+  fireForce: 2
   visionBlockingLayers:
     serializedVersion: 2
     m_Bits: 64
-  projectilePrefab: {fileID: 6007650139448959880, guid: 7a33fa6a62b8f2347a2d80b7cd45a308, type: 3}
-  firePoint: {fileID: 8332563173071703196}
-  fireForce: 20
-  fireCooldown: 2
 --- !u!1 &4722354147126418602
 GameObject:
   m_ObjectHideFlags: 0
@@ -1432,15 +1436,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10e067b5565bed34bae597bf9c6fc297, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectionRange: 70
-  detectionAngle: 150
+  detectionRadius: 70
+  fieldOfView: 150
+  rotationSpeed: 5
+  fireInterval: 3
+  projectilePrefab: {fileID: 6007650139448959880, guid: 7a33fa6a62b8f2347a2d80b7cd45a308, type: 3}
+  firePoint: {fileID: 7900061655668082379}
+  fireForce: 2
   visionBlockingLayers:
     serializedVersion: 2
     m_Bits: 64
-  projectilePrefab: {fileID: 6007650139448959880, guid: 7a33fa6a62b8f2347a2d80b7cd45a308, type: 3}
-  firePoint: {fileID: 7900061655668082379}
-  fireForce: 20
-  fireCooldown: 2
 --- !u!1 &6524108504120550986
 GameObject:
   m_ObjectHideFlags: 0
@@ -2120,15 +2125,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10e067b5565bed34bae597bf9c6fc297, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectionRange: 70
-  detectionAngle: 150
+  detectionRadius: 70
+  fieldOfView: 150
+  rotationSpeed: 5
+  fireInterval: 3
+  projectilePrefab: {fileID: 6007650139448959880, guid: 7a33fa6a62b8f2347a2d80b7cd45a308, type: 3}
+  firePoint: {fileID: 8312538954507636693}
+  fireForce: 2
   visionBlockingLayers:
     serializedVersion: 2
     m_Bits: 64
-  projectilePrefab: {fileID: 6007650139448959880, guid: 7a33fa6a62b8f2347a2d80b7cd45a308, type: 3}
-  firePoint: {fileID: 8312538954507636693}
-  fireForce: 20
-  fireCooldown: 2
 --- !u!1 &8905425102623228468
 GameObject:
   m_ObjectHideFlags: 0

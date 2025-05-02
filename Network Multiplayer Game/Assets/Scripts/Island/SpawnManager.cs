@@ -6,7 +6,7 @@ public class SpawnManager : MonoBehaviour
     public static SpawnManager Instance;
 
     public List<Vector3> occupiedPositions = new List<Vector3>();
-    public float minDistanceBetweenObjects = 50f; // Rocks + Islands
+    public float minDistanceBetweenObjects = 50f; 
 
     private void Awake()
     {

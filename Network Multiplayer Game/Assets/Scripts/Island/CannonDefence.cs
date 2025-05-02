@@ -8,7 +8,8 @@ public class CannonDefence : MonoBehaviour
     public float fireInterval = 3f;
     public GameObject projectilePrefab;
     public Transform firePoint;
-
+    public float fireForce = 2f;
+    public LayerMask visionBlockingLayers;
     private float fireTimer;
     private Transform player;
 
@@ -24,20 +25,22 @@ public class CannonDefence : MonoBehaviour
         Vector3 dirToPlayer = player.position - transform.position;
         float distance = dirToPlayer.magnitude;
         float angle = Vector3.Angle(transform.forward, dirToPlayer);
-
-        // Check if in cone
-        if (distance < detectionRadius && angle < fieldOfView / 2f)
+        if (CanSeePlayer(player.transform))
         {
-            // Rotate toward player
-            Quaternion targetRotation = Quaternion.LookRotation(dirToPlayer);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
 
-            // Fire timer
-            fireTimer += Time.deltaTime;
-            if (fireTimer >= fireInterval)
+            if (distance < detectionRadius && angle < fieldOfView / 2f)
             {
-                FireCannon();
-                fireTimer = 0f;
+
+                Quaternion targetRotation = Quaternion.LookRotation(dirToPlayer);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+
+
+                fireTimer += Time.deltaTime;
+                if (fireTimer >= fireInterval)
+                {
+                    FireCannon();
+                    fireTimer = 0f;
+                }
             }
         }
     }
@@ -50,14 +53,35 @@ public class CannonDefence : MonoBehaviour
         Rigidbody rb = proj.GetComponent<Rigidbody>();
         if (rb != null)
         {
-            // Add arc by adjusting upward force
-            Vector3 toTarget = (player.position + Vector3.up * 1.5f) - firePoint.position;
-            rb.linearVelocity = toTarget.normalized * Random.Range(20f, 30f) + Vector3.up * Random.Range(2f, 5f);
+            Vector3 toTarget = (player.position + Vector3.up * 2f) - firePoint.position;
+            rb.linearVelocity = toTarget.normalized * Random.Range(20f, 30f) + Vector3.up * Random.Range(2f, 5f) * fireForce;
+
         }
 
-        // Optional: play firing effects
-        // e.g. ParticleSystem muzzleFlash = firePoint.GetComponentInChildren<ParticleSystem>();
-        // muzzleFlash?.Play();
+
+
+
+        //ParticleSystem muzzleFlash = firePoint.GetComponentInChildren<ParticleSystem>();
+        //muzzleFlash?.Play();
+    }
+
+    private bool CanSeePlayer(Transform target)
+    {
+        Vector3 dirToTarget = (target.position - transform.position).normalized;
+        float distanceToTarget = Vector3.Distance(transform.position, target.position);
+
+        if (distanceToTarget > detectionRadius) return false;
+
+        float angle = Vector3.Angle(transform.forward, dirToTarget);
+        if (angle > detectionRadius / 2f) return false;
+
+        // Check line of sight
+        if (Physics.Raycast(transform.position, dirToTarget, out RaycastHit hit, detectionRadius, visionBlockingLayers))
+        {
+            if (hit.transform != target) return false;
+        }
+
+        return true;
     }
 
     void OnDrawGizmosSelected()

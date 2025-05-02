@@ -7,8 +7,8 @@ public class SharkAI : MonoBehaviour
     public Transform player;
     public float chaseRange = 100f;
     public float attackRange = 3f;
-    public float attackOffset = 1.5f; // Shark rises up
-    public float chaseOffset = -2f;   // Shark stays under water
+    public float attackOffset = 1.5f; 
+    public float chaseOffset = -2f;   
     public float offsetSmoothSpeed = 2f;
 
     private NavMeshAgent agent;
@@ -33,14 +33,14 @@ public class SharkAI : MonoBehaviour
         {
             isAttacking = true;
             isChasing = false;
-            agent.SetDestination(transform.position); // stop
+            agent.SetDestination(transform.position); 
         }
         else if (distanceToPlayer <= chaseRange)
         {
             isAttacking = false;
             isChasing = true;
             agent.SetDestination(player.position);
-            agent.speed = 10f;
+            agent.speed = 15f;
         }
         else
         {
@@ -52,11 +52,11 @@ public class SharkAI : MonoBehaviour
                 GoToNextPatrolPoint();
         }
 
-        // Handle rotation
+      
         if (agent.velocity.sqrMagnitude > 0.01f)
         {
             Quaternion targetRotation = Quaternion.LookRotation(agent.velocity.normalized);
-            targetRotation *= Quaternion.Euler(0, 180f, 0); // backward fix
+            targetRotation *= Quaternion.Euler(0, 180f, 0); 
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
         }
 
@@ -64,7 +64,7 @@ public class SharkAI : MonoBehaviour
         float targetOffset = isAttacking ? attackOffset : chaseOffset;
         agent.baseOffset = Mathf.Lerp(agent.baseOffset, targetOffset, Time.deltaTime * offsetSmoothSpeed);
 
-        // Animator updates
+     
         animator.SetBool("isChasing", isChasing);
         animator.SetBool("isAttacking", isAttacking);
     }

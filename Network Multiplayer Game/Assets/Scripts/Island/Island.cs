@@ -22,6 +22,8 @@ public class Island : MonoBehaviour
     [Header("Defences")]
     public List<CannonDefence> cannons;
 
+    private Coroutine lootCoroutine;
+
     private void Start()
     {
         currentHealth = maxHealth;
@@ -30,8 +32,7 @@ public class Island : MonoBehaviour
         myCollider.radius = 100f;
         myCollider.isTrigger = true;
 
-        // Optional: log for debugging
-        Debug.Log("Island initialized with " + cannons.Count + " cannons.");
+      
     }
 
     private void OnTriggerEnter(Collider other)
@@ -41,9 +42,10 @@ public class Island : MonoBehaviour
             Debug.Log("Player entered island radius.");
             playerNearby = true;
 
-            if (isDestroyed && !isLooted)
+           
+            if (isDestroyed && !isLooted && lootCoroutine == null)
             {
-                StartCoroutine(CollectTreasureRoutine());
+                lootCoroutine = StartCoroutine(CollectTreasureRoutine());
             }
         }
     }
@@ -54,6 +56,25 @@ public class Island : MonoBehaviour
         {
             playerNearby = false;
             Debug.Log("Player left island radius.");
+
+           
+            if (isDestroyed && !isLooted && lootCoroutine != null)
+            {
+                StopCoroutine(lootCoroutine);
+                lootCoroutine = null;
+                StartCoroutine(WaitBeforeDespawn());
+            }
+        }
+    }
+
+    private IEnumerator WaitBeforeDespawn()
+    {
+        yield return new WaitForSeconds(10f); 
+
+        if (!playerNearby) // Only despawn if the player is still not in range
+        {
+            Debug.Log("Player didn't stay nearby to loot. Despawning island...");
+            StartCoroutine(DespawnAfterDelay());
         }
     }
 
@@ -61,6 +82,7 @@ public class Island : MonoBehaviour
     {
         float timer = 0f;
 
+        // Collect treasure only if player is still nearby
         while (playerNearby && timer < treasureCollectionTime)
         {
             timer += Time.deltaTime;
@@ -72,6 +94,8 @@ public class Island : MonoBehaviour
             LootIsland();
             StartCoroutine(DespawnAfterDelay());
         }
+
+        lootCoroutine = null;
     }
 
     public void TakeDamage(float damage)
@@ -84,8 +108,13 @@ public class Island : MonoBehaviour
         if (currentHealth <= 0f)
         {
             isDestroyed = true;
-            Debug.Log("Island destroyed! Stay nearby to collect treasure.");
-            // Optional: play destruction FX here
+            Debug.Log("Island destroyed! Stay nearby to loot.");
+
+            // If player is already nearby, start looting right away
+            if (playerNearby && lootCoroutine == null)
+            {
+                lootCoroutine = StartCoroutine(CollectTreasureRoutine());
+            }
         }
     }
 
@@ -93,6 +122,9 @@ public class Island : MonoBehaviour
     {
         isLooted = true;
         Debug.Log("Island looted!");
+
+        int lootAmount = Random.Range(100, 1001);  
+        Debug.Log("Loot collected: " + lootAmount);
     }
 
     private IEnumerator DespawnAfterDelay()

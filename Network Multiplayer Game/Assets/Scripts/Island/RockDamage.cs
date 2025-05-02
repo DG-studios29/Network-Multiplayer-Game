@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class RockDamage : MonoBehaviour
 {
-    public int damageAmount = 10; // Damage to player on hit
+    public int damageAmount = 10; 
 
     private void OnCollisionEnter(Collision collision)
     {

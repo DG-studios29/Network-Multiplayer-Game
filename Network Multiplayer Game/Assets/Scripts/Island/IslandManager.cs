@@ -20,7 +20,7 @@ public class IslandManager : MonoBehaviour
         
         for (int i = 0; i < numIslands; i++)
         {
-            // Choose a random prefab or use i to pick each unique type once
+           
             GameObject prefab = islandPrefabs[i % islandPrefabs.Count];
             SpawnIsland(prefab);
         }
@@ -50,7 +50,7 @@ public class IslandManager : MonoBehaviour
                     islandScript.islandPrefab = prefab;
                 }
 
-                return; // success, leave the function
+                return;
             }
 
             attempts++;

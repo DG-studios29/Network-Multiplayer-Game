@@ -27,7 +27,7 @@ public class KrakenAI : MonoBehaviour
     void Update()
     {
         float distance = Vector3.Distance(player.position, transform.position);
-
+        // State logic
         if (distance <= attackRange)
         {
             isAttacking = true;
@@ -53,14 +53,14 @@ public class KrakenAI : MonoBehaviour
         float targetOffset = isAttacking ? attackOffset : patrolOffset;
         agent.baseOffset = Mathf.Lerp(agent.baseOffset, targetOffset, Time.deltaTime * offsetLerpSpeed);
 
-        // Rotate to movement direction
+        
         if (agent.velocity.sqrMagnitude > 0.01f)
         {
             Quaternion look = Quaternion.LookRotation(agent.velocity.normalized);
             transform.rotation = Quaternion.Slerp(transform.rotation, look, Time.deltaTime * 5f);
         }
 
-        // Animator parameters
+       
         animator.SetBool("isChasing", isChasing);
         animator.SetBool("isAttacking", isAttacking);
     }

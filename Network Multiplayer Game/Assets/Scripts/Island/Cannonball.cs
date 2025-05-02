@@ -6,7 +6,7 @@ public class Cannonball : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            // Reduce player health here
+            
         }
 
         if (collision.gameObject.CompareTag("Island"))

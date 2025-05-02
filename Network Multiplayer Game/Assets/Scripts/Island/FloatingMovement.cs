@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.InputSystem; // New Input System
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody))]
 public class FloatingMovement : MonoBehaviour
@@ -9,16 +9,16 @@ public class FloatingMovement : MonoBehaviour
     public float turnTorque = 5f;
 
     [Header("Input Actions")]
-    public InputActionAsset inputActions; // Drag your InputActions asset here
+    public InputActionAsset inputActions; 
     private InputAction moveAction;
     private InputAction turnAction;
-
+    private Island island;
     private Rigidbody rb;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
-
+        island = GetComponent<Island>();
         // Set up input actions
         var gameplayMap = inputActions.FindActionMap("Player");
         moveAction = gameplayMap.FindAction("Move");
@@ -37,6 +37,23 @@ public class FloatingMovement : MonoBehaviour
         moveAction?.Disable();
         turnAction?.Disable();
     }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            Collider[] nearby = Physics.OverlapSphere(transform.position, 50f);
+            foreach (Collider col in nearby)
+            {
+                Island island = col.GetComponent<Island>();
+                if (island != null)
+                {
+                    Debug.Log("DEBUG: Instantly destroying island: " + island.name);
+                    island.TakeDamage(100f);
+                }
+            }
+        }
+    }
+
 
     void FixedUpdate()
     {
