@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8785026436935716753}
   - component: {fileID: 5951132492216384268}
   - component: {fileID: 965569806846752293}
+  - component: {fileID: 8866767756903860200}
   m_Layer: 0
   m_Name: Cannon4
   m_TagString: Untagged
@@ -27,10 +28,11 @@ Transform:
   m_GameObject: {fileID: 766009716214519950}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.6234093, y: 2.2981398, z: 2.846362}
+  m_LocalPosition: {x: -4.69, y: 2.2981398, z: 2.846362}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1760768659257462310}
   m_Father: {fileID: 1010485865256027444}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5951132492216384268
@@ -87,6 +89,32 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &8866767756903860200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 766009716214519950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32e1a9ab0545dec4ab55b3c57270c2a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  index: 0
+  ballPrefab: {fileID: 4193620958866771453, guid: 72730504b4608c04884b56042b14e795, type: 3}
+  ballType: {fileID: 0}
+  launchAngle: 0
+  rangeZ: 0
+  Uz: 0
+  Uy: 0
+  Uo: 0
+  gravity: 0
+  heightY: 0
+  heightMax: 0
+  timeTaken: 0
+  initialVelocity: {x: 0, y: 0, z: 0}
+  globalVelocity: {x: 0, y: 0, z: 0}
 --- !u!1 &871471557848212532
 GameObject:
   m_ObjectHideFlags: 0
@@ -98,6 +126,7 @@ GameObject:
   - component: {fileID: 1372409003362409206}
   - component: {fileID: 6274755927448989719}
   - component: {fileID: 1633957451917210348}
+  - component: {fileID: 7666426319330600151}
   m_Layer: 0
   m_Name: Cannon6
   m_TagString: Untagged
@@ -114,10 +143,11 @@ Transform:
   m_GameObject: {fileID: 871471557848212532}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.9611208, y: 1.815914, z: -2.8206832}
+  m_LocalPosition: {x: -3.63, y: 1.815914, z: -2.8206832}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 736169077939992877}
   m_Father: {fileID: 1010485865256027444}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &6274755927448989719
@@ -174,6 +204,63 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &7666426319330600151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 871471557848212532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32e1a9ab0545dec4ab55b3c57270c2a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  index: 0
+  ballPrefab: {fileID: 4193620958866771453, guid: 72730504b4608c04884b56042b14e795, type: 3}
+  ballType: {fileID: 0}
+  launchAngle: 0
+  rangeZ: 0
+  Uz: 0
+  Uy: 0
+  Uo: 0
+  gravity: 0
+  heightY: 0
+  heightMax: 0
+  timeTaken: 0
+  initialVelocity: {x: 0, y: 0, z: 0}
+  globalVelocity: {x: 0, y: 0, z: 0}
+--- !u!1 &1636081095240799398
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1970213029474972764}
+  m_Layer: 0
+  m_Name: SpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1970213029474972764
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1636081095240799398}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 1.18, y: 0.08, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2008709344748434658}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &1920548239758520606
 GameObject:
   m_ObjectHideFlags: 0
@@ -185,6 +272,7 @@ GameObject:
   - component: {fileID: 6127021473413047317}
   - component: {fileID: 8520514042750286776}
   - component: {fileID: 4348735165402979589}
+  - component: {fileID: 2734291353194266534}
   m_Layer: 0
   m_Name: Cannon1
   m_TagString: Untagged
@@ -201,10 +289,11 @@ Transform:
   m_GameObject: {fileID: 1920548239758520606}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.7733352, y: 2.2981398, z: -3.456454}
+  m_LocalPosition: {x: 4.62, y: 2.2981398, z: -3.456454}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 8082503622525677140}
   m_Father: {fileID: 1010485865256027444}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8520514042750286776
@@ -261,6 +350,32 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &2734291353194266534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1920548239758520606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32e1a9ab0545dec4ab55b3c57270c2a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  index: 0
+  ballPrefab: {fileID: 4193620958866771453, guid: 72730504b4608c04884b56042b14e795, type: 3}
+  ballType: {fileID: 0}
+  launchAngle: 0
+  rangeZ: 0
+  Uz: 0
+  Uy: 0
+  Uo: 0
+  gravity: 0
+  heightY: 0
+  heightMax: 0
+  timeTaken: 0
+  initialVelocity: {x: 0, y: 0, z: 0}
+  globalVelocity: {x: 0, y: 0, z: 0}
 --- !u!1 &2680862322850410353
 GameObject:
   m_ObjectHideFlags: 0
@@ -272,6 +387,7 @@ GameObject:
   - component: {fileID: 6912313179552458491}
   - component: {fileID: 4358010504242209327}
   - component: {fileID: 8385665986097307847}
+  - component: {fileID: 410438572433195212}
   m_Layer: 0
   m_Name: Cannon2
   m_TagString: Untagged
@@ -288,10 +404,11 @@ Transform:
   m_GameObject: {fileID: 2680862322850410353}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.8949513, y: 1.815914, z: 0.062086936}
+  m_LocalPosition: {x: 4.2376027, y: 1.815914, z: 0.062086936}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1317257085510978931}
   m_Father: {fileID: 1010485865256027444}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4358010504242209327
@@ -348,6 +465,63 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &410438572433195212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2680862322850410353}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32e1a9ab0545dec4ab55b3c57270c2a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  index: 0
+  ballPrefab: {fileID: 4193620958866771453, guid: 72730504b4608c04884b56042b14e795, type: 3}
+  ballType: {fileID: 0}
+  launchAngle: 0
+  rangeZ: 0
+  Uz: 0
+  Uy: 0
+  Uo: 0
+  gravity: 0
+  heightY: 0
+  heightMax: 0
+  timeTaken: 0
+  initialVelocity: {x: 0, y: 0, z: 0}
+  globalVelocity: {x: 0, y: 0, z: 0}
+--- !u!1 &3147248353005788162
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8082503622525677140}
+  m_Layer: 0
+  m_Name: SpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8082503622525677140
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3147248353005788162}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0.81, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6127021473413047317}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &3254779765377943575
 GameObject:
   m_ObjectHideFlags: 0
@@ -561,7 +735,7 @@ GameObject:
   - component: {fileID: 6221017111877241726}
   m_Layer: 0
   m_Name: Ship
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -677,7 +851,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1761834525785767194
 Transform:
   m_ObjectHideFlags: 0
@@ -746,6 +920,99 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &6370193152653787775
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2311523971199606769}
+  m_Layer: 0
+  m_Name: SpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2311523971199606769
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6370193152653787775}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -1.64, y: 0.27, z: 0.56}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6572100677095509923}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+--- !u!1 &6476869063971484351
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1317257085510978931}
+  m_Layer: 0
+  m_Name: SpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1317257085510978931
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6476869063971484351}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 1.45, y: 0.52, z: -0.62}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6912313179552458491}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!1 &6847229832057811369
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1760768659257462310}
+  m_Layer: 0
+  m_Name: SpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1760768659257462310
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6847229832057811369}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -0.779, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8785026436935716753}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!1 &7002620678467424673
 GameObject:
   m_ObjectHideFlags: 0
@@ -819,8 +1086,11 @@ GameObject:
   - component: {fileID: 1010485865256027444}
   - component: {fileID: 348253218199550421}
   - component: {fileID: 5995339684430777562}
-  - component: {fileID: 848683311353910597}
   - component: {fileID: 7691425475848373609}
+  - component: {fileID: 5641115387133083343}
+  - component: {fileID: 7845396330977765345}
+  - component: {fileID: 8249592422090293471}
+  - component: {fileID: 7741258323732423117}
   m_Layer: 0
   m_Name: PriateShip 1
   m_TagString: Player
@@ -906,22 +1176,7 @@ MonoBehaviour:
   waterAngularDrag: 5
   rotationSmoothSpeed: 3
   maxTiltAngle: 2
-  WaterVolumeHelper: {fileID: 0}
---- !u!114 &848683311353910597
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7399807029032890164}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 219def7d9637efb459a6de3f4be4b2cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveForce: 1000
-  turnTorque: 2000
-  inputActions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  WaterVolumeHelper: {fileID: 7158919299287046807, guid: c9193ed5302b97341846216c44dd6d23, type: 3}
 --- !u!114 &7691425475848373609
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -950,13 +1205,25 @@ MonoBehaviour:
   - m_PersistentCalls:
       m_Calls: []
     m_ActionId: 351f2ccd-1f9f-44bf-9bec-d62ac5c5f408
-    m_ActionName: 'Player/Move[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]'
+    m_ActionName: 'Player/Sail[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]'
   - m_PersistentCalls:
       m_Calls: []
     m_ActionId: 6b444451-8a00-4d00-a97e-f47457f736a8
     m_ActionName: 'Player/Look[/Mouse/delta,/Pen/delta]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7845396330977765345}
+        m_TargetAssemblyTypeName: PlayerInputTemp, Assembly-CSharp
+        m_MethodName: AttackTest
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 6c2ab1b8-8984-453a-af3d-a3c78ae1679a
     m_ActionName: 'Player/Attack[/Mouse/leftButton,/Keyboard/enter]'
   - m_PersistentCalls:
@@ -964,25 +1231,81 @@ MonoBehaviour:
     m_ActionId: 852140f2-7766-474d-8707-702459ba45f3
     m_ActionName: 'Player/Interact[/Keyboard/e]'
   - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 27c5f898-bc57-4ee1-8800-db469aca5fe3
-    m_ActionName: 'Player/Crouch[/Keyboard/c]'
+      m_Calls:
+      - m_Target: {fileID: 7845396330977765345}
+        m_TargetAssemblyTypeName: PlayerInputTemp, Assembly-CSharp
+        m_MethodName: ToggleCannonMenu
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 452ebfd9-e007-41ad-bc96-a0b6680970a6
+    m_ActionName: 'Player/Toggle Cannon Menu[/Keyboard/i]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: f1ba0d36-48eb-4cd5-b651-1c94a6531f70
-    m_ActionName: 'Player/Jump[/Keyboard/space]'
+    m_ActionId: 5a51ebfe-db96-4f8a-bc2c-39eabc7a126d
+    m_ActionName: Player/Pause
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7845396330977765345}
+        m_TargetAssemblyTypeName: PlayerInputTemp, Assembly-CSharp
+        m_MethodName: ChangeCannonType
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: cf11537c-ed05-4bda-a090-46203dcfc155
+    m_ActionName: 'Player/ChangeCannon[/Keyboard/tab]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 2776c80d-3c14-4091-8c56-d04ced07a2b0
-    m_ActionName: 'Player/Previous[/Keyboard/1]'
+    m_ActionId: d2ef0671-3f16-4c3b-a941-99cadee8bed9
+    m_ActionName: 'Player/Turn[/Keyboard/a,/Keyboard/d]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7845396330977765345}
+        m_TargetAssemblyTypeName: PlayerInputTemp, Assembly-CSharp
+        m_MethodName: AutoLoadPreset
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 53d7b6a0-d28f-4979-b309-2e0b5030fa1e
+    m_ActionName: 'Player/LoadPreset[/Keyboard/o]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7845396330977765345}
+        m_TargetAssemblyTypeName: PlayerInputTemp, Assembly-CSharp
+        m_MethodName: PresetHold
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 0cb4d3eb-6b99-4dee-a937-87c46ab5c5b2
+    m_ActionName: 'Player/HoldPreset[/Keyboard/leftShift]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: b7230bb6-fc9b-4f52-8b25-f5e19cb2c2ba
-    m_ActionName: 'Player/Next[/Keyboard/2]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 641cd816-40e6-41b4-8c3d-04687c349290
-    m_ActionName: 'Player/Sprint[/Keyboard/leftShift]'
+    m_ActionId: 667a2f76-87fc-41fd-98c4-2ab3882f956f
+    m_ActionName: 'Player/Sailing[/Keyboard/leftBracket]'
   - m_PersistentCalls:
       m_Calls: []
     m_ActionId: c95b2375-e6d9-4b88-9c4c-c5e76515df4b
@@ -1004,6 +1327,38 @@ MonoBehaviour:
     m_ActionId: 3c7022bf-7922-4f7c-a998-c437916075ad
     m_ActionName: 'UI/Click[/Mouse/leftButton,/Pen/tip]'
   - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7845396330977765345}
+        m_TargetAssemblyTypeName: PlayerInputTemp, Assembly-CSharp
+        m_MethodName: LoadCannon
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: b14dedb5-6cd5-40ce-8700-147b62311224
+    m_ActionName: 'UI/Load[/Keyboard/j]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7845396330977765345}
+        m_TargetAssemblyTypeName: PlayerInputTemp, Assembly-CSharp
+        m_MethodName: ClearLoadedCannon
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: d3cce0b1-698b-46f0-90b3-3020c5d9c906
+    m_ActionName: 'UI/Clear[/Keyboard/backspace]'
+  - m_PersistentCalls:
       m_Calls: []
     m_ActionId: 44b200b1-1557-4083-816c-b22cbdf77ddf
     m_ActionName: 'UI/RightClick[/Mouse/rightButton]'
@@ -1024,38 +1379,177 @@ MonoBehaviour:
     m_ActionId: 9caa3d8a-6b2f-4e8e-8bad-6ede561bd9be
     m_ActionName: UI/TrackedDeviceOrientation
   - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: d2ef0671-3f16-4c3b-a941-99cadee8bed9
-    m_ActionName: 'Player/Turn[/Keyboard/a,/Keyboard/d]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 452ebfd9-e007-41ad-bc96-a0b6680970a6
-    m_ActionName: Player/Toggle Cannon Menu
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 5a51ebfe-db96-4f8a-bc2c-39eabc7a126d
-    m_ActionName: Player/Pause
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: cf11537c-ed05-4bda-a090-46203dcfc155
-    m_ActionName: Player/ChangeCannon
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: b14dedb5-6cd5-40ce-8700-147b62311224
-    m_ActionName: 'UI/Load[/Keyboard/j]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: d3cce0b1-698b-46f0-90b3-3020c5d9c906
-    m_ActionName: 'UI/Clear[/Keyboard/backspace]'
-  - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7845396330977765345}
+        m_TargetAssemblyTypeName: PlayerInputTemp, Assembly-CSharp
+        m_MethodName: ToggleCannonMenu
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: a6a1304b-f3bf-4ac1-8145-07a2a48bad69
     m_ActionName: 'UI/Toggle Cannon Menu[/Keyboard/i]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7845396330977765345}
+        m_TargetAssemblyTypeName: PlayerInputTemp, Assembly-CSharp
+        m_MethodName: OpenPresetsMenu
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 2b847f06-89e2-432a-90e5-b3f2b4b96c15
+    m_ActionName: 'UI/OpenPresets[/Keyboard/e]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7845396330977765345}
+        m_TargetAssemblyTypeName: PlayerInputTemp, Assembly-CSharp
+        m_MethodName: OpenLoadoutMenu
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 320af6dd-e2b1-438f-b569-7da19610865b
+    m_ActionName: 'UI/OpenLoader[/Keyboard/q]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &5641115387133083343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7399807029032890164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 558258c464b2e7a449e6072008f7d3e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cannon1: {fileID: 2734291353194266534}
+  cannon2: {fileID: 410438572433195212}
+  cannon3: {fileID: 6460241745344793442}
+  cannon4: {fileID: 8866767756903860200}
+  cannon5: {fileID: 3187507321163136786}
+  cannon6: {fileID: 7666426319330600151}
+  cannonOptions:
+  - {fileID: 11400000, guid: c3896223d51fcc0478c636ab6cfceeb2, type: 2}
+  - {fileID: 11400000, guid: c1e509dfc7dc15c4c9d73d3caa43060b, type: 2}
+  - {fileID: 11400000, guid: d7470e249ae05284e947aab25e04afab, type: 2}
+  loadTimeMax: 0
+--- !u!114 &7845396330977765345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7399807029032890164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b58bcab33fe04fa43b458c749192de92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cannonMenu: {fileID: 0}
+  playerHUD: {fileID: 0}
+  pauseMenu: {fileID: 0}
+  presetsPanel: {fileID: 0}
+  loadingPanel: {fileID: 0}
+  activePanel: 0
+--- !u!114 &8249592422090293471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7399807029032890164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecf66daeee4b530449e2d12bf0eb3215, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shipSpeed: 100
+  shipSteerMultiplier: 50
+  turningThreshhold: 0.1
+  sailMultiplier: 2
+  speedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 10
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: -3.6379242
+      outSlope: -3.6379242
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.13746691
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  turnCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0.1
+      inSlope: -0.18943009
+      outSlope: -0.18943009
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.11080629
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  windDirIndicatorUI: {fileID: 0}
+  sailIndicatorUI: {fileID: 0}
+--- !u!114 &7741258323732423117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7399807029032890164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f450b58f7660e814c94d7d887e9b8ad1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7560684566445515750
 GameObject:
   m_ObjectHideFlags: 0
@@ -1067,6 +1561,7 @@ GameObject:
   - component: {fileID: 2008709344748434658}
   - component: {fileID: 2975500811521331365}
   - component: {fileID: 4184079357826448965}
+  - component: {fileID: 6460241745344793442}
   m_Layer: 0
   m_Name: Cannon3
   m_TagString: Untagged
@@ -1083,10 +1578,11 @@ Transform:
   m_GameObject: {fileID: 7560684566445515750}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.4227297, y: 2.2981398, z: 2.675566}
+  m_LocalPosition: {x: 4.765381, y: 2.2981398, z: 2.675566}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1970213029474972764}
   m_Father: {fileID: 1010485865256027444}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &2975500811521331365
@@ -1143,6 +1639,63 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &6460241745344793442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7560684566445515750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32e1a9ab0545dec4ab55b3c57270c2a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  index: 0
+  ballPrefab: {fileID: 4193620958866771453, guid: 72730504b4608c04884b56042b14e795, type: 3}
+  ballType: {fileID: 0}
+  launchAngle: 0
+  rangeZ: 0
+  Uz: 0
+  Uy: 0
+  Uo: 0
+  gravity: 0
+  heightY: 0
+  heightMax: 0
+  timeTaken: 0
+  initialVelocity: {x: 0, y: 0, z: 0}
+  globalVelocity: {x: 0, y: 0, z: 0}
+--- !u!1 &8468129370025592605
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 736169077939992877}
+  m_Layer: 0
+  m_Name: SpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &736169077939992877
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8468129370025592605}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -2.11, y: 0.65, z: -0.36}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1372409003362409206}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!1 &8559712169726855176
 GameObject:
   m_ObjectHideFlags: 0
@@ -1160,7 +1713,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3882919590522977710
 Transform:
   m_ObjectHideFlags: 0
@@ -1240,6 +1793,7 @@ GameObject:
   - component: {fileID: 6572100677095509923}
   - component: {fileID: 7566769771579943960}
   - component: {fileID: 3545456719057335115}
+  - component: {fileID: 3187507321163136786}
   m_Layer: 0
   m_Name: Cannon5
   m_TagString: Untagged
@@ -1256,10 +1810,11 @@ Transform:
   m_GameObject: {fileID: 8780827301396355076}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.4861715, y: 1.815914, z: -1.0990849}
+  m_LocalPosition: {x: -3.5527608, y: 1.815914, z: -1.0990849}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 2311523971199606769}
   m_Father: {fileID: 1010485865256027444}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &7566769771579943960
@@ -1316,3 +1871,29 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &3187507321163136786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8780827301396355076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32e1a9ab0545dec4ab55b3c57270c2a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  index: 0
+  ballPrefab: {fileID: 4193620958866771453, guid: 72730504b4608c04884b56042b14e795, type: 3}
+  ballType: {fileID: 0}
+  launchAngle: 0
+  rangeZ: 0
+  Uz: 0
+  Uy: 0
+  Uo: 0
+  gravity: 0
+  heightY: 0
+  heightMax: 0
+  timeTaken: 0
+  initialVelocity: {x: 0, y: 0, z: 0}
+  globalVelocity: {x: 0, y: 0, z: 0}
