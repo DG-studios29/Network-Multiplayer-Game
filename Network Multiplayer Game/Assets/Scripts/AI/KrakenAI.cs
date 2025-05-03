@@ -2,11 +2,9 @@ using UnityEngine;
 using UnityEngine.AI;
 using Mirror;
 
-
 public class KrakenAI : NetworkBehaviour
 {
     public Transform[] patrolPoints;
-    public Transform player;
     public float chaseRange = 100f;
     public float attackRange = 5f;
     public float attackOffset = 2f;
@@ -16,25 +14,27 @@ public class KrakenAI : NetworkBehaviour
     private NavMeshAgent agent;
     private Animator animator;
     private int currentPatrolIndex;
-    private bool isAttacking;
+    private Transform targetPlayer;
     private bool isChasing;
+    private bool isAttacking;
 
-    void Start()
+    public override void OnStartServer()
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
-
-        if (isServer)
-            GoToNextPatrolPoint();
+        GoToNextPatrolPoint();
     }
 
+    [ServerCallback]
     void Update()
     {
-        if (!isServer) return; // AI logic only runs on the server
+        if (!isServer) return;
 
-        float distance = Vector3.Distance(player.position, transform.position);
+        targetPlayer = GetClosestPlayer();
+        if (targetPlayer == null) return;
 
-        // State logic
+        float distance = Vector3.Distance(targetPlayer.position, transform.position);
+
         if (distance <= attackRange)
         {
             isAttacking = true;
@@ -45,28 +45,56 @@ public class KrakenAI : NetworkBehaviour
         {
             isAttacking = false;
             isChasing = true;
-            agent.SetDestination(player.position);
+            agent.SetDestination(targetPlayer.position);
         }
         else
         {
             isAttacking = false;
             isChasing = false;
-
             if (!agent.pathPending && agent.remainingDistance < 0.5f)
                 GoToNextPatrolPoint();
         }
 
-        // Smoothly adjust base offset for breaching effect
         float targetOffset = isAttacking ? attackOffset : patrolOffset;
         agent.baseOffset = Mathf.Lerp(agent.baseOffset, targetOffset, Time.deltaTime * offsetLerpSpeed);
 
-        if (agent.velocity.sqrMagnitude > 0.01f)
+        if (isAttacking)
+        {
+            Vector3 dir = (targetPlayer.position - transform.position).normalized;
+            dir.y = 0f;
+            if (dir != Vector3.zero)
+            {
+                Quaternion lookRotation = Quaternion.LookRotation(dir);
+                transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 3f);
+            }
+        }
+        else if (agent.velocity.sqrMagnitude > 0.01f)
         {
             Quaternion look = Quaternion.LookRotation(agent.velocity.normalized);
             transform.rotation = Quaternion.Slerp(transform.rotation, look, Time.deltaTime * 5f);
         }
 
-        RpcUpdateAnimation(isChasing, isAttacking);
+        animator.SetBool("isChasing", isChasing);
+        animator.SetBool("isAttacking", isAttacking);
+    }
+
+    Transform GetClosestPlayer()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        float closestDist = Mathf.Infinity;
+        Transform closest = null;
+
+        foreach (GameObject p in players)
+        {
+            float dist = Vector3.Distance(p.transform.position, transform.position);
+            if (dist < closestDist)
+            {
+                closestDist = dist;
+                closest = p.transform;
+            }
+        }
+
+        return closest;
     }
 
     void GoToNextPatrolPoint()
@@ -75,22 +103,4 @@ public class KrakenAI : NetworkBehaviour
         currentPatrolIndex = Random.Range(0, patrolPoints.Length);
         agent.SetDestination(patrolPoints[currentPatrolIndex].position);
     }
-
-    [ClientRpc]
-    void RpcUpdateAnimation(bool chasing, bool attacking)
-    {
-        if (animator == null)
-        {
-            animator = GetComponent<Animator>();
-            if (animator == null)
-            {
-                Debug.LogWarning("Animator is missing on KrakenAI!");
-                return;
-            }
-        }
-
-        animator.SetBool("isChasing", chasing);
-        animator.SetBool("isAttacking", attacking);
-    }
-
 }

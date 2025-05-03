@@ -88,19 +88,24 @@ public class FloatingMovement : NetworkBehaviour
         Vector2 moveInput = moveAction.ReadValue<Vector2>();
         float turnInput = turnAction.ReadValue<float>();
 
-        // Forward/backward movement
+        CmdMoveIsland(moveInput, turnInput);
+    }
+
+    [Command]
+    void CmdMoveIsland(Vector2 moveInput, float turnInput)
+    {
         Vector3 forward = transform.forward * moveInput.y;
         if (forward.sqrMagnitude > 0.01f)
         {
             rb.AddForce(forward * moveForce, ForceMode.Force);
         }
 
-        // Turning (left/right)
         if (Mathf.Abs(turnInput) > 0.01f)
         {
             rb.AddTorque(Vector3.up * turnInput * turnTorque, ForceMode.Force);
         }
 
-        StabilizeUpright();
+        StabilizeUpright(); // Run this here too if you want stabilization to also be server-simulated
     }
+
 }

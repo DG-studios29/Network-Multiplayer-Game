@@ -2,74 +2,102 @@ using UnityEngine;
 using UnityEngine.AI;
 using Mirror;
 
-
 public class SharkAI : NetworkBehaviour
 {
-    public Transform[] patrolPoints;
-    public Transform player;
     public float chaseRange = 100f;
     public float attackRange = 3f;
-    public float attackOffset = 1.5f;
-    public float chaseOffset = -2f;
-    public float offsetSmoothSpeed = 2f;
+    public Transform[] patrolPoints;
 
     private NavMeshAgent agent;
     private Animator animator;
     private int currentPatrolIndex;
+    private Transform targetPlayer;
+
     private bool isChasing;
     private bool isAttacking;
 
-    void Start()
+    public float patrolOffset = -2f;
+    public float attackOffset = 1f;
+
+    public override void OnStartServer()
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
-
-        if (isServer)
-            GoToNextPatrolPoint();
+        GoToNextPatrolPoint();
     }
 
+    [ServerCallback]
     void Update()
     {
-        if (!isServer) return; // AI logic only runs on the server
+        if (!isServer) return;
 
-        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+        targetPlayer = GetClosestPlayer();
 
-        // State transitions
-        if (distanceToPlayer <= attackRange)
+        if (targetPlayer == null) return;
+
+        float distance = Vector3.Distance(transform.position, targetPlayer.position);
+
+        if (distance <= attackRange)
         {
             isAttacking = true;
             isChasing = false;
-            agent.SetDestination(transform.position);
+            agent.SetDestination(transform.position); // Stop
         }
-        else if (distanceToPlayer <= chaseRange)
+        else if (distance <= chaseRange)
         {
             isAttacking = false;
             isChasing = true;
-            agent.SetDestination(player.position);
-            agent.speed = 15f;
+            agent.SetDestination(targetPlayer.position);
         }
         else
         {
             isAttacking = false;
             isChasing = false;
-            agent.speed = 5f;
 
             if (!agent.pathPending && agent.remainingDistance < 0.5f)
                 GoToNextPatrolPoint();
         }
 
-        // Rotation and breaching logic
-        if (agent.velocity.sqrMagnitude > 0.01f)
+        float targetOffset = isAttacking ? attackOffset : patrolOffset;
+        agent.baseOffset = Mathf.Lerp(agent.baseOffset, targetOffset, Time.deltaTime * 2f);
+
+        if (isAttacking)
         {
-            Quaternion targetRotation = Quaternion.LookRotation(agent.velocity.normalized);
-            targetRotation *= Quaternion.Euler(0, 180f, 0);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
+            Vector3 dir = (targetPlayer.position - transform.position).normalized;
+            dir.y = 0;
+            if (dir != Vector3.zero)
+            {
+                Quaternion look = Quaternion.LookRotation(dir);
+                transform.rotation = Quaternion.Slerp(transform.rotation, look, Time.deltaTime * 5f);
+            }
+        }
+        else if (agent.velocity.sqrMagnitude > 0.01f)
+        {
+            Quaternion look = Quaternion.LookRotation(agent.velocity.normalized);
+            transform.rotation = Quaternion.Slerp(transform.rotation, look, Time.deltaTime * 5f);
         }
 
-        float targetOffset = isAttacking ? attackOffset : chaseOffset;
-        agent.baseOffset = Mathf.Lerp(agent.baseOffset, targetOffset, Time.deltaTime * offsetSmoothSpeed);
+        animator.SetBool("isChasing", isChasing);
+        animator.SetBool("isAttacking", isAttacking);
+    }
 
-        RpcUpdateAnimation(isChasing, isAttacking);
+    Transform GetClosestPlayer()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        float minDistance = Mathf.Infinity;
+        Transform closest = null;
+
+        foreach (GameObject go in players)
+        {
+            float dist = Vector3.Distance(go.transform.position, transform.position);
+            if (dist < minDistance)
+            {
+                minDistance = dist;
+                closest = go.transform;
+            }
+        }
+
+        return closest;
     }
 
     void GoToNextPatrolPoint()
@@ -77,22 +105,5 @@ public class SharkAI : NetworkBehaviour
         if (patrolPoints.Length == 0) return;
         currentPatrolIndex = Random.Range(0, patrolPoints.Length);
         agent.SetDestination(patrolPoints[currentPatrolIndex].position);
-    }
-
-    [ClientRpc]
-    void RpcUpdateAnimation(bool chasing, bool attacking)
-    {
-        if (animator == null)
-        {
-            animator = GetComponent<Animator>();
-            if (animator == null)
-            {
-                Debug.LogWarning("Animator is missing on KrakenAI!");
-                return;
-            }
-        }
-
-        animator.SetBool("isChasing", chasing);
-        animator.SetBool("isAttacking", attacking);
     }
 }
