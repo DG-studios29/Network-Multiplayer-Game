@@ -23,6 +23,12 @@ public class CannonHolder : MonoBehaviour
     private int firstMatch = 0;
     int firstAppear,lastAppear;
 
+    //will need to know selected
+    private PresetsHolder presetsHolder;
+    private PresetsBtn selectedPresetBtn;
+    private LoadPresetData presetData;
+
+
     private void Awake()
     {
         cSlots = new CannonSlot[6]; //create cannon slot array of six 
@@ -30,6 +36,7 @@ public class CannonHolder : MonoBehaviour
         loadedCannons = new List<CannonSlot>();
 
         cannonLinq = GameObject.FindAnyObjectByType<CannonLinq>();
+        presetsHolder = GameObject.FindAnyObjectByType<PresetsHolder>();
 
     }
 
@@ -183,6 +190,71 @@ public class CannonHolder : MonoBehaviour
         }
     }
 
+
+    public void UsePresetToLoad()
+    {
+        //start fresh
+        ClearLoadedList();
+        CannonSlot loadingSlot = null;
+
+        if (loadedCannons.Count < 6)
+        {
+
+
+            //build the sequence
+            selectedPresetBtn = presetsHolder.FindActivePreset();
+
+            if (selectedPresetBtn != null)
+            {
+                presetData = selectedPresetBtn.FindPresetData();
+                
+
+                for (int i = 0; i < cSlots.Length; i++)
+                {
+                    int seqValue = presetData.GetBuildSequence(i);
+                    //Debug.Log(" Sequence " + seqValue.ToString());
+
+                    foreach(CannonSlot slot in cSlots)
+                    {
+                        if (slot.GetSlotIndex() == seqValue)
+                        {
+                            loadingSlot = slot;
+                            break;
+                        }
+                    }
+
+                    if (seqValue > 0 && loadingSlot != null)
+                    {
+                        if (!CheckAlreadyInList(loadingSlot))
+                        {
+                            loadedCannons.Add(loadingSlot);
+                            loadingSlot.SetCannon(loadedCannons.Count); //number
+
+                            loadingSlot = null;
+
+                            cannonLinq.LinkHUD();
+                        }
+                        else
+                        {
+                            Debug.Log("Adding on top");
+                            loadedCannons.Add(loadingSlot);
+
+                            //Get number of repetitions and set our multi text
+                            loadingSlot.SetMultiCount(CountMultiples(loadingSlot));
+
+                            loadingSlot = null;
+
+                            //not sure if we'll need to sync HUD
+                        }
+                    }
+                }
+
+            }
+        }
+
+
+    }
+
     private void UpdateLoadCount()
     {
         if (loadedCannons.Count == 0)
@@ -261,6 +333,13 @@ public class CannonHolder : MonoBehaviour
     public void ClearLoadedList()
     {
         loadedCannons.Clear();
+
+
+        foreach(CannonSlot slot in cSlots)
+        {
+            slot.ResetCannon();
+        }
+        cannonLinq.LinkHUD();
     }
 
 

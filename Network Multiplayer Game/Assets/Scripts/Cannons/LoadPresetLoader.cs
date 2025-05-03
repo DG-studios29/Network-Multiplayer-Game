@@ -8,6 +8,7 @@ public class LoadPresetLoader : MonoBehaviour
 {
     //This is gonna be hardcoded highkey, can be rebuilt in future
     [SerializeField] private LoadPresetData presetData;
+    public LoadPresetData LoadPresetData => presetData;
 
 
     private TMP_Text[] sList;
