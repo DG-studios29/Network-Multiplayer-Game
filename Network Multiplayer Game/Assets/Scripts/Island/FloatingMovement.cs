@@ -1,17 +1,25 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Mirror;
 
-[RequireComponent(typeof(Rigidbody))]
-public class FloatingMovement : MonoBehaviour
+
+[RequireComponent(typeof(NetworkRigidbodyReliable))]
+public class FloatingMovement : NetworkBehaviour
 {
     [Header("Movement Settings")]
     public float moveForce = 10f;
     public float turnTorque = 5f;
 
     [Header("Input Actions")]
-    public InputActionAsset inputActions; 
+    public InputActionAsset inputActions;
     private InputAction moveAction;
     private InputAction turnAction;
+
+    [Header("Stabilization Settings")]
+    public float uprightStabilizationStrength = 10f;
+    public float uprightStabilizationDamping = 1f;
+
+
     private Island island;
     private Rigidbody rb;
 
@@ -19,27 +27,31 @@ public class FloatingMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         island = GetComponent<Island>();
-        // Set up input actions
+
         var gameplayMap = inputActions.FindActionMap("Player");
         moveAction = gameplayMap.FindAction("Move");
         turnAction = gameplayMap.FindAction("Turn");
-        
     }
 
     void OnEnable()
     {
-        moveAction?.Enable();
-        turnAction?.Enable();
+        if (moveAction != null) moveAction.Enable();
+        if (turnAction != null) turnAction.Enable();
     }
 
     void OnDisable()
     {
-        moveAction?.Disable();
-        turnAction?.Disable();
+        if (moveAction != null) moveAction.Disable();
+        if (turnAction != null) turnAction.Disable();
     }
+
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.K))
+        // Only run on local client
+        if (!isLocalPlayer) return;
+
+        //Debug input to damage nearby islands
+        if (Keyboard.current.kKey.wasPressedThisFrame)
         {
             Collider[] nearby = Physics.OverlapSphere(transform.position, 50f);
             foreach (Collider col in nearby)
@@ -54,9 +66,25 @@ public class FloatingMovement : MonoBehaviour
         }
     }
 
+    private void StabilizeUpright()
+    {
+        // Desired up direction (world up)
+        Vector3 up = transform.up;
+        Vector3 desiredUp = Vector3.up;
+
+        // Calculate the torque required to align the up vector
+        Vector3 torqueVector = Vector3.Cross(up, desiredUp);
+
+        // Apply torque to correct tilt
+        rb.AddTorque(torqueVector * uprightStabilizationStrength - rb.angularVelocity * uprightStabilizationDamping);
+    }
+
 
     void FixedUpdate()
     {
+        // Only run physics input for local player
+        if (!isLocalPlayer) return;
+
         Vector2 moveInput = moveAction.ReadValue<Vector2>();
         float turnInput = turnAction.ReadValue<float>();
 
@@ -72,5 +100,7 @@ public class FloatingMovement : MonoBehaviour
         {
             rb.AddTorque(Vector3.up * turnInput * turnTorque, ForceMode.Force);
         }
+
+        StabilizeUpright();
     }
 }

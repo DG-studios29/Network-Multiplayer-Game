@@ -359,7 +359,7 @@ GameObject:
   - component: {fileID: 1279573273195243902}
   m_Layer: 0
   m_Name: GameObject (3)
-  m_TagString: Untagged
+  m_TagString: FloatPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -471,7 +471,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4276564517959345225}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!114 &4793413682877025816
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -527,7 +527,7 @@ GameObject:
   - component: {fileID: 4490889395972284458}
   m_Layer: 0
   m_Name: GameObject (2)
-  m_TagString: Untagged
+  m_TagString: FloatPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -757,7 +757,7 @@ GameObject:
   - component: {fileID: 2955206392259044587}
   m_Layer: 0
   m_Name: GameObject
-  m_TagString: Untagged
+  m_TagString: FloatPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -788,7 +788,7 @@ GameObject:
   - component: {fileID: 6823648488647489572}
   m_Layer: 0
   m_Name: GameObject (1)
-  m_TagString: Untagged
+  m_TagString: FloatPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -821,6 +821,8 @@ GameObject:
   - component: {fileID: 5995339684430777562}
   - component: {fileID: 848683311353910597}
   - component: {fileID: 7691425475848373609}
+  - component: {fileID: 4506054147601215503}
+  - component: {fileID: 4696905374434675407}
   m_Layer: 0
   m_Name: PriateShip 1
   m_TagString: Player
@@ -896,17 +898,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63b4155b1fb4253428c77474dc29e1d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  floatPoints:
-  - {fileID: 2955206392259044587}
-  - {fileID: 6823648488647489572}
-  - {fileID: 4490889395972284458}
-  - {fileID: 1279573273195243902}
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  floatPoints: []
   buoyancyForce: 20
   waterDrag: 2
   waterAngularDrag: 5
-  rotationSmoothSpeed: 3
+  rotationSmoothSpeed: 1
   maxTiltAngle: 2
-  WaterVolumeHelper: {fileID: 0}
+  WaterVolumeHelper: {fileID: 4662610285661882018, guid: c9193ed5302b97341846216c44dd6d23, type: 3}
 --- !u!114 &848683311353910597
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -919,9 +920,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 219def7d9637efb459a6de3f4be4b2cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveForce: 1000
-  turnTorque: 2000
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  moveForce: 500
+  turnTorque: 400
   inputActions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  uprightStabilizationStrength: 10
+  uprightStabilizationDamping: 1
 --- !u!114 &7691425475848373609
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1056,6 +1062,57 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &4506054147601215503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7399807029032890164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 0
+  _assetId: 1755776678
+  serverOnly: 0
+  visibility: 0
+  hasSpawned: 0
+--- !u!114 &4696905374434675407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7399807029032890164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb803efbe62c34d7baece46c9ffebad9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 1
+  syncMode: 0
+  syncInterval: 0
+  target: {fileID: 1010485865256027444}
+  syncPosition: 1
+  syncRotation: 1
+  syncScale: 0
+  onlySyncOnChange: 1
+  compressRotation: 1
+  interpolatePosition: 1
+  interpolateRotation: 1
+  interpolateScale: 1
+  coordinateSpace: 0
+  timelineOffset: 1
+  showGizmos: 0
+  showOverlay: 0
+  overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
+  onlySyncOnChangeCorrectionMultiplier: 2
+  useFixedUpdate: 0
+  rotationSensitivity: 0.01
+  positionPrecision: 0.01
+  scalePrecision: 0.01
 --- !u!1 &7560684566445515750
 GameObject:
   m_ObjectHideFlags: 0

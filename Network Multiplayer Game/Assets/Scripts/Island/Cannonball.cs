@@ -1,13 +1,13 @@
 using UnityEngine;
+using Mirror;
 
-public class Cannonball : MonoBehaviour
+[RequireComponent(typeof(NetworkRigidbodyReliable))]
+public class Cannonball : NetworkBehaviour
 {
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            
-        }
+        // Only the server should apply damage
+        if (!isServer) return;
 
         if (collision.gameObject.CompareTag("Island"))
         {
@@ -18,6 +18,7 @@ public class Cannonball : MonoBehaviour
             }
         }
 
-        Destroy(gameObject);
+        // Destroy the cannonball across the network
+        NetworkServer.Destroy(gameObject);
     }
 }

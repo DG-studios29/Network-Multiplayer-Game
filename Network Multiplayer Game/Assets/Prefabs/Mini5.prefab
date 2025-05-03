@@ -648,6 +648,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10e067b5565bed34bae597bf9c6fc297, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
   detectionRadius: 70
   fieldOfView: 150
   rotationSpeed: 5
@@ -655,6 +658,9 @@ MonoBehaviour:
   projectilePrefab: {fileID: 6007650139448959880, guid: 7a33fa6a62b8f2347a2d80b7cd45a308, type: 3}
   firePoint: {fileID: 5838895188957634464}
   fireForce: 2
+  visionBlockingLayers:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1 &3505242541268771432
 GameObject:
   m_ObjectHideFlags: 0
@@ -1130,6 +1136,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10e067b5565bed34bae597bf9c6fc297, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
   detectionRadius: 70
   fieldOfView: 150
   rotationSpeed: 5
@@ -1137,6 +1146,9 @@ MonoBehaviour:
   projectilePrefab: {fileID: 6007650139448959880, guid: 7a33fa6a62b8f2347a2d80b7cd45a308, type: 3}
   firePoint: {fileID: 536748029170147522}
   fireForce: 2
+  visionBlockingLayers:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1 &5112064418891868301
 GameObject:
   m_ObjectHideFlags: 0
@@ -1354,6 +1366,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10e067b5565bed34bae597bf9c6fc297, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
   detectionRadius: 70
   fieldOfView: 150
   rotationSpeed: 5
@@ -1361,6 +1376,9 @@ MonoBehaviour:
   projectilePrefab: {fileID: 6007650139448959880, guid: 7a33fa6a62b8f2347a2d80b7cd45a308, type: 3}
   firePoint: {fileID: 3596584811915622207}
   fireForce: 2
+  visionBlockingLayers:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1 &6247908414324330434
 GameObject:
   m_ObjectHideFlags: 0
@@ -1609,6 +1627,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10e067b5565bed34bae597bf9c6fc297, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
   detectionRadius: 70
   fieldOfView: 150
   rotationSpeed: 5
@@ -1616,6 +1637,9 @@ MonoBehaviour:
   projectilePrefab: {fileID: 6007650139448959880, guid: 7a33fa6a62b8f2347a2d80b7cd45a308, type: 3}
   firePoint: {fileID: 6996516573687649270}
   fireForce: 2
+  visionBlockingLayers:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1 &7931355341778674477
 GameObject:
   m_ObjectHideFlags: 0
@@ -1887,6 +1911,7 @@ GameObject:
   - component: {fileID: 7042608377410174604}
   - component: {fileID: 1433615212895189105}
   - component: {fileID: 1541608053475064611}
+  - component: {fileID: 7743434882278494317}
   m_Layer: 0
   m_Name: Mini5
   m_TagString: Island
@@ -1963,9 +1988,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 661c0c21429c6d84a9b2e76ad22e25b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
   manager: {fileID: 0}
   islandPrefab: {fileID: 0}
-  isLooted: 0
   maxHealth: 100
   treasureCollectionTime: 5
   cannons:
@@ -1990,6 +2017,23 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
+--- !u!114 &7743434882278494317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8529380321927760432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 0
+  _assetId: 3086449322
+  serverOnly: 0
+  visibility: 0
+  hasSpawned: 0
 --- !u!1 &9138290205783380510
 GameObject:
   m_ObjectHideFlags: 0
@@ -2176,6 +2220,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10e067b5565bed34bae597bf9c6fc297, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
   detectionRadius: 70
   fieldOfView: 150
   rotationSpeed: 5
@@ -2183,3 +2230,6 @@ MonoBehaviour:
   projectilePrefab: {fileID: 6007650139448959880, guid: 7a33fa6a62b8f2347a2d80b7cd45a308, type: 3}
   firePoint: {fileID: 5551785766569949129}
   fireForce: 2
+  visionBlockingLayers:
+    serializedVersion: 2
+    m_Bits: 64

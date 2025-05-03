@@ -1,20 +1,21 @@
 using UnityEngine;
+using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 
 [RequireComponent(typeof(SphereCollider))]
-public class Island : MonoBehaviour
+public class Island : NetworkBehaviour
 {
     [HideInInspector] public IslandManager manager;
     [HideInInspector] public GameObject islandPrefab;
 
-    public bool isLooted = false;
     private bool playerNearby = false;
-    private bool isDestroyed = false;
+    [SyncVar(hook = nameof(OnDestroyedChanged))] private bool isDestroyed = false;
+    [SyncVar(hook = nameof(OnLootedChanged))] private bool isLooted = false;
 
     [Header("Island Settings")]
     public float maxHealth = 100f;
-    private float currentHealth;
+    [SyncVar(hook = nameof(OnHealthChanged))] private float currentHealth;
 
     [Header("Treasure Settings")]
     public float treasureCollectionTime = 5f;
@@ -26,55 +27,72 @@ public class Island : MonoBehaviour
 
     private void Start()
     {
-        currentHealth = maxHealth;
+        // Initialize health on server
+        if (isServer) currentHealth = maxHealth;
 
         SphereCollider myCollider = GetComponent<SphereCollider>();
         myCollider.radius = 100f;
         myCollider.isTrigger = true;
-
-      
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
-        {
-            Debug.Log("Player entered island radius.");
-            playerNearby = true;
+        if (!isServer) return;
+        if (!other.CompareTag("Player")) return;
 
-           
-            if (isDestroyed && !isLooted && lootCoroutine == null)
+        Debug.Log("Player entered island radius.");
+        playerNearby = true;
+
+        if (isDestroyed && !isLooted && lootCoroutine == null)
+        {
+            lootCoroutine = StartCoroutine(CollectTreasureRoutine());
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (!isServer) return;
+        if (!other.CompareTag("Player")) return;
+
+        playerNearby = false;
+        Debug.Log("Player left island radius.");
+
+        if (isDestroyed && !isLooted && lootCoroutine != null)
+        {
+            StopCoroutine(lootCoroutine);
+            lootCoroutine = null;
+            StartCoroutine(WaitBeforeDespawn());
+        }
+    }
+
+    [Server]
+    public void TakeDamage(float damage)
+    {
+        if (isDestroyed) return;
+
+        currentHealth -= damage;
+        Debug.Log($"Island took damage. Current HP: {currentHealth}");
+
+        if (currentHealth <= 0f)
+        {
+            isDestroyed = true;
+            Debug.Log("Island destroyed! Stay nearby to loot.");
+
+            if (playerNearby && lootCoroutine == null)
             {
                 lootCoroutine = StartCoroutine(CollectTreasureRoutine());
             }
         }
     }
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            playerNearby = false;
-            Debug.Log("Player left island radius.");
-
-           
-            if (isDestroyed && !isLooted && lootCoroutine != null)
-            {
-                StopCoroutine(lootCoroutine);
-                lootCoroutine = null;
-                StartCoroutine(WaitBeforeDespawn());
-            }
-        }
-    }
-
     private IEnumerator WaitBeforeDespawn()
     {
-        yield return new WaitForSeconds(10f); 
+        yield return new WaitForSeconds(10f);
 
-        if (!playerNearby) // Only despawn if the player is still not in range
+        if (!playerNearby)
         {
             Debug.Log("Player didn't stay nearby to loot. Despawning island...");
-            StartCoroutine(DespawnAfterDelay());
+            yield return DespawnAndRespawn();
         }
     }
 
@@ -82,7 +100,6 @@ public class Island : MonoBehaviour
     {
         float timer = 0f;
 
-        // Collect treasure only if player is still nearby
         while (playerNearby && timer < treasureCollectionTime)
         {
             timer += Time.deltaTime;
@@ -92,42 +109,14 @@ public class Island : MonoBehaviour
         if (timer >= treasureCollectionTime)
         {
             LootIsland();
-            StartCoroutine(DespawnAfterDelay());
+            yield return DespawnAndRespawn();
         }
 
         lootCoroutine = null;
     }
 
-    public void TakeDamage(float damage)
-    {
-        if (isDestroyed) return;
-
-        currentHealth -= damage;
-        Debug.Log("Island took damage. Current HP: " + currentHealth);
-
-        if (currentHealth <= 0f)
-        {
-            isDestroyed = true;
-            Debug.Log("Island destroyed! Stay nearby to loot.");
-
-            // If player is already nearby, start looting right away
-            if (playerNearby && lootCoroutine == null)
-            {
-                lootCoroutine = StartCoroutine(CollectTreasureRoutine());
-            }
-        }
-    }
-
-    public void LootIsland()
-    {
-        isLooted = true;
-        Debug.Log("Island looted!");
-
-        int lootAmount = Random.Range(100, 1001);  
-        Debug.Log("Loot collected: " + lootAmount);
-    }
-
-    private IEnumerator DespawnAfterDelay()
+    [Server]
+    private IEnumerator DespawnAndRespawn()
     {
         manager?.NotifyIslandDespawn(this);
         yield return new WaitForSeconds(5f);
@@ -137,6 +126,44 @@ public class Island : MonoBehaviour
             manager.SpawnIsland(islandPrefab);
         }
 
-        Destroy(gameObject);
+        NetworkServer.Destroy(gameObject);
     }
+
+    [Server]
+    private void LootIsland()
+    {
+        if (isLooted) return;
+        isLooted = true;
+        Debug.Log("Island looted!");
+
+        int lootAmount = Random.Range(100, 1001);
+        Debug.Log($"Loot collected: {lootAmount}");
+
+        RpcOnLoot(lootAmount);
+    }
+
+    #region SyncVar Hooks & RPCs
+
+    private void OnHealthChanged(float oldValue, float newValue)
+    {
+        // Update health UI or progress bars here
+    }
+
+    private void OnDestroyedChanged(bool oldValue, bool newValue)
+    {
+        // Trigger destruction VFX/logic on clients
+    }
+
+    private void OnLootedChanged(bool oldValue, bool newValue)
+    {
+        // Show looted state (e.g., change material) on clients
+    }
+
+    [ClientRpc]
+    private void RpcOnLoot(int amount)
+    {
+        // Client-side loot effect, e.g., display popup
+    }
+
+    #endregion
 }

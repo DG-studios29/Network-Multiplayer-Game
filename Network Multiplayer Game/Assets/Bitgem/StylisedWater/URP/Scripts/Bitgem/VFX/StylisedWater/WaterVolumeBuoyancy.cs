@@ -1,19 +1,16 @@
-﻿using Bitgem.VFX.StylisedWater;
+﻿using Mirror;
 using UnityEngine;
+using Bitgem.VFX.StylisedWater;
 
-//https://www.youtube.com/watch?v=eL_zHQEju8s&t=472s
-//https://www.youtube.com/watch?v=fHuN7WkrmsI&t=152s
-//https://www.youtube.com/watch?v=vzqoLJmpUqU&t=45s
-
-[RequireComponent(typeof(Rigidbody))]
-public class BuoyantObject : MonoBehaviour
+[RequireComponent(typeof(NetworkIdentity))]
+public class BuoyantObject : NetworkBehaviour
 {
     public Transform[] floatPoints;
     public float buoyancyForce = 10f;
     public float waterDrag = 1f;
     public float waterAngularDrag = 1f;
     public float rotationSmoothSpeed = 0.5f;
-    public float maxTiltAngle = 25f; 
+    public float maxTiltAngle = 25f;
 
     public WaterVolumeHelper WaterVolumeHelper = null;
 
@@ -24,13 +21,33 @@ public class BuoyantObject : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         rb.useGravity = true;
-        rb.centerOfMass = Vector3.down * 0.5f; 
+        rb.centerOfMass = Vector3.down * 0.5f;
+
+        // Automatically find float points by tag
+        GameObject[] foundPoints = GameObject.FindGameObjectsWithTag("FloatPoint");
+        floatPoints = new Transform[foundPoints.Length];
+        for (int i = 0; i < foundPoints.Length; i++)
+        {
+            floatPoints[i] = foundPoints[i].transform;
+        }
     }
 
     void FixedUpdate()
     {
+        // ONLY RUN PHYSICS ON SERVER
+        if (!isServer) return;
+
         var helper = WaterVolumeHelper != null ? WaterVolumeHelper : WaterVolumeHelper.Instance;
-        if (!helper) return;
+
+        if (helper == null || helper.WaterVolume == null)
+        {
+            return;
+        }
+
+        if (floatPoints == null || floatPoints.Length == 0)
+        {
+            return;
+        }
 
         bool isUnderwater = false;
         Vector3[] wavePoints = new Vector3[floatPoints.Length];
@@ -38,33 +55,39 @@ public class BuoyantObject : MonoBehaviour
         for (int i = 0; i < floatPoints.Length; i++)
         {
             Transform point = floatPoints[i];
-            float? height = helper.GetHeight(point.position);
+            float? height = null;
+
+            try
+            {
+                height = helper.GetHeight(point.position);
+            }
+            catch (System.Exception)
+            {
+                continue;
+            }
 
             if (height.HasValue)
             {
-                float diff = (height.Value+17f) - point.position.y;
+                float diff = (height.Value + 17f) - point.position.y;
                 if (diff > 0f)
                 {
                     Vector3 uplift = Vector3.up * diff * buoyancyForce;
                     rb.AddForceAtPosition(uplift, point.position);
                     isUnderwater = true;
                 }
+
                 wavePoints[i] = new Vector3(point.position.x, height.Value, point.position.z);
             }
             else
             {
-                wavePoints[i] = point.position; // fallback
+                wavePoints[i] = point.position;
             }
         }
 
         if (isUnderwater && floatPoints.Length >= 3)
         {
             Vector3 targetNormal = CalculateSurfaceNormal(wavePoints);
-
-            // Smooth the rotation normal to prevent jittering
             smoothedNormal = Vector3.Lerp(smoothedNormal, targetNormal, Time.fixedDeltaTime * rotationSmoothSpeed);
-
-            // Clamp tilt
             smoothedNormal = ClampTilt(smoothedNormal, maxTiltAngle);
 
             Quaternion targetRotation = Quaternion.FromToRotation(transform.up, smoothedNormal) * rb.rotation;
@@ -89,4 +112,4 @@ public class BuoyantObject : MonoBehaviour
         tiltRotation = Quaternion.RotateTowards(Quaternion.identity, tiltRotation, maxDegrees);
         return tiltRotation * Vector3.up;
     }
-}
+}

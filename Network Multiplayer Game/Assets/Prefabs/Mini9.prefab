@@ -131,6 +131,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10e067b5565bed34bae597bf9c6fc297, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
   detectionRadius: 70
   fieldOfView: 150
   rotationSpeed: 5
@@ -585,6 +588,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10e067b5565bed34bae597bf9c6fc297, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
   detectionRadius: 70
   fieldOfView: 150
   rotationSpeed: 5
@@ -1132,6 +1138,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10e067b5565bed34bae597bf9c6fc297, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
   detectionRadius: 70
   fieldOfView: 150
   rotationSpeed: 5
@@ -1154,6 +1163,7 @@ GameObject:
   - component: {fileID: 7410342431805675612}
   - component: {fileID: 8504934761680451083}
   - component: {fileID: 1877838755656442712}
+  - component: {fileID: 6579045900212386552}
   m_Layer: 0
   m_Name: Mini9
   m_TagString: Island
@@ -1226,9 +1236,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 661c0c21429c6d84a9b2e76ad22e25b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
   manager: {fileID: 0}
   islandPrefab: {fileID: 0}
-  isLooted: 0
   maxHealth: 100
   treasureCollectionTime: 5
   cannons:
@@ -1255,6 +1267,23 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
+--- !u!114 &6579045900212386552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7401669251963004928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 0
+  _assetId: 313500737
+  serverOnly: 0
+  visibility: 0
+  hasSpawned: 0
 --- !u!1 &7587130373161393402
 GameObject:
   m_ObjectHideFlags: 0
@@ -1386,6 +1415,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10e067b5565bed34bae597bf9c6fc297, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
   detectionRadius: 70
   fieldOfView: 150
   rotationSpeed: 5
@@ -1527,6 +1559,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10e067b5565bed34bae597bf9c6fc297, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
   detectionRadius: 70
   fieldOfView: 150
   rotationSpeed: 5
@@ -1723,6 +1758,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10e067b5565bed34bae597bf9c6fc297, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
   detectionRadius: 70
   fieldOfView: 150
   rotationSpeed: 5

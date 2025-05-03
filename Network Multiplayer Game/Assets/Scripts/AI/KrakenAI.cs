@@ -1,7 +1,9 @@
 using UnityEngine;
 using UnityEngine.AI;
+using Mirror;
 
-public class KrakenAI : MonoBehaviour
+
+public class KrakenAI : NetworkBehaviour
 {
     public Transform[] patrolPoints;
     public Transform player;
@@ -21,12 +23,17 @@ public class KrakenAI : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
-        GoToNextPatrolPoint();
+
+        if (isServer)
+            GoToNextPatrolPoint();
     }
 
     void Update()
     {
+        if (!isServer) return; // AI logic only runs on the server
+
         float distance = Vector3.Distance(player.position, transform.position);
+
         // State logic
         if (distance <= attackRange)
         {
@@ -53,16 +60,13 @@ public class KrakenAI : MonoBehaviour
         float targetOffset = isAttacking ? attackOffset : patrolOffset;
         agent.baseOffset = Mathf.Lerp(agent.baseOffset, targetOffset, Time.deltaTime * offsetLerpSpeed);
 
-        
         if (agent.velocity.sqrMagnitude > 0.01f)
         {
             Quaternion look = Quaternion.LookRotation(agent.velocity.normalized);
             transform.rotation = Quaternion.Slerp(transform.rotation, look, Time.deltaTime * 5f);
         }
 
-       
-        animator.SetBool("isChasing", isChasing);
-        animator.SetBool("isAttacking", isAttacking);
+        RpcUpdateAnimation(isChasing, isAttacking);
     }
 
     void GoToNextPatrolPoint()
@@ -71,4 +75,22 @@ public class KrakenAI : MonoBehaviour
         currentPatrolIndex = Random.Range(0, patrolPoints.Length);
         agent.SetDestination(patrolPoints[currentPatrolIndex].position);
     }
+
+    [ClientRpc]
+    void RpcUpdateAnimation(bool chasing, bool attacking)
+    {
+        if (animator == null)
+        {
+            animator = GetComponent<Animator>();
+            if (animator == null)
+            {
+                Debug.LogWarning("Animator is missing on KrakenAI!");
+                return;
+            }
+        }
+
+        animator.SetBool("isChasing", chasing);
+        animator.SetBool("isAttacking", attacking);
+    }
+
 }

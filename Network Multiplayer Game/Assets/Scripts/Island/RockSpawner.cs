@@ -1,18 +1,20 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Mirror;
 
-public class RockSpawner : MonoBehaviour
+public class RockSpawner : NetworkBehaviour
 {
     public GameObject[] rockPrefabs;
     public int numberOfRocks = 100;
     public Vector3 spawnAreaSize = new Vector3(1500, 1, 1500);
-    public Vector3 spawnCenter = Vector3.zero; 
+    public Vector3 spawnCenter = Vector3.zero;
     public float minDistanceBetweenRocks = 20f;
 
     private List<Vector3> spawnedPositions = new List<Vector3>();
 
-    void Start()
+    public override void OnStartServer()
     {
+        base.OnStartServer();
         SpawnRocks();
     }
 
@@ -29,15 +31,24 @@ public class RockSpawner : MonoBehaviour
                 Random.Range(spawnCenter.z - spawnAreaSize.z / 2f, spawnCenter.z + spawnAreaSize.z / 2f)
             );
 
-            if (SpawnManager.Instance.IsPositionAvailable(randomPos)) 
+            if (IsPositionFarEnough(randomPos) && SpawnManager.Instance.IsPositionAvailable(randomPos))
             {
                 GameObject prefab = rockPrefabs[Random.Range(0, rockPrefabs.Length)];
-                Instantiate(prefab, randomPos, Quaternion.Euler(0, Random.Range(0, 360), 0));
-                SpawnManager.Instance.RegisterPosition(randomPos); 
+                GameObject rock = Instantiate(prefab, randomPos, Quaternion.Euler(0, Random.Range(0, 360), 0));
+
+                NetworkServer.Spawn(rock); // Mirror network spawn
+                SpawnManager.Instance.RegisterPosition(randomPos);
+
+                spawnedPositions.Add(randomPos);
                 rocksSpawned++;
             }
 
             attempts++;
+        }
+
+        if (rocksSpawned < numberOfRocks)
+        {
+            Debug.LogWarning("Not all rocks could be spawned due to space constraints.");
         }
     }
 
