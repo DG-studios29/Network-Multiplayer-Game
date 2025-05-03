@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ChainCannon
   m_EditorClassIdentifier: 
   cannonName: ChainCannon
-  ballPrefab: {fileID: 3630204142601734126, guid: 1fed68ae8fe134042aa5758f58748c57, type: 3}
+  ballPrefab: {fileID: 4193620958866771453, guid: 72730504b4608c04884b56042b14e795, type: 3}
   launchAngle: 60
   rangeZ: 20
   heightY: 0
