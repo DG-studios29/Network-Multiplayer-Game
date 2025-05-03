@@ -22,7 +22,7 @@ public class PirateInput : MonoBehaviour
         playerInput = GetComponent<PlayerInput>();
         currentMap = playerInput.currentActionMap;
 
-        playerInput.defaultControlScheme = currentMap.controlSchemes[0].name;
+        //playerInput.defaultControlScheme = currentMap.controlSchemes[0].name;
 
         SailAction = currentMap.FindAction("Sail");
         SailingAction = currentMap.FindAction("Sailing");
