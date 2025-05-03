@@ -1,53 +1,49 @@
 using UnityEngine;
 using Mirror;
-using UnityEngine.UI;
 
 public class MinimapInitializer : NetworkBehaviour
 {
-    public GameObject minimapCamPrefab;   
-    public GameObject minimapUIPrefab;     
-    private RawImage minimapUI;            
-    private GameObject minimapCam;        
+    public GameObject minimapCamPrefab;   // Prefab for the minimap camera
+    public RectTransform compassImage;   // The compass image (static)
+    public RectTransform playerIcon;     // The player icon (rotates)
+    public RectTransform minimapImage;   // The minimap image (center is the reference point)
+    public float minimapScale = 1f;      // Scale factor for minimap coordinates
+
+    private GameObject minimapCam;       // Instance of the minimap camera
 
     public override void OnStartLocalPlayer()
     {
         base.OnStartLocalPlayer();
 
-        
-        minimapCam = Instantiate(minimapCamPrefab);
-
-       
-        if (minimapUIPrefab != null)
+        // Instantiate the minimap camera for the local player
+        if (minimapCamPrefab != null)
         {
-            minimapUI = Instantiate(minimapUIPrefab).GetComponent<RawImage>();
+            minimapCam = Instantiate(minimapCamPrefab);
+            MinimapCameraFollow follow = minimapCam.GetComponent<MinimapCameraFollow>();
+            if (follow != null)
+            {
+                follow.target = transform; // Set the player as the target
+            }
         }
 
-       
-        MinimapCameraFollow follow = minimapCam.GetComponent<MinimapCameraFollow>();
-        follow.target = transform;
-
-       
-        if (minimapUI != null)
+        // Ensure the compass and player icon are assigned
+        if (compassImage == null || playerIcon == null || minimapImage == null)
         {
-            follow.minimapUI = minimapUI;
+            Debug.LogError("Compass image, player icon, or minimap image is not assigned!");
+            return;
         }
 
-   
-        minimapCam.GetComponent<Camera>().enabled = true;
-        minimapUI.gameObject.SetActive(true);
+        Debug.Log("MinimapInitializer initialized for local player.");
     }
 
     public override void OnStopLocalPlayer()
     {
-       
+        base.OnStopLocalPlayer();
+
+        // Clean up the minimap camera when the player is destroyed
         if (minimapCam != null)
         {
             Destroy(minimapCam);
-        }
-
-        if (minimapUI != null)
-        {
-            Destroy(minimapUI.gameObject);
         }
     }
 }
