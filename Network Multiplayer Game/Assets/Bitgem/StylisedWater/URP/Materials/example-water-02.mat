@@ -74,8 +74,8 @@ Material:
     - Vector1_244B0600: 1.5
     - Vector1_34CF798A: 1.75
     - Vector1_36E8227: 0
-    - Vector1_3D886DA1: 0.042
-    - Vector1_46E42935: 0.289
+    - Vector1_3D886DA1: 0.05
+    - Vector1_46E42935: 0.4
     - Vector1_47683D42: 0.77
     - Vector1_A0EAD698: 0.5
     - Vector1_A6A0BC26: 0.025
@@ -105,9 +105,9 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
-    - _WaveFrequency: 3
-    - _WaveScale: 2.2
-    - _WaveSpeed: 0.88
+    - _WaveFrequency: 2.75
+    - _WaveScale: 0.05
+    - _WaveSpeed: 1.75
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
