@@ -139,6 +139,7 @@ public class PlayerInputTemp : MonoBehaviour
         {
            
             cannonHolder.FireLoadedCannon();
+            
 
             //cannonLinq.FireCannonChain();
         }

@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: BundleCannon
   m_EditorClassIdentifier: 
   cannonName: BundleShot
-  ballPrefab: {fileID: 4193620958866771453, guid: 72730504b4608c04884b56042b14e795, type: 3}
+  ballPrefab: {fileID: 3630204142601734126, guid: 1fed68ae8fe134042aa5758f58748c57, type: 3}
   launchAngle: 40
   rangeZ: 40
   heightY: 0
   timeTaken: 1
+  lifespan: 20
+  damage: 10
