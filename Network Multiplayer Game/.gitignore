@@ -61,11 +61,11 @@ $RECYCLE.BIN/
 # ========== ASSET EXCLUSIONS (OPTIONAL) ==========
 
 # Uncomment if you use Git LFS to track large assets and want to exclude them from the repo.
-*.png
-*.jpg
-*.mp3
-*.fbx
-*.wav
+//*.png
+//*.jpg
+//*.mp3
+//*.fbx
+//*.wav
 
 # ========== EXCEPTIONS ==========
 
