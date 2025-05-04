@@ -58,7 +58,7 @@ public class CannonDefence : NetworkBehaviour
         if (rb != null)
         {
             Vector3 toTarget = (player.position + Vector3.up * 2f) - firePoint.position;
-            rb.velocity = toTarget.normalized * Random.Range(20f, 30f) + Vector3.up * Random.Range(2f, 5f) * fireForce;
+            rb.linearVelocity = toTarget.normalized * Random.Range(20f, 30f) + Vector3.up * Random.Range(2f, 5f) * fireForce;
         }
 
         // Spawn it on the network
