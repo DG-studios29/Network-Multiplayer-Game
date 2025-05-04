@@ -2,19 +2,16 @@ using UnityEngine;
 
 public class Cannonball : MonoBehaviour
 {
+    public int damage = 2;
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            
-        }
-
-        if (collision.gameObject.CompareTag("Island"))
-        {
-            Island island = collision.gameObject.GetComponent<Island>();
-            if (island != null)
+            PlayerHealth playerHealth = collision.gameObject.GetComponent<PlayerHealth>();
+            if (playerHealth != null)
             {
-                island.TakeDamage(10f);
+                playerHealth.TakeDamage(damage);
             }
         }
 
