@@ -7,7 +7,7 @@ public class HandleEvent : MonoBehaviour
 {
 
     private EventSystem eSystem;
-    public GameObject pauseBtn;
+    //public GameObject pauseBtn;
     public GameObject cannonBtn;
     public GameObject presetsBtn;
  
@@ -35,11 +35,13 @@ public class HandleEvent : MonoBehaviour
     //Just remembered you can't pause online
     public void ChangeFirstSelected(ActivePanel activePanel) 
     { 
-        if(activePanel == ActivePanel.PAUSE)
+     /*   if(activePanel == ActivePanel.PAUSE)
         {
             PauseActive();
         }
-        else if(activePanel == ActivePanel.CANNON)
+        else */
+        
+        if(activePanel == ActivePanel.CANNON)
         {
             CannonActive();
         }
@@ -51,16 +53,16 @@ public class HandleEvent : MonoBehaviour
 
 
 
-    void PauseActive()
+  /*  void PauseActive()
     {
-        if(eSystem.firstSelectedGameObject != null)
+        if (eSystem.firstSelectedGameObject != null)
         {
             eSystem.firstSelectedGameObject = pauseBtn;
             Button button = eSystem.firstSelectedGameObject.GetComponent<Button>();
             button.Select();
         }
     }
-
+*/
     void CannonActive()
     {
 

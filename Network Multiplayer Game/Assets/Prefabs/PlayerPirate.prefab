@@ -104,17 +104,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   index: 0
-  ballPrefab: {fileID: 4193620958866771453, guid: 72730504b4608c04884b56042b14e795, type: 3}
   ballType: {fileID: 0}
-  launchAngle: 0
-  rangeZ: 0
-  Uz: 0
-  Uy: 0
-  Uo: 0
-  gravity: 0
-  heightY: 0
-  heightMax: 0
-  timeTaken: 0
   initialVelocity: {x: 0, y: 0, z: 0}
   globalVelocity: {x: 0, y: 0, z: 0}
 --- !u!114 &7754194532873933928
@@ -130,17 +120,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   index: 0
-  ballPrefab: {fileID: 4193620958866771453, guid: 72730504b4608c04884b56042b14e795, type: 3}
   ballType: {fileID: 0}
-  launchAngle: 0
-  rangeZ: 0
-  Uz: 0
-  Uy: 0
-  Uo: 0
-  gravity: 0
-  heightY: 0
-  heightMax: 0
-  timeTaken: 0
   initialVelocity: {x: 0, y: 0, z: 0}
   globalVelocity: {x: 0, y: 0, z: 0}
 --- !u!1 &371316255406129984
@@ -1138,17 +1118,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   index: 0
-  ballPrefab: {fileID: 4193620958866771453, guid: 72730504b4608c04884b56042b14e795, type: 3}
   ballType: {fileID: 0}
-  launchAngle: 0
-  rangeZ: 0
-  Uz: 0
-  Uy: 0
-  Uo: 0
-  gravity: 0
-  heightY: 0
-  heightMax: 0
-  timeTaken: 0
   initialVelocity: {x: 0, y: 0, z: 0}
   globalVelocity: {x: 0, y: 0, z: 0}
 --- !u!114 &3758498198616646250
@@ -1164,17 +1134,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   index: 0
-  ballPrefab: {fileID: 4193620958866771453, guid: 72730504b4608c04884b56042b14e795, type: 3}
   ballType: {fileID: 0}
-  launchAngle: 0
-  rangeZ: 0
-  Uz: 0
-  Uy: 0
-  Uo: 0
-  gravity: 0
-  heightY: 0
-  heightMax: 0
-  timeTaken: 0
   initialVelocity: {x: 0, y: 0, z: 0}
   globalVelocity: {x: 0, y: 0, z: 0}
 --- !u!1 &2994070024457861122
@@ -1493,17 +1453,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   index: 0
-  ballPrefab: {fileID: 4193620958866771453, guid: 72730504b4608c04884b56042b14e795, type: 3}
   ballType: {fileID: 0}
-  launchAngle: 0
-  rangeZ: 0
-  Uz: 0
-  Uy: 0
-  Uo: 0
-  gravity: 0
-  heightY: 0
-  heightMax: 0
-  timeTaken: 0
   initialVelocity: {x: 0, y: 0, z: 0}
   globalVelocity: {x: 0, y: 0, z: 0}
 --- !u!114 &905385350925226540
@@ -1519,17 +1469,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   index: 0
-  ballPrefab: {fileID: 4193620958866771453, guid: 72730504b4608c04884b56042b14e795, type: 3}
   ballType: {fileID: 0}
-  launchAngle: 0
-  rangeZ: 0
-  Uz: 0
-  Uy: 0
-  Uo: 0
-  gravity: 0
-  heightY: 0
-  heightMax: 0
-  timeTaken: 0
   initialVelocity: {x: 0, y: 0, z: 0}
   globalVelocity: {x: 0, y: 0, z: 0}
 --- !u!1 &4354588303489984972
@@ -1753,17 +1693,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   index: 0
-  ballPrefab: {fileID: 4193620958866771453, guid: 72730504b4608c04884b56042b14e795, type: 3}
   ballType: {fileID: 0}
-  launchAngle: 0
-  rangeZ: 0
-  Uz: 0
-  Uy: 0
-  Uo: 0
-  gravity: 0
-  heightY: 0
-  heightMax: 0
-  timeTaken: 0
   initialVelocity: {x: 0, y: 0, z: 0}
   globalVelocity: {x: 0, y: 0, z: 0}
 --- !u!114 &7484365824933882451
@@ -1779,17 +1709,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   index: 0
-  ballPrefab: {fileID: 4193620958866771453, guid: 72730504b4608c04884b56042b14e795, type: 3}
   ballType: {fileID: 0}
-  launchAngle: 0
-  rangeZ: 0
-  Uz: 0
-  Uy: 0
-  Uo: 0
-  gravity: 0
-  heightY: 0
-  heightMax: 0
-  timeTaken: 0
   initialVelocity: {x: 0, y: 0, z: 0}
   globalVelocity: {x: 0, y: 0, z: 0}
 --- !u!1 &5359105727032362847
@@ -2188,17 +2108,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   index: 0
-  ballPrefab: {fileID: 4193620958866771453, guid: 72730504b4608c04884b56042b14e795, type: 3}
   ballType: {fileID: 0}
-  launchAngle: 0
-  rangeZ: 0
-  Uz: 0
-  Uy: 0
-  Uo: 0
-  gravity: 0
-  heightY: 0
-  heightMax: 0
-  timeTaken: 0
   initialVelocity: {x: 0, y: 0, z: 0}
   globalVelocity: {x: 0, y: 0, z: 0}
 --- !u!114 &6062019787658586201
@@ -2214,17 +2124,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   index: 0
-  ballPrefab: {fileID: 4193620958866771453, guid: 72730504b4608c04884b56042b14e795, type: 3}
   ballType: {fileID: 0}
-  launchAngle: 0
-  rangeZ: 0
-  Uz: 0
-  Uy: 0
-  Uo: 0
-  gravity: 0
-  heightY: 0
-  heightMax: 0
-  timeTaken: 0
   initialVelocity: {x: 0, y: 0, z: 0}
   globalVelocity: {x: 0, y: 0, z: 0}
 --- !u!1 &8215968071516603313
@@ -2331,17 +2231,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   index: 0
-  ballPrefab: {fileID: 4193620958866771453, guid: 72730504b4608c04884b56042b14e795, type: 3}
   ballType: {fileID: 0}
-  launchAngle: 0
-  rangeZ: 0
-  Uz: 0
-  Uy: 0
-  Uo: 0
-  gravity: 0
-  heightY: 0
-  heightMax: 0
-  timeTaken: 0
   initialVelocity: {x: 0, y: 0, z: 0}
   globalVelocity: {x: 0, y: 0, z: 0}
 --- !u!114 &3236234351032320178
@@ -2357,17 +2247,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   index: 0
-  ballPrefab: {fileID: 4193620958866771453, guid: 72730504b4608c04884b56042b14e795, type: 3}
   ballType: {fileID: 0}
-  launchAngle: 0
-  rangeZ: 0
-  Uz: 0
-  Uy: 0
-  Uo: 0
-  gravity: 0
-  heightY: 0
-  heightMax: 0
-  timeTaken: 0
   initialVelocity: {x: 0, y: 0, z: 0}
   globalVelocity: {x: 0, y: 0, z: 0}
 --- !u!1 &8347516487340293680
@@ -2682,7 +2562,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 221193160570626109, guid: 7f29cd3baa7c91e4693df20e824a173b, type: 3}
       propertyPath: m_fontSize
-      value: 9.45
+      value: 25.2
       objectReference: {fileID: 0}
     - target: {fileID: 331543098831454673, guid: 7f29cd3baa7c91e4693df20e824a173b, type: 3}
       propertyPath: m_AnchorMax.y
@@ -3318,7 +3198,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3865635530473225986, guid: 7f29cd3baa7c91e4693df20e824a173b, type: 3}
       propertyPath: m_fontSize
-      value: 27.75
+      value: 42.2
       objectReference: {fileID: 0}
     - target: {fileID: 4222507301614700225, guid: 7f29cd3baa7c91e4693df20e824a173b, type: 3}
       propertyPath: m_AnchorMax.y
@@ -3506,7 +3386,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5455754828113545934, guid: 7f29cd3baa7c91e4693df20e824a173b, type: 3}
       propertyPath: m_fontSize
-      value: 20.85
+      value: 33.4
       objectReference: {fileID: 0}
     - target: {fileID: 5623459192351863175, guid: 7f29cd3baa7c91e4693df20e824a173b, type: 3}
       propertyPath: m_AnchorMax.y
@@ -3894,7 +3774,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7459812347050654324, guid: 7f29cd3baa7c91e4693df20e824a173b, type: 3}
       propertyPath: m_fontSize
-      value: 12.15
+      value: 25.65
       objectReference: {fileID: 0}
     - target: {fileID: 7463116353936445098, guid: 7f29cd3baa7c91e4693df20e824a173b, type: 3}
       propertyPath: m_AnchorMax.y
@@ -4046,7 +3926,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8088797156821116227, guid: 7f29cd3baa7c91e4693df20e824a173b, type: 3}
       propertyPath: m_fontSize
-      value: 28.45
+      value: 47.45
       objectReference: {fileID: 0}
     - target: {fileID: 8110900369602181731, guid: 7f29cd3baa7c91e4693df20e824a173b, type: 3}
       propertyPath: m_IsActive
