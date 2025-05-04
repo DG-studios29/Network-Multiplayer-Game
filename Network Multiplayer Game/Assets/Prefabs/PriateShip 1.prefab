@@ -104,19 +104,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   index: 0
-  ballPrefab: {fileID: 4193620958866771453, guid: 72730504b4608c04884b56042b14e795, type: 3}
   ballType: {fileID: 0}
-  launchAngle: 0
-  rangeZ: 0
-  Uz: 0
-  Uy: 0
-  Uo: 0
-  gravity: 0
-  heightY: 0
-  heightMax: 0
-  timeTaken: 0
   initialVelocity: {x: 0, y: 0, z: 0}
   globalVelocity: {x: 0, y: 0, z: 0}
+  spawnPoint: {fileID: 0}
+  gravityScale: 1.4
 --- !u!114 &2384634959903287689
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -130,19 +122,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   index: 0
-  ballPrefab: {fileID: 4193620958866771453, guid: 72730504b4608c04884b56042b14e795, type: 3}
   ballType: {fileID: 0}
-  launchAngle: 0
-  rangeZ: 0
-  Uz: 0
-  Uy: 0
-  Uo: 0
-  gravity: 0
-  heightY: 0
-  heightMax: 0
-  timeTaken: 0
   initialVelocity: {x: 0, y: 0, z: 0}
   globalVelocity: {x: 0, y: 0, z: 0}
+  spawnPoint: {fileID: 0}
+  gravityScale: 1.4
 --- !u!1 &871471557848212532
 GameObject:
   m_ObjectHideFlags: 0
@@ -247,19 +231,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   index: 0
-  ballPrefab: {fileID: 4193620958866771453, guid: 72730504b4608c04884b56042b14e795, type: 3}
   ballType: {fileID: 0}
-  launchAngle: 0
-  rangeZ: 0
-  Uz: 0
-  Uy: 0
-  Uo: 0
-  gravity: 0
-  heightY: 0
-  heightMax: 0
-  timeTaken: 0
   initialVelocity: {x: 0, y: 0, z: 0}
   globalVelocity: {x: 0, y: 0, z: 0}
+  spawnPoint: {fileID: 0}
+  gravityScale: 1.4
 --- !u!114 &1326760019531551881
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -273,19 +249,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   index: 0
-  ballPrefab: {fileID: 4193620958866771453, guid: 72730504b4608c04884b56042b14e795, type: 3}
   ballType: {fileID: 0}
-  launchAngle: 0
-  rangeZ: 0
-  Uz: 0
-  Uy: 0
-  Uo: 0
-  gravity: 0
-  heightY: 0
-  heightMax: 0
-  timeTaken: 0
   initialVelocity: {x: 0, y: 0, z: 0}
   globalVelocity: {x: 0, y: 0, z: 0}
+  spawnPoint: {fileID: 0}
+  gravityScale: 1.4
 --- !u!1 &1036230802730382427
 GameObject:
   m_ObjectHideFlags: 0
@@ -483,19 +451,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   index: 0
-  ballPrefab: {fileID: 4193620958866771453, guid: 72730504b4608c04884b56042b14e795, type: 3}
   ballType: {fileID: 0}
-  launchAngle: 0
-  rangeZ: 0
-  Uz: 0
-  Uy: 0
-  Uo: 0
-  gravity: 0
-  heightY: 0
-  heightMax: 0
-  timeTaken: 0
   initialVelocity: {x: 0, y: 0, z: 0}
   globalVelocity: {x: 0, y: 0, z: 0}
+  spawnPoint: {fileID: 0}
+  gravityScale: 1.4
 --- !u!114 &2233415672915124859
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -509,19 +469,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   index: 0
-  ballPrefab: {fileID: 4193620958866771453, guid: 72730504b4608c04884b56042b14e795, type: 3}
   ballType: {fileID: 0}
-  launchAngle: 0
-  rangeZ: 0
-  Uz: 0
-  Uy: 0
-  Uo: 0
-  gravity: 0
-  heightY: 0
-  heightMax: 0
-  timeTaken: 0
   initialVelocity: {x: 0, y: 0, z: 0}
   globalVelocity: {x: 0, y: 0, z: 0}
+  spawnPoint: {fileID: 0}
+  gravityScale: 1.4
 --- !u!1 &2427183125153241921
 GameObject:
   m_ObjectHideFlags: 0
@@ -688,19 +640,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   index: 0
-  ballPrefab: {fileID: 4193620958866771453, guid: 72730504b4608c04884b56042b14e795, type: 3}
   ballType: {fileID: 0}
-  launchAngle: 0
-  rangeZ: 0
-  Uz: 0
-  Uy: 0
-  Uo: 0
-  gravity: 0
-  heightY: 0
-  heightMax: 0
-  timeTaken: 0
   initialVelocity: {x: 0, y: 0, z: 0}
   globalVelocity: {x: 0, y: 0, z: 0}
+  spawnPoint: {fileID: 0}
+  gravityScale: 1.4
 --- !u!114 &1055741493040394140
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -714,19 +658,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   index: 0
-  ballPrefab: {fileID: 4193620958866771453, guid: 72730504b4608c04884b56042b14e795, type: 3}
   ballType: {fileID: 0}
-  launchAngle: 0
-  rangeZ: 0
-  Uz: 0
-  Uy: 0
-  Uo: 0
-  gravity: 0
-  heightY: 0
-  heightMax: 0
-  timeTaken: 0
   initialVelocity: {x: 0, y: 0, z: 0}
   globalVelocity: {x: 0, y: 0, z: 0}
+  spawnPoint: {fileID: 0}
+  gravityScale: 1.4
 --- !u!1 &2821998656220786956
 GameObject:
   m_ObjectHideFlags: 0
@@ -1411,7 +1347,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7399807029032890164}
   serializedVersion: 4
-  m_Mass: 10
+  m_Mass: 20
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -1454,7 +1390,7 @@ MonoBehaviour:
   waterDrag: 2
   waterAngularDrag: 5
   rotationSmoothSpeed: 3
-  maxTiltAngle: 2
+  maxTiltAngle: 1
   WaterVolumeHelper: {fileID: 7158919299287046807, guid: c9193ed5302b97341846216c44dd6d23, type: 3}
 --- !u!114 &7691425475848373609
 MonoBehaviour:
@@ -1818,12 +1754,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7399807029032890164}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ecf66daeee4b530449e2d12bf0eb3215, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shipSpeed: 100
+  shipSpeed: 1
   shipSteerMultiplier: 50
   turningThreshhold: 0.1
   sailMultiplier: 2
@@ -2166,19 +2102,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   index: 0
-  ballPrefab: {fileID: 4193620958866771453, guid: 72730504b4608c04884b56042b14e795, type: 3}
   ballType: {fileID: 0}
-  launchAngle: 0
-  rangeZ: 0
-  Uz: 0
-  Uy: 0
-  Uo: 0
-  gravity: 0
-  heightY: 0
-  heightMax: 0
-  timeTaken: 0
   initialVelocity: {x: 0, y: 0, z: 0}
   globalVelocity: {x: 0, y: 0, z: 0}
+  spawnPoint: {fileID: 0}
+  gravityScale: 1.4
 --- !u!114 &627169166307891121
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2192,19 +2120,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   index: 0
-  ballPrefab: {fileID: 4193620958866771453, guid: 72730504b4608c04884b56042b14e795, type: 3}
   ballType: {fileID: 0}
-  launchAngle: 0
-  rangeZ: 0
-  Uz: 0
-  Uy: 0
-  Uo: 0
-  gravity: 0
-  heightY: 0
-  heightMax: 0
-  timeTaken: 0
   initialVelocity: {x: 0, y: 0, z: 0}
   globalVelocity: {x: 0, y: 0, z: 0}
+  spawnPoint: {fileID: 0}
+  gravityScale: 1.4
 --- !u!1 &8141015740048390705
 GameObject:
   m_ObjectHideFlags: 0
@@ -2457,19 +2377,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   index: 0
-  ballPrefab: {fileID: 4193620958866771453, guid: 72730504b4608c04884b56042b14e795, type: 3}
   ballType: {fileID: 0}
-  launchAngle: 0
-  rangeZ: 0
-  Uz: 0
-  Uy: 0
-  Uo: 0
-  gravity: 0
-  heightY: 0
-  heightMax: 0
-  timeTaken: 0
   initialVelocity: {x: 0, y: 0, z: 0}
   globalVelocity: {x: 0, y: 0, z: 0}
+  spawnPoint: {fileID: 0}
+  gravityScale: 1.4
 --- !u!114 &8092428754727610631
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2483,19 +2395,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   index: 0
-  ballPrefab: {fileID: 4193620958866771453, guid: 72730504b4608c04884b56042b14e795, type: 3}
   ballType: {fileID: 0}
-  launchAngle: 0
-  rangeZ: 0
-  Uz: 0
-  Uy: 0
-  Uo: 0
-  gravity: 0
-  heightY: 0
-  heightMax: 0
-  timeTaken: 0
   initialVelocity: {x: 0, y: 0, z: 0}
   globalVelocity: {x: 0, y: 0, z: 0}
+  spawnPoint: {fileID: 0}
+  gravityScale: 1.4
 --- !u!1001 &8538372263757561811
 PrefabInstance:
   m_ObjectHideFlags: 0

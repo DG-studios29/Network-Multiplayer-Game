@@ -1,8 +1,9 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using Mirror;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 [RequireComponent(typeof(SphereCollider))]
 [RequireComponent(typeof(NetworkIdentity))]
@@ -179,8 +180,33 @@ public class Island : NetworkBehaviour
         isLooted = true;
 
         int lootAmount = Random.Range(100, 1001);
+
+        // Get the player who looted
+        GameObject player = playersInside.FirstOrDefault();
+        if (player != null)
+        {
+            // Try to get ScoreboardManager
+            ScoreboardManager scoreboard = player.GetComponent<ScoreboardManager>();
+            if (scoreboard != null)
+            {
+                scoreboard.CmdIncreaseScore(lootAmount);
+            }
+
+            // Optional: Notify the specific client
+            TargetShowLootPopup(player.GetComponent<NetworkIdentity>().connectionToClient, lootAmount);
+        }
+
         RpcNotifyLootCollected(lootAmount);
     }
+
+    [TargetRpc]
+    private void TargetShowLootPopup(NetworkConnection target, int amount)
+    {
+        Debug.Log($"[UI] You looted {amount} gold!");
+        LootPopupManager.Instance?.ShowLootPopup(amount);
+
+    }
+
 
     [ClientRpc]
     private void RpcNotifyLootCollected(int amount)
