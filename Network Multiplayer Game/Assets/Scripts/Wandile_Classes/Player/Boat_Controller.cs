@@ -28,6 +28,15 @@ public class Boat_Controller : MonoBehaviour
     [SerializeField] private Transform windDirIndicatorUI;
     [SerializeField] private Transform sailIndicatorUI;
 
+
+    [Header("Audio"), Space(5f)]
+    [SerializeField] private AudioSource waterSFx;
+
+    [Header("All About Speed Gauge"), Space(5f)]
+    [SerializeField] private Transform speedNeedleUI;
+    [SerializeField] private float minNeedleRot, maxNeedleRot;
+    private float speedInKm;
+
     #endregion
 
     #region Built-In Methods
@@ -36,6 +45,10 @@ public class Boat_Controller : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         pirateInput = GetComponent<PirateInput>();
+
+
+        if(waterSFx != null)
+        waterSFx.volume = .01f;
     }
 
     void FixedUpdate()
@@ -50,7 +63,7 @@ public class Boat_Controller : MonoBehaviour
 
     private void ShipSail()
     {
-        if(rb == null || pirateInput == null) return;
+        if(rb == null || pirateInput == null || waterSFx == null) return;
 
         float v = pirateInput.sailInput.y;
         float h = pirateInput.sailInput.x;
@@ -79,9 +92,18 @@ public class Boat_Controller : MonoBehaviour
 
         rb.AddForce(forward * v * speed, ForceMode.Acceleration);
 
+        //seed gauge
+        speedInKm = Mathf.Abs(rb.linearVelocity.magnitude);
+
+        speedNeedleUI.localRotation = Quaternion.Euler(0f, 0f, Mathf.Lerp(minNeedleRot, maxNeedleRot, speedInKm/23.5f)); //roughly 23
+
+        float sqrSpeed = Mathf.Max(shipVel.sqrMagnitude, 0.0001f);
+        float clampedSqrSpeed = Mathf.Clamp01(sqrSpeed);
+        waterSFx.volume = Mathf.Lerp(waterSFx.volume, clampedSqrSpeed * 0.1f, Time.deltaTime);
+
         float shipDir = Vector3.Dot(shipVel, forward);
 
-        if (shipVel.sqrMagnitude != 0 && (v > turningThreshhold || v < -turningThreshhold))
+        if (shipVel.sqrMagnitude != 0)
         {
             rb.AddRelativeTorque(new Vector3(0, turnCurve.Evaluate(Mathf.Abs(shipDir))
                 * shipSteerMultiplier, 0) * h, ForceMode.Acceleration);
