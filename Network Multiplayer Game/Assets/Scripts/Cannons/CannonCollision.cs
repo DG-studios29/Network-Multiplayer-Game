@@ -2,7 +2,7 @@ using UnityEngine;
 using Mirror;
 
 [RequireComponent(typeof(NetworkIdentity))]
-public class CannonCollision : MonoBehaviour
+public class CannonCollision : NetworkBehaviour
 {
     public GameObject parentObj;
 
@@ -39,18 +39,14 @@ public class CannonCollision : MonoBehaviour
         rb.AddForce(gravity, ForceMode.Acceleration);
     }
 
-    /*private void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter(Collision collision)
     {
         // Only the server should process collisions to avoid desync
         //if (!isServer) return;
 
         if (collision.gameObject.CompareTag("Player"))
         {
-            if(collision.gameObject.name == parentObj.name)
-            {
-                Debug.Log("Escape called");
-                return;
-            }
+          
             PlayerHealthUI playerHealth = collision.gameObject.GetComponent<PlayerHealthUI>();
             if (playerHealth != null)
             {
@@ -60,7 +56,7 @@ public class CannonCollision : MonoBehaviour
 
         // Destroy the cannonball on all clients
         NetworkServer.Destroy(gameObject);
-    }*/
+    }
 
 
 }

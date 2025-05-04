@@ -29,8 +29,7 @@ public class CannonFire : MonoBehaviour
     [SerializeField] private Vector3 globalVelocity;
 
     [SerializeField] private Transform spawnPoint;
-
-    CannonCollision cannonCtrl;
+    [SerializeField] private float gravityScale = 1.4f;
 
 
 
@@ -88,7 +87,7 @@ public class CannonFire : MonoBehaviour
         Uy = Uo * sinAlpha;
 
        
-        initialVelocity = new Vector3(0, Uy , Uz);
+        initialVelocity = new Vector3(0, Uy , Uz) * gravityScale;
       
 
     }
@@ -119,12 +118,13 @@ public class CannonFire : MonoBehaviour
         globalVelocity = spawnPoint.transform.TransformDirection(initialVelocity);
         GameObject cannonObj = Instantiate(ballPrefab,spawnPoint.position,spawnPoint.transform.rotation);
 
-        cannonCtrl = cannonObj.GetComponent<CannonCollision>();
+        CannonCollision cannonCtrl = cannonObj.GetComponent<CannonCollision>();
 
         cannonCtrl.cannonLifeSpan = lifespan;
         cannonCtrl.cannonDamage = damage;
-        cannonCtrl.gravityScale = 1f;
+        cannonCtrl.gravityScale = 2f;
         cannonCtrl.parentObj = this.gameObject;
+        cannonCtrl.gravityScale = gravityScale * gravityScale;
 
 
         rb = cannonObj.GetComponent<Rigidbody>();
