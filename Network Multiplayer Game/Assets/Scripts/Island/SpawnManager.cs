@@ -12,10 +12,12 @@ public class SpawnManager : NetworkBehaviour
     public List<Vector3> occupiedPositions = new List<Vector3>();
 
     [Header("Avoid These (can be networked Transforms)")]
-    public Transform player;
     public Transform bigIsland;
-    public float avoidPlayerRadius = 100f;
+    public List<Transform> playerSpawnPoints;  // List of predefined spawn points for players
+    public List<Transform> islands;            // List of island positions to avoid
+    public List<Transform> rocks;              // List of rocks positions to avoid
     public float avoidBigIslandRadius = 150f;
+    public float avoidObjectRadius = 100f;     // Distance to avoid rocks, islands, and players
 
     #region Server Initialization
     public override void OnStartServer()
@@ -37,11 +39,21 @@ public class SpawnManager : NetworkBehaviour
                 return false;
         }
 
-        // Check distance to player (if assigned)
-        if (player != null && Vector3.Distance(position, player.position) < avoidPlayerRadius)
-            return false;
+        // Check distance to any islands
+        foreach (Transform island in islands)
+        {
+            if (Vector3.Distance(position, island.position) < avoidObjectRadius)
+                return false;
+        }
 
-        // Check distance to big island (if assigned)
+        // Check distance to any rocks
+        foreach (Transform rock in rocks)
+        {
+            if (Vector3.Distance(position, rock.position) < avoidObjectRadius)
+                return false;
+        }
+
+        // Check distance to the big island (if assigned)
         if (bigIsland != null && Vector3.Distance(position, bigIsland.position) < avoidBigIslandRadius)
             return false;
 
@@ -58,6 +70,23 @@ public class SpawnManager : NetworkBehaviour
     public void UnregisterPosition(Vector3 position)
     {
         occupiedPositions.Remove(position);
+    }
+
+    // Spawn players at predefined spawn points
+    [Server]
+    public Transform GetAvailableSpawnPoint()
+    {
+        foreach (Transform spawnPoint in playerSpawnPoints)
+        {
+            if (IsPositionAvailable(spawnPoint.position))
+            {
+                RegisterPosition(spawnPoint.position);
+                return spawnPoint;
+            }
+        }
+
+        // If no spawn points are available, return null or handle as needed
+        return null;
     }
     #endregion
 }

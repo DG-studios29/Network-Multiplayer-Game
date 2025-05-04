@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using Mirror;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,17 +8,20 @@ using System.Collections.Generic;
 [RequireComponent(typeof(NetworkIdentity))]
 public class Island : NetworkBehaviour
 {
+    [Header("References")]
+    public Slider healthSlider;
+    public Slider lootSlider;
+    public LootRadiusVisualizer lootRadiusVisualizer;
+
     [HideInInspector] public IslandManager manager;
     [HideInInspector] public GameObject islandPrefab;
 
     [SyncVar] public bool isLooted = false;
     [SyncVar] private bool isDestroyed = false;
 
-    private bool playerNearby = false;
-
     [Header("Island Settings")]
     public float maxHealth = 100f;
-    [SyncVar] private float currentHealth;
+    [SyncVar(hook = nameof(OnHealthChanged))] private float currentHealth;
 
     [Header("Treasure Settings")]
     public float treasureCollectionTime = 5f;
@@ -26,15 +30,43 @@ public class Island : NetworkBehaviour
     public List<CannonDefence> cannons;
 
     private Coroutine lootCoroutine;
+    private HashSet<GameObject> playersInside = new HashSet<GameObject>();
+    private float currentLootProgress = 0f;
+
+    private SphereCollider myCollider;
 
     public override void OnStartServer()
     {
         base.OnStartServer();
         currentHealth = maxHealth;
 
-        SphereCollider myCollider = GetComponent<SphereCollider>();
+        myCollider = GetComponent<SphereCollider>();
         myCollider.radius = 100f;
         myCollider.isTrigger = true;
+    }
+
+    private void Update()
+    {
+        if (healthSlider != null)
+        {
+            healthSlider.value = currentHealth;
+        }
+
+        if (lootSlider != null)
+        {
+            lootSlider.gameObject.SetActive(playersInside.Count == 1 && isDestroyed && !isLooted);
+            lootSlider.value = currentLootProgress / treasureCollectionTime;
+        }
+    }
+
+    private void OnHealthChanged(float oldHealth, float newHealth)
+    {
+        currentHealth = newHealth;
+
+        if (healthSlider != null)
+        {
+            healthSlider.value = currentHealth / maxHealth;
+        }
     }
 
     [ServerCallback]
@@ -42,27 +74,52 @@ public class Island : NetworkBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            playerNearby = true;
+            playersInside.Add(other.gameObject);
 
-            if (isDestroyed && !isLooted && lootCoroutine == null)
+            // Notify LootRadiusVisualizer that the player is inside
+            LootRadiusVisualizer radiusVisualizer = GetComponentInChildren<LootRadiusVisualizer>();
+            if (radiusVisualizer != null)
+            {
+                radiusVisualizer.SetPlayerInside(true);
+            }
+
+            if (isDestroyed && !isLooted && playersInside.Count == 1 && lootCoroutine == null)
             {
                 lootCoroutine = StartCoroutine(CollectTreasureRoutine());
             }
         }
     }
 
+
     [ServerCallback]
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            playerNearby = false;
+            playersInside.Remove(other.gameObject);
 
-            if (isDestroyed && !isLooted && lootCoroutine != null)
+            // Notify LootRadiusVisualizer that the player is no longer inside
+            LootRadiusVisualizer radiusVisualizer = GetComponentInChildren<LootRadiusVisualizer>();
+            if (radiusVisualizer != null)
+            {
+                radiusVisualizer.SetPlayerInside(false);
+            }
+
+            if (lootCoroutine != null)
             {
                 StopCoroutine(lootCoroutine);
                 lootCoroutine = null;
+                currentLootProgress = 0f;
+            }
+
+            if (isDestroyed && !isLooted)
+            {
                 StartCoroutine(WaitBeforeDespawn());
+
+                if (playersInside.Count == 1)
+                {
+                    lootCoroutine = StartCoroutine(CollectTreasureRoutine());
+                }
             }
         }
     }
@@ -72,7 +129,7 @@ public class Island : NetworkBehaviour
     {
         yield return new WaitForSeconds(10f);
 
-        if (!playerNearby)
+        if (playersInside.Count == 0)
         {
             StartCoroutine(DespawnAfterDelay());
         }
@@ -81,15 +138,15 @@ public class Island : NetworkBehaviour
     [Server]
     private IEnumerator CollectTreasureRoutine()
     {
-        float timer = 0f;
+        currentLootProgress = 0f;
 
-        while (playerNearby && timer < treasureCollectionTime)
+        while (playersInside.Count == 1 && currentLootProgress < treasureCollectionTime)
         {
-            timer += Time.deltaTime;
+            currentLootProgress += Time.deltaTime;
             yield return null;
         }
 
-        if (timer >= treasureCollectionTime)
+        if (currentLootProgress >= treasureCollectionTime)
         {
             LootIsland();
             StartCoroutine(DespawnAfterDelay());
@@ -109,7 +166,7 @@ public class Island : NetworkBehaviour
         {
             isDestroyed = true;
 
-            if (playerNearby && lootCoroutine == null)
+            if (playersInside.Count == 1 && lootCoroutine == null)
             {
                 lootCoroutine = StartCoroutine(CollectTreasureRoutine());
             }

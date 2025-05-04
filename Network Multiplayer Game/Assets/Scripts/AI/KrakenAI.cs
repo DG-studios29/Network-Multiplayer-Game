@@ -2,15 +2,14 @@ using Mirror;
 using UnityEngine;
 using UnityEngine.AI;
 
-[RequireComponent(typeof(NetworkIdentity))]
 public class KrakenAI : NetworkBehaviour
 {
     [Header("Waypoints")]
     public Transform[] patrolPoints;
 
     [Header("Player Info")]
-    public Transform player;
-    PlayerHealthUI playerHealth;
+    private Transform player;
+    private PlayerHealthUI playerHealth;
     private float lastAttackTime;
     public int attackDamage = 30;
     public float attackCooldown = 1.5f;
@@ -32,28 +31,21 @@ public class KrakenAI : NetworkBehaviour
     private bool isChasing;
     private bool isAttacking;
 
+    private KrakenHealth krakenHealth;
     private float targetOffset;
 
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
+        krakenHealth = GetComponent<KrakenHealth>();
         GoToNextPatrolPoint();
-        if (player == null)
+
+        // Automatically find player using tag
+        GameObject foundPlayer = GameObject.FindGameObjectWithTag("Player");
+        if (foundPlayer != null)
         {
-            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
-            if (playerObj != null)
-            {
-                player = playerObj.transform;
-                playerHealth = player.GetComponent<PlayerHealthUI>();
-            }
-            else
-            {
-                Debug.LogWarning("KrakenAI: Player object not found with tag 'Player'");
-            }
-        }
-        else
-        {
+            player = foundPlayer.transform;
             playerHealth = player.GetComponent<PlayerHealthUI>();
         }
     }
@@ -62,49 +54,58 @@ public class KrakenAI : NetworkBehaviour
     {
         if (player == null || playerHealth == null)
         {
+            // Retry in case the player was spawned later
+            GameObject foundPlayer = GameObject.FindGameObjectWithTag("Player");
+            if (foundPlayer != null)
+            {
+                player = foundPlayer.transform;
+                playerHealth = player.GetComponent<PlayerHealthUI>();
+            }
             return;
         }
 
         playerIsDead = playerHealth.currentHealth <= 0;
-        if (playerIsDead && !isReturningToPortal)
+
+        if (playerIsDead)
         {
-            animator.ResetTrigger("Attack");
-            animator.SetBool("isChasing", false);
-            isChasing = false;
-            isAttacking = false;
-            hasAttacked = false;
-            GoToNearestPortal();
-            isReturningToPortal = true;
-            patrolOffset = -14f;
+            if (!isReturningToPortal)
+            {
+                animator.ResetTrigger("Attack");
+                animator.SetBool("isChasing", false);
+                isChasing = false;
+                isAttacking = false;
+                hasAttacked = false;
+                GoToNearestPortal();
+                isReturningToPortal = true;
+                patrolOffset = -14f;
+            }
         }
 
-        // Smoothly adjust base offset always (even when dead)
         targetOffset = isAttacking ? attackOffset : patrolOffset;
         agent.baseOffset = Mathf.Lerp(agent.baseOffset, targetOffset, Time.deltaTime * offsetLerpSpeed);
 
-        if (playerIsDead)
-            return;
+        if (playerIsDead) return;
 
-      
         float distance = Vector3.Distance(player.position, transform.position);
-        Vector3 direction = Vector3.zero;
+        Vector3 direction;
 
+        // State logic
         if (distance <= attackRange)
         {
-            // Attack logic
             isAttacking = true;
             isChasing = false;
             agent.SetDestination(transform.position);
+
             if (!hasAttacked && Time.time - lastAttackTime >= attackCooldown)
             {
                 animator.SetTrigger("Attack");
                 lastAttackTime = Time.time;
                 playerHealth.TakeDamage(attackDamage);
+                hasAttacked = true;
             }
         }
         else if (distance <= chaseRange)
         {
-            // Chasing logic
             isChasing = true;
             isAttacking = false;
             hasAttacked = false;
@@ -112,17 +113,17 @@ public class KrakenAI : NetworkBehaviour
         }
         else
         {
-            // Patrol logic
             isChasing = false;
             isAttacking = false;
             hasAttacked = false;
+
             if (!agent.pathPending && agent.remainingDistance < 0.5f)
                 GoToNextPatrolPoint();
         }
 
-        // Smooth rotation
-        direction = (isChasing) ? (player.position - transform.position).normalized :
-                                  (agent.velocity.sqrMagnitude > 0.01f) ? agent.velocity.normalized : transform.forward;
+        direction = isChasing ? (player.position - transform.position).normalized :
+                   agent.velocity.sqrMagnitude > 0.01f ? agent.velocity.normalized :
+                   transform.forward;
 
         if (direction != Vector3.zero)
         {
@@ -132,11 +133,19 @@ public class KrakenAI : NetworkBehaviour
 
         animator.SetBool("isChasing", isChasing);
     }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!isServer) return;
 
+        if (other.CompareTag("Cannonball"))
+        {
+            krakenHealth?.TakeDamage(20); // damage per cannonball hit
+            Destroy(other.gameObject); // destroy cannonball
+        }
+    }
     void GoToNextPatrolPoint()
     {
         if (patrolPoints.Length == 0) return;
-
         currentPatrolIndex = Random.Range(0, patrolPoints.Length);
         agent.SetDestination(patrolPoints[currentPatrolIndex].position);
     }
@@ -145,17 +154,16 @@ public class KrakenAI : NetworkBehaviour
     {
         if (patrolPoints.Length == 0) return;
 
-        // Find the nearest portal by comparing distances
         Transform nearestPortal = patrolPoints[0];
         float nearestDistance = Vector3.Distance(transform.position, patrolPoints[0].position);
 
         for (int i = 1; i < patrolPoints.Length; i++)
         {
-            float distanceToPortal = Vector3.Distance(transform.position, patrolPoints[i].position);
-            if (distanceToPortal < nearestDistance)
+            float dist = Vector3.Distance(transform.position, patrolPoints[i].position);
+            if (dist < nearestDistance)
             {
                 nearestPortal = patrolPoints[i];
-                nearestDistance = distanceToPortal;
+                nearestDistance = dist;
             }
         }
 
