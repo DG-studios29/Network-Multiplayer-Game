@@ -1,18 +1,22 @@
 using UnityEngine;
+using Mirror;
 
-public class RockDamage : MonoBehaviour
+public class RockDamage : NetworkBehaviour
 {
-    public int damageAmount = 1; 
+    public int damageAmount = 1;
 
     private void OnCollisionEnter(Collision collision)
     {
+        if (!isServer) return; 
+
         if (collision.gameObject.CompareTag("Player"))
         {
             Debug.Log("Hit Rock");
-            PlayerHealth playerHealth = collision.gameObject.GetComponent<PlayerHealth>();
+
+            PlayerHealthUI playerHealth = collision.gameObject.GetComponent<PlayerHealthUI>();
             if (playerHealth != null)
             {
-                playerHealth.TakeDamage(damageAmount);
+                playerHealth.TakeDamage(damageAmount); 
             }
         }
     }

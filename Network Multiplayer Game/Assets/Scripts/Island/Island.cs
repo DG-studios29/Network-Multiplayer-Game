@@ -1,20 +1,23 @@
 using UnityEngine;
+using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 
 [RequireComponent(typeof(SphereCollider))]
-public class Island : MonoBehaviour
+[RequireComponent(typeof(NetworkIdentity))]
+public class Island : NetworkBehaviour
 {
     [HideInInspector] public IslandManager manager;
     [HideInInspector] public GameObject islandPrefab;
 
-    public bool isLooted = false;
+    [SyncVar] public bool isLooted = false;
+    [SyncVar] private bool isDestroyed = false;
+
     private bool playerNearby = false;
-    private bool isDestroyed = false;
 
     [Header("Island Settings")]
     public float maxHealth = 100f;
-    private float currentHealth;
+    [SyncVar] private float currentHealth;
 
     [Header("Treasure Settings")]
     public float treasureCollectionTime = 5f;
@@ -24,25 +27,23 @@ public class Island : MonoBehaviour
 
     private Coroutine lootCoroutine;
 
-    private void Start()
+    public override void OnStartServer()
     {
+        base.OnStartServer();
         currentHealth = maxHealth;
 
         SphereCollider myCollider = GetComponent<SphereCollider>();
         myCollider.radius = 100f;
         myCollider.isTrigger = true;
-
-      
     }
 
+    [ServerCallback]
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Player entered island radius.");
             playerNearby = true;
 
-           
             if (isDestroyed && !isLooted && lootCoroutine == null)
             {
                 lootCoroutine = StartCoroutine(CollectTreasureRoutine());
@@ -50,14 +51,13 @@ public class Island : MonoBehaviour
         }
     }
 
+    [ServerCallback]
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
         {
             playerNearby = false;
-            Debug.Log("Player left island radius.");
 
-           
             if (isDestroyed && !isLooted && lootCoroutine != null)
             {
                 StopCoroutine(lootCoroutine);
@@ -67,22 +67,22 @@ public class Island : MonoBehaviour
         }
     }
 
+    [Server]
     private IEnumerator WaitBeforeDespawn()
     {
-        yield return new WaitForSeconds(10f); 
+        yield return new WaitForSeconds(10f);
 
-        if (!playerNearby) // Only despawn if the player is still not in range
+        if (!playerNearby)
         {
-            Debug.Log("Player didn't stay nearby to loot. Despawning island...");
             StartCoroutine(DespawnAfterDelay());
         }
     }
 
+    [Server]
     private IEnumerator CollectTreasureRoutine()
     {
         float timer = 0f;
 
-        // Collect treasure only if player is still nearby
         while (playerNearby && timer < treasureCollectionTime)
         {
             timer += Time.deltaTime;
@@ -98,19 +98,17 @@ public class Island : MonoBehaviour
         lootCoroutine = null;
     }
 
+    [Server]
     public void TakeDamage(float damage)
     {
         if (isDestroyed) return;
 
         currentHealth -= damage;
-        Debug.Log("Island took damage. Current HP: " + currentHealth);
 
         if (currentHealth <= 0f)
         {
             isDestroyed = true;
-            Debug.Log("Island destroyed! Stay nearby to loot.");
 
-            // If player is already nearby, start looting right away
             if (playerNearby && lootCoroutine == null)
             {
                 lootCoroutine = StartCoroutine(CollectTreasureRoutine());
@@ -118,15 +116,22 @@ public class Island : MonoBehaviour
         }
     }
 
+    [Server]
     public void LootIsland()
     {
         isLooted = true;
-        Debug.Log("Island looted!");
 
-        int lootAmount = Random.Range(100, 1001);  
-        Debug.Log("Loot collected: " + lootAmount);
+        int lootAmount = Random.Range(100, 1001);
+        RpcNotifyLootCollected(lootAmount);
     }
 
+    [ClientRpc]
+    private void RpcNotifyLootCollected(int amount)
+    {
+        Debug.Log("Island looted! Loot collected: " + amount);
+    }
+
+    [Server]
     private IEnumerator DespawnAfterDelay()
     {
         manager?.NotifyIslandDespawn(this);
@@ -137,6 +142,6 @@ public class Island : MonoBehaviour
             manager.SpawnIsland(islandPrefab);
         }
 
-        Destroy(gameObject);
+        NetworkServer.Destroy(gameObject);
     }
 }

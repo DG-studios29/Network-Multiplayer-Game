@@ -1,32 +1,30 @@
 using UnityEngine;
+using Mirror;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 //https://stackoverflow.com/questions/70368042/how-to-spawn-objects-in-unity3d-with-a-minimum-distance-between#:~:text=%2F%2F%20It%20is%20cheaper%20to,minimumDistance
 //https://stackoverflow.com/questions/70368042/how-to-spawn-objects-in-unity3d-with-a-minimum-distance-between#:~:text=,to%20an%20already%20existing%20one
-
-public class IslandManager : MonoBehaviour
+public class IslandManager : NetworkBehaviour
 {
-    public List<GameObject> islandPrefabs;  
+    public List<GameObject> islandPrefabs;
     public int numIslands = 10;
     public Vector3 worldMin = new Vector3(0f, 1f, 0f);
     public Vector3 worldMax = new Vector3(1500f, 1f, 1500f);
     public float minDistance = 100f;
-   
 
     private List<Vector3> usedPositions = new List<Vector3>();
 
-    void Start()
+    public override void OnStartServer()
     {
-        
+        base.OnStartServer();
+
         for (int i = 0; i < numIslands; i++)
         {
-           
             GameObject prefab = islandPrefabs[i % islandPrefabs.Count];
             SpawnIsland(prefab);
         }
     }
 
-    // Spawns one island of given prefab at a random valid location.
+    [Server]
     public void SpawnIsland(GameObject prefab)
     {
         int attempts = 0;
@@ -41,6 +39,8 @@ public class IslandManager : MonoBehaviour
             if (SpawnManager.Instance.IsPositionAvailable(pos))
             {
                 GameObject islandObj = Instantiate(prefab, pos, Quaternion.identity);
+                NetworkServer.Spawn(islandObj); // ?? Mirror-safe spawn
+
                 SpawnManager.Instance.RegisterPosition(pos);
 
                 Island islandScript = islandObj.GetComponent<Island>();
@@ -50,6 +50,7 @@ public class IslandManager : MonoBehaviour
                     islandScript.islandPrefab = prefab;
                 }
 
+                usedPositions.Add(pos);
                 return;
             }
 
@@ -59,12 +60,9 @@ public class IslandManager : MonoBehaviour
         Debug.LogWarning("Couldn't find valid spawn position for island after 100 attempts.");
     }
 
-
-
-
+    [Server]
     public void NotifyIslandDespawn(Island island)
     {
-        
         Vector3 oldPos = island.transform.position;
         usedPositions.Remove(oldPos);
     }

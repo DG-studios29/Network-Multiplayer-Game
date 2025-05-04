@@ -1,8 +1,9 @@
-using Mirror.Examples.AdditiveLevels;
+using Mirror;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class KrakenAI : MonoBehaviour
+[RequireComponent(typeof(NetworkIdentity))]
+public class KrakenAI : NetworkBehaviour
 {
     [Header("Waypoints")]
     public Transform[] patrolPoints;
@@ -46,61 +47,51 @@ public class KrakenAI : MonoBehaviour
 
     void Update()
     {
-        if ((player == null || playerHealth == null))
+        if (player == null || playerHealth == null)
         {
             return;
         }
 
         playerIsDead = playerHealth.currentHealth <= 0;
-        if (playerIsDead)
+        if (playerIsDead && !isReturningToPortal)
         {
-            if (!isReturningToPortal)
-            {
-                animator.ResetTrigger("Attack");
-                animator.SetBool("isChasing", false);
-                isChasing = false;
-                isAttacking = false;
-                hasAttacked = false;
-                GoToNearestPortal();
-                isReturningToPortal = true;
-                patrolOffset = -14f;
-            }
+            animator.ResetTrigger("Attack");
+            animator.SetBool("isChasing", false);
+            isChasing = false;
+            isAttacking = false;
+            hasAttacked = false;
+            GoToNearestPortal();
+            isReturningToPortal = true;
+            patrolOffset = -14f;
         }
 
         // Smoothly adjust base offset always (even when dead)
         targetOffset = isAttacking ? attackOffset : patrolOffset;
         agent.baseOffset = Mathf.Lerp(agent.baseOffset, targetOffset, Time.deltaTime * offsetLerpSpeed);
 
-        // Don't run further AI logic if dead
         if (playerIsDead)
             return;
 
-
+      
         float distance = Vector3.Distance(player.position, transform.position);
-        Vector3 direction;
-        if ((player == null || playerHealth == null))
-        {
-            return;
-        }
-       
-        // State logic
+        Vector3 direction = Vector3.zero;
+
         if (distance <= attackRange)
         {
+            // Attack logic
             isAttacking = true;
             isChasing = false;
             agent.SetDestination(transform.position);
-            if (!hasAttacked)
+            if (!hasAttacked && Time.time - lastAttackTime >= attackCooldown)
             {
-                if (Time.time - lastAttackTime >= attackCooldown)
-                {
-                    animator.SetTrigger("Attack");
-                    lastAttackTime = Time.time;
-                    playerHealth.TakeDamage(attackDamage);
-                }
+                animator.SetTrigger("Attack");
+                lastAttackTime = Time.time;
+                playerHealth.TakeDamage(attackDamage);
             }
         }
         else if (distance <= chaseRange)
         {
+            // Chasing logic
             isChasing = true;
             isAttacking = false;
             hasAttacked = false;
@@ -108,6 +99,7 @@ public class KrakenAI : MonoBehaviour
         }
         else
         {
+            // Patrol logic
             isChasing = false;
             isAttacking = false;
             hasAttacked = false;
@@ -115,37 +107,23 @@ public class KrakenAI : MonoBehaviour
                 GoToNextPatrolPoint();
         }
 
-        // Smoothly adjust base offset for breaching effect
-        targetOffset = isAttacking ? attackOffset : patrolOffset;
-        agent.baseOffset = Mathf.Lerp(agent.baseOffset, targetOffset, Time.deltaTime * offsetLerpSpeed);
-
-
-        if (isChasing)
-        {
-            direction = (player.position - transform.position).normalized;
-        }
-        else if (agent.velocity.sqrMagnitude> 0.01f)
-        {
-            direction = agent.velocity.normalized;
-        }
-        else
-        {
-            direction = transform.forward;
-        }
+        // Smooth rotation
+        direction = (isChasing) ? (player.position - transform.position).normalized :
+                                  (agent.velocity.sqrMagnitude > 0.01f) ? agent.velocity.normalized : transform.forward;
 
         if (direction != Vector3.zero)
         {
-            Quaternion targetRotation = Quaternion.LookRotation(agent.velocity.normalized);
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
         }
-       
+
         animator.SetBool("isChasing", isChasing);
-   
     }
 
     void GoToNextPatrolPoint()
     {
         if (patrolPoints.Length == 0) return;
+
         currentPatrolIndex = Random.Range(0, patrolPoints.Length);
         agent.SetDestination(patrolPoints[currentPatrolIndex].position);
     }
@@ -168,9 +146,7 @@ public class KrakenAI : MonoBehaviour
             }
         }
 
-      
         agent.SetDestination(nearestPortal.position);
         isChasing = false;
-
     }
 }
