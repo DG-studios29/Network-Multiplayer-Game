@@ -55,8 +55,8 @@ public class CamBehavior : MonoBehaviour
     {
         pivotPoint.position = pivotPoint.parent? pivotPoint.localPosition = transform.position: pivotPoint.position = transform.position;   
 
-        float x = input.cameraInput.x * Time.smoothDeltaTime * sensitivity;
-        float y = input.cameraInput.y * Time.smoothDeltaTime * sensitivity;
+        float x = input.camInput.x * Time.smoothDeltaTime * sensitivity;
+        float y = input.camInput.y * Time.smoothDeltaTime * sensitivity;
 
         xRot -= y;
         yRot += x;

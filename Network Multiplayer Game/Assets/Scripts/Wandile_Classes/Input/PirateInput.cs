@@ -10,7 +10,9 @@ public class PirateInput : MonoBehaviour
     private InputActionMap currentMap;
     private InputAction SailAction;
     private InputAction SailingAction;
+    public InputAction CamAction { get; set; }
     public Vector2 sailInput { get; set; }
+    public Vector2 camInput;
     public float sailingInput {  get; set; }
 
     #endregion
@@ -26,24 +28,26 @@ public class PirateInput : MonoBehaviour
 
         SailAction = currentMap.FindAction("Sail");
         SailingAction = currentMap.FindAction("Sailing");
+        CamAction = currentMap.FindAction("Look");
 
         SailAction.performed += OnSail;
         SailAction.canceled += NoSail;
 
         SailingAction.performed += OnSailing;
         SailingAction.canceled += NoSailing;
+
+        CamAction.performed += OnCamera;
+        CamAction.canceled += NoCamera;
     }
 
     private void OnEnable()
     {
-        SailAction.Enable();
-        SailingAction.Enable();
+        currentMap.Enable();
     }
 
     private void OnDisable()
     {
-        SailAction.Disable();
-        SailingAction.Disable();
+        currentMap.Disable();
     }
 
     #endregion
@@ -58,6 +62,16 @@ public class PirateInput : MonoBehaviour
     public void NoSail(InputAction.CallbackContext context)
     {
         sailInput = Vector2.zero;
+    }
+
+    public void OnCamera(InputAction.CallbackContext context)
+    {
+        camInput = context.ReadValue<Vector2>();
+    }
+
+    public void NoCamera(InputAction.CallbackContext context)
+    {
+        camInput = Vector2.zero;
     }
 
     public void OnSailing(InputAction.CallbackContext context)
