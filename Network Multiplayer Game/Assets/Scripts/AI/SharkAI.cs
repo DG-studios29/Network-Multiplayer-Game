@@ -10,7 +10,7 @@ public class SharkAI : NetworkBehaviour
 
     [Header("Player Info")]
     public Transform player;
-    private PlayerHealth playerHealth;
+    private PlayerHealthUI playerHealth;
     private float lastAttackTime;
     public int attackDamage = 10;
     public float attackCooldown = 5f;
@@ -40,8 +40,23 @@ public class SharkAI : NetworkBehaviour
         animator = GetComponent<Animator>();
         GoToNextPatrolPoint();
 
-        if (player != null)
-            playerHealth = player.GetComponent<PlayerHealth>();
+        if (player == null)
+        {
+            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+            if (playerObj != null)
+            {
+                player = playerObj.transform;
+                playerHealth = player.GetComponent<PlayerHealthUI>();
+            }
+            else
+            {
+                Debug.LogWarning("SharkAI: Player object not found with tag 'Player'");
+            }
+        }
+        else
+        {
+            playerHealth = player.GetComponent<PlayerHealthUI>();
+        }
     }
 
     [ServerCallback]

@@ -10,7 +10,7 @@ public class KrakenAI : NetworkBehaviour
 
     [Header("Player Info")]
     public Transform player;
-    PlayerHealth playerHealth;
+    PlayerHealthUI playerHealth;
     private float lastAttackTime;
     public int attackDamage = 30;
     public float attackCooldown = 1.5f;
@@ -39,9 +39,22 @@ public class KrakenAI : NetworkBehaviour
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         GoToNextPatrolPoint();
-        if (player != null)
+        if (player == null)
         {
-            playerHealth = player.GetComponent<PlayerHealth>();
+            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+            if (playerObj != null)
+            {
+                player = playerObj.transform;
+                playerHealth = player.GetComponent<PlayerHealthUI>();
+            }
+            else
+            {
+                Debug.LogWarning("KrakenAI: Player object not found with tag 'Player'");
+            }
+        }
+        else
+        {
+            playerHealth = player.GetComponent<PlayerHealthUI>();
         }
     }
 
