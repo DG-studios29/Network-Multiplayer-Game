@@ -1365,7 +1365,7 @@ GameObject:
   - component: {fileID: 5543325627245319377}
   - component: {fileID: 3052400510477311609}
   - component: {fileID: 3007623652371693692}
-  - component: {fileID: 1281627762503569086}
+  - component: {fileID: -2475897276655600298}
   m_Layer: 0
   m_Name: PriateShip 1
   m_TagString: Player
@@ -2047,7 +2047,7 @@ MonoBehaviour:
   defaultColor: {r: 0, g: 0, b: 0, a: 1}
   playerName: 
   playerScore: 0
---- !u!114 &1281627762503569086
+--- !u!114 &-2475897276655600298
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
