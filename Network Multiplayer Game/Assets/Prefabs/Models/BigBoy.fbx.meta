@@ -3,7 +3,22 @@ guid: 27bd33db0f024474890f69a9c558ebda
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material
+    second: {fileID: 2100000, guid: 4b13877c9c3788445ba9ef0899ed4546, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MetalBase
+    second: {fileID: 2100000, guid: ad7d8ab42a4ba5440bb0261de7a2e2a5, type: 2}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Metal005_2K-JPG_Metalness
+    second: {fileID: 2800000, guid: 744ed463d307d6e4995272bfbd568fff, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0

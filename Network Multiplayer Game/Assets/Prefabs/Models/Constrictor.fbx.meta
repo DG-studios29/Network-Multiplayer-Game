@@ -3,7 +3,27 @@ guid: 450e4f9d0c959bc4796b6e8e3f9709cb
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Beaks
+    second: {fileID: 2100000, guid: 1b4c3ea4d238d174792b0ecad4d00128, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Body
+    second: {fileID: 2100000, guid: 96206c88d0b6de346be60514b8166691, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Eyes
+    second: {fileID: 2100000, guid: 296a1ff4b7066fc41bc290b03b8789a3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Spikes
+    second: {fileID: 2100000, guid: 0a75d0be23a92f24dba0f4cb3c85953a, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
