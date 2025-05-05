@@ -18,15 +18,17 @@ public class CannonHolder : MonoBehaviour
 
     private CannonSlot ActiveSelectedBtn;
 
-    private CannonLinq cannonLinq;
+    [SerializeField] private CannonLinq cannonLinq;
 
     private int firstMatch = 0;
     int firstAppear,lastAppear;
 
     //will need to know selected
-    private PresetsHolder presetsHolder;
+    [SerializeField] private PresetsHolder presetsHolder;
     private PresetsBtn selectedPresetBtn;
     private LoadPresetData presetData;
+
+    [SerializeField] private NetTempFinder netTempFinder;
 
 
     private void Awake()
@@ -35,8 +37,16 @@ public class CannonHolder : MonoBehaviour
 
         loadedCannons = new List<CannonSlot>();
 
-        cannonLinq = GameObject.FindAnyObjectByType<CannonLinq>();
-        presetsHolder = GameObject.FindAnyObjectByType<PresetsHolder>();
+        if(netTempFinder == null)
+        {
+
+        }
+        else
+        {
+            cannonLinq = GameObject.FindAnyObjectByType<CannonLinq>();
+            presetsHolder = GameObject.FindAnyObjectByType<PresetsHolder>();
+        }
+    
 
     }
 

@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 using Mirror;
 
 
-public enum ActivePanel { PAUSE, CANNON , PRESETS};
+public enum ActivePanel {  CANNON , PRESETS};
 
 public class PlayerInputTemp : NetworkBehaviour
 {
@@ -20,23 +20,25 @@ public class PlayerInputTemp : NetworkBehaviour
 
     private PlayerInput playerInput;
 
-    
 
+    [Header("References")]
     public ActivePanel activePanel;
-    private HandleEvent handleEvent;
+    [SerializeField]private HandleEvent handleEvent;
 
 
-    private CannonHolder cannonHolder;
-    private CannonLinq cannonLinq;
+    [SerializeField]private CannonHolder cannonHolder;
+    [SerializeField] private CannonLinq cannonLinq;
 
-    private CanvasLoadHUD canvasLoadHUD;
-    private PresetInput presetInput;
-    private bool isPresetLoading;
+    [SerializeField] private CanvasLoadHUD canvasLoadHUD;
+    [SerializeField] private PresetInput presetInput;
+    [SerializeField]private bool isPresetLoading;
 
 
-    [SerializeField] private NetworkIdentity netID;
+    private NetworkIdentity netID;
 
     public NetworkIdentity NetID;
+
+    [SerializeField] private NetTempFinder netTempFinder;
 
 
     private void Awake()
@@ -46,15 +48,20 @@ public class PlayerInputTemp : NetworkBehaviour
         pInputAction = new InputSystem_Actions();
 
         playerInput = GetComponent<PlayerInput>();
-       
-        
 
-        handleEvent = GameObject.FindAnyObjectByType<HandleEvent>();
-        cannonHolder = GameObject.FindAnyObjectByType<CannonHolder>();
-        cannonLinq = GameObject.FindAnyObjectByType<CannonLinq>();
-        canvasLoadHUD = GameObject.FindAnyObjectByType<CanvasLoadHUD>();
-        presetInput = GameObject.FindAnyObjectByType<PresetInput>();
+        if (netTempFinder == null)
+        {
 
+        }
+        else
+        {
+
+            handleEvent = GameObject.FindAnyObjectByType<HandleEvent>();
+            cannonHolder = GameObject.FindAnyObjectByType<CannonHolder>();
+            cannonLinq = GameObject.FindAnyObjectByType<CannonLinq>();
+            canvasLoadHUD = GameObject.FindAnyObjectByType<CanvasLoadHUD>();
+            presetInput = GameObject.FindAnyObjectByType<PresetInput>();
+        }
 
     }
 
@@ -182,7 +189,7 @@ public class PlayerInputTemp : NetworkBehaviour
 
 
 
-    public void YouCantPauseOnline(InputAction.CallbackContext context)
+/*    public void YouCantPauseOnline(InputAction.CallbackContext context)
     {
        
 
@@ -206,7 +213,7 @@ public class PlayerInputTemp : NetworkBehaviour
             }
         }
     }
-
+*/
 
 
 
@@ -220,8 +227,11 @@ public class PlayerInputTemp : NetworkBehaviour
 
             if (loadingPanel.activeSelf)
             {
-                loadingPanel.SetActive(false);
+
+
                 presetsPanel.SetActive(true);
+                loadingPanel.SetActive(false);
+                
 
                 activePanel = ActivePanel.PRESETS;
                

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class CannonHUD : MonoBehaviour
 {
-    private CannonLinq cannonLinq;
+    [SerializeField]private CannonLinq cannonLinq;
     private CannonHolder cannonHolder;
     [SerializeField]private CannonData ballType;
 
@@ -29,12 +29,20 @@ public class CannonHUD : MonoBehaviour
     int loadTextMessage;
     bool cannonsToLoad;
 
-
+    [SerializeField] private NetTempFinder netTempFinder;
 
 
     private void Awake()
     {
-        cannonLinq = GameObject.FindAnyObjectByType<CannonLinq>();
+        if(netTempFinder == null)
+        {
+
+        }
+        else
+        {
+            cannonLinq = GameObject.FindAnyObjectByType<CannonLinq>();
+        }
+        
         
 
 
