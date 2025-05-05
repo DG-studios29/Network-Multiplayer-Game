@@ -10,6 +10,8 @@ public class NetworkTempHUD : MonoBehaviour
     public TMP_InputField nameInputField;
     private string nameText;
     public GameObject lobbyPanel;
+    public GameObject lobbyCam;
+    public GameObject lobbyEvents;
 
     // References to Mirror's NetworkManager and Transport
     public NetworkManagerTemp networkManager;
@@ -59,9 +61,14 @@ public class NetworkTempHUD : MonoBehaviour
 
     }
 
+    //We can activate OnConnected for when the Server clicks a start button game
+
     private void OnConnected()
     {
         Debug.Log("Connected — hide lobby UI");
         lobbyPanel.SetActive(false);
+        lobbyCam.SetActive(false);
+        lobbyEvents.SetActive(false);
+
     }
 }
