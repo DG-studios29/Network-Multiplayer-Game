@@ -1,5 +1,5 @@
-using UnityEngine;
 using Mirror;
+using UnityEngine;
 
 [RequireComponent(typeof(NetworkIdentity))]
 public class CannonCollision : NetworkBehaviour
@@ -25,16 +25,16 @@ public class CannonCollision : NetworkBehaviour
         rb = GetComponent<Rigidbody>();
         rb.useGravity = false;
         globalGravity = -9.81f;
-       
+
     }
 
     // Update is called once per frame
     void Update()
     {
         cannonLifeSpan -= Time.deltaTime;
-        if(cannonLifeSpan <= 0)
+        if (cannonLifeSpan <= 0)
         {
-           NetworkServer.Destroy(this.gameObject);
+            NetworkServer.Destroy(this.gameObject);
         }
     }
 
@@ -51,8 +51,8 @@ public class CannonCollision : NetworkBehaviour
 
         if (collision.gameObject.CompareTag("Player"))
         {
-          
-            if(cannonLifeSpan/lifeTotal >= 0.99f)
+
+            if (cannonLifeSpan / lifeTotal >= 0.99f)
             {
                 Debug.Log("Escape this");
                 return;
@@ -68,7 +68,7 @@ public class CannonCollision : NetworkBehaviour
             NetworkServer.Destroy(gameObject);
         }
 
-       else if (collision.gameObject.CompareTag("Island"))
+        else if (collision.gameObject.CompareTag("Island"))
         {
             Debug.Log("Cannon hit an Island!");
 
@@ -81,11 +81,14 @@ public class CannonCollision : NetworkBehaviour
             // Destroy the cannonball on all clients
             NetworkServer.Destroy(gameObject);
         }
-        else if(collision.gameObject.CompareTag("EnemyAI"))
+        else if (collision.gameObject.CompareTag("KrakenAI"))
         {
-            //Do stuff
+            KrakenHealth kraken = collision.gameObject.GetComponent<KrakenHealth>();
+            if (kraken != null)
+            {
+                kraken.TakeDamage((int)cannonDamage);
+            }
 
-            // Destroy the cannonball on all clients
             NetworkServer.Destroy(gameObject);
         }
         else
@@ -100,7 +103,7 @@ public class CannonCollision : NetworkBehaviour
         }
 
 
-    
+
     }
 
 

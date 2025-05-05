@@ -8,6 +8,7 @@ TagManager:
   - MinimapCamera
   - MapCamera
   - Cannonball
+  - KrakenAI
   layers:
   - Default
   - TransparentFX

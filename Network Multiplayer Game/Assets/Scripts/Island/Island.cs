@@ -10,8 +10,11 @@ using System.Linq;
 public class Island : NetworkBehaviour
 {
     [Header("References")]
-    public Slider healthSlider;
-    public Slider lootSlider;
+    [SerializeField] public Slider healthSlider;
+    [SerializeField] public Slider lootSlider;
+    [SerializeField] private GameObject healthBarUI;
+    [SerializeField] private GameObject lootBarUI;
+    [SerializeField] private float lootBarDelay = 2f;
     public LootRadiusVisualizer lootRadiusVisualizer;
 
     [HideInInspector] public IslandManager manager;
@@ -45,6 +48,20 @@ public class Island : NetworkBehaviour
         myCollider.radius = 100f;
         myCollider.isTrigger = true;
     }
+
+    void Start()
+    {
+        if (lootBarUI != null) lootBarUI.SetActive(false);
+        if (healthBarUI != null) healthBarUI.SetActive(true);
+
+        currentHealth = maxHealth;
+        if (healthSlider != null)
+        {
+            healthSlider.maxValue = maxHealth;
+            healthSlider.value = currentHealth;
+        }
+    }
+
 
     private void Update()
     {
@@ -84,13 +101,9 @@ public class Island : NetworkBehaviour
                 radiusVisualizer.SetPlayerInside(true);
             }
 
-            if (isDestroyed && !isLooted && lootCoroutine == null)
+            if (isDestroyed && !isLooted && playersInside.Count == 1 && lootCoroutine == null)
             {
-                if (playersInside.Count == 1)
-                {
-                    Debug.Log("Start looting island is destroyed");
-                    lootCoroutine = StartCoroutine(CollectTreasureRoutine());
-                }
+                lootCoroutine = StartCoroutine(CollectTreasureRoutine());
             }
         }
     }
@@ -143,7 +156,6 @@ public class Island : NetworkBehaviour
     [Server]
     private IEnumerator CollectTreasureRoutine()
     {
-        isLooted = true;
         currentLootProgress = 0f;
 
         while (playersInside.Count == 1 && currentLootProgress < treasureCollectionTime)
@@ -162,24 +174,36 @@ public class Island : NetworkBehaviour
     }
 
     [Server]
-    public void TakeDamage(float damage)
+    public void TakeDamage(float amount)
     {
         if (isDestroyed) return;
 
-        currentHealth -= damage;
+        currentHealth -= amount;
+        Debug.Log($"Island took damage: {amount}. Current health: {currentHealth}");
+
+        if (healthSlider != null)
+        {
+            healthSlider.value = currentHealth;
+        }
 
         if (currentHealth <= 0f)
         {
             isDestroyed = true;
-            Debug.Log("island Destroyed");
+            Debug.Log("Island destroyed");
+
+            if (healthBarUI != null)
+                healthBarUI.SetActive(false);
+
+            if (lootBarUI != null)
+                StartCoroutine(ShowLootBarWithDelay());
+
             if (playersInside.Count == 1 && lootCoroutine == null)
             {
-                Debug.Log("Player inside on destruction — starting loot coroutine.");
                 lootCoroutine = StartCoroutine(CollectTreasureRoutine());
             }
         }
-
     }
+
 
     [Server]
     public void LootIsland()
@@ -199,8 +223,8 @@ public class Island : NetworkBehaviour
                 scoreboard.CmdIncreaseScore(lootAmount);
             }
 
-          
-            TargetShowLootPopup(player.GetComponent<NetworkIdentity>().connectionToClient, lootAmount);
+
+            //TargetShowLootPopup(player.GetComponent<NetworkIdentity>().connectionToClient, lootAmount);
         }
 
         RpcNotifyLootCollected(lootAmount);
@@ -224,14 +248,43 @@ public class Island : NetworkBehaviour
     [Server]
     private IEnumerator DespawnAfterDelay()
     {
+        Debug.Log("Despawn coroutine started");
+
         manager?.NotifyIslandDespawn(this);
+
         yield return new WaitForSeconds(5f);
 
         if (manager != null && islandPrefab != null)
         {
+            Debug.Log("Spawning new island...");
             manager.SpawnIsland(islandPrefab);
         }
+        else
+        {
+            Debug.LogWarning("Island prefab or manager missing!");
+        }
 
-        NetworkServer.Destroy(gameObject);
+        if (isServer)
+        {
+            Debug.Log("Destroying island on server...");
+            NetworkServer.Destroy(gameObject);
+        }
+        else
+        {
+            Debug.LogWarning("Tried to destroy island from a client!");
+        }
     }
+
+
+    private IEnumerator ShowLootBarWithDelay()
+    {
+        yield return new WaitForSeconds(lootBarDelay);
+
+        if (lootBarUI != null)
+        {
+            lootBarUI.SetActive(true);
+            Debug.Log("Loot bar displayed.");
+        }
+    }
+
 }
