@@ -99,7 +99,7 @@ public class Boat_Controller : MonoBehaviour
 
         float sqrSpeed = Mathf.Max(rb.linearVelocity.sqrMagnitude, 0.0001f);
         float clampedSqrSpeed = Mathf.Clamp01(sqrSpeed);
-        waterSFx.volume = Mathf.Lerp(waterSFx.volume, clampedSqrSpeed * 0.5f, Time.deltaTime);
+        waterSFx.volume = Mathf.Lerp(waterSFx.volume, clampedSqrSpeed * 0.2f, Time.deltaTime);
 
         float shipDir = Vector3.Dot(shipVel, forward);
 
