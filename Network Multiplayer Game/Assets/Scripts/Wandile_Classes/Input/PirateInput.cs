@@ -12,7 +12,7 @@ public class PirateInput : MonoBehaviour
     private InputAction SailingAction;
     public InputAction CamAction { get; set; }
     public Vector2 sailInput { get; set; }
-    public Vector2 camInput;
+    public Vector2 camInput { get; set; }
     public float sailingInput {  get; set; }
 
     #endregion

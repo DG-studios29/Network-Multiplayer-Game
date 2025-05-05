@@ -17,7 +17,7 @@ public class PirateMusicSettings : MonoBehaviour
     public AudioClip[] battleClips;
 
     [Header("Floats"), Space(10)]
-    [Range(0.05f,.1f)] public float maxVolume;
+    [Range(0.02f,.1f)] public float maxVolume;
     private const float minVolume = .01f;
 
     [Range(0.9f, 1)] public float maxPitch;

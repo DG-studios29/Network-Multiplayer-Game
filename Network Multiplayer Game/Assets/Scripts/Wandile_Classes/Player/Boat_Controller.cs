@@ -41,7 +41,7 @@ public class Boat_Controller : MonoBehaviour
 
     #region Built-In Methods
 
-    void Start()
+    void OnEnable()
     {
         rb = GetComponent<Rigidbody>();
         pirateInput = GetComponent<PirateInput>();
@@ -95,11 +95,11 @@ public class Boat_Controller : MonoBehaviour
         //seed gauge
         speedInKm = Mathf.Abs(rb.linearVelocity.magnitude);
 
-        speedNeedleUI.localRotation = Quaternion.Euler(0f, 0f, Mathf.Lerp(minNeedleRot, maxNeedleRot, speedInKm/23.5f)); //roughly 23
+        speedNeedleUI.localRotation = Quaternion.Euler(0f, 0f, Mathf.Lerp(minNeedleRot, maxNeedleRot, speedInKm/17.5f)); //roughly 23
 
-        float sqrSpeed = Mathf.Max(shipVel.sqrMagnitude, 0.0001f);
+        float sqrSpeed = Mathf.Max(rb.linearVelocity.sqrMagnitude, 0.0001f);
         float clampedSqrSpeed = Mathf.Clamp01(sqrSpeed);
-        waterSFx.volume = Mathf.Lerp(waterSFx.volume, clampedSqrSpeed * 0.1f, Time.deltaTime);
+        waterSFx.volume = Mathf.Lerp(waterSFx.volume, clampedSqrSpeed * 0.5f, Time.deltaTime);
 
         float shipDir = Vector3.Dot(shipVel, forward);
 

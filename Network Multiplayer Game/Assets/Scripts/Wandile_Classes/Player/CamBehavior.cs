@@ -8,14 +8,14 @@ public class CamBehavior : MonoBehaviour
     public PirateInput input;
 
     [Header("Transform/s"), Space(5f)]
-    [SerializeField] private Transform pivotPoint;
+    [SerializeField] private Transform localPivotPoint;
     [SerializeField] private Transform cam;
     [SerializeField] private Transform waterEdgeChecker;
 
     [Header("Float/s"), Space(5f)]
     [SerializeField, Range(10f, 100f)] private float sensitivity;
 
-    [SerializeField, Range(15f, 40f)] private float minRollLimit,maxRollLimit;
+    [SerializeField, Range(15f, 40f)] private float minRollLimit, maxRollLimit;
     [SerializeField, Range(0f, 50f)] private float checkRadius;
 
     [Header("LayerMask/s"), Space(5f)]
@@ -35,14 +35,14 @@ public class CamBehavior : MonoBehaviour
     #region Built-In Methods
     void Start()
     {
-        if(cam!= null)
-        cam.localRotation = Quaternion.Euler(50, 0, 0);
-        cam.localPosition = new Vector3(0, 20, -20);
+        if (cam != null)
+            cam.localRotation = Quaternion.Euler(40, 0, 0);
+        cam.localPosition = new Vector3(0, 50, -50);
     }
 
-    void Update()
+    void LateUpdate()
     {
-        if (pivotPoint != null) OrbitOnCommand();
+        if (localPivotPoint != null) OrbitOnCommand();
 
         SwitchToTopViewIfNecessary();
     }
@@ -53,7 +53,7 @@ public class CamBehavior : MonoBehaviour
 
     private void OrbitOnCommand()
     {
-        pivotPoint.position = pivotPoint.parent? pivotPoint.localPosition = transform.position: pivotPoint.position = transform.position;   
+        localPivotPoint.position = localPivotPoint.parent ? localPivotPoint.localPosition = transform.position : localPivotPoint.position = transform.position;
 
         float x = input.camInput.x * Time.smoothDeltaTime * sensitivity;
         float y = input.camInput.y * Time.smoothDeltaTime * sensitivity;
@@ -63,12 +63,12 @@ public class CamBehavior : MonoBehaviour
 
         xRot = Mathf.Clamp(xRot, minRollLimit, maxRollLimit);
 
-        if(yRot> 180f)
+        if (yRot > 180f)
         {
             yRot -= 360f;
         }
 
-        pivotPoint.localRotation = Quaternion.Euler(xRot, yRot, 0);
+        localPivotPoint.rotation = Quaternion.Euler(xRot + transform.eulerAngles.x, yRot + transform.eulerAngles.y, 0);
     }
 
     private void SwitchToTopViewIfNecessary()
@@ -78,12 +78,12 @@ public class CamBehavior : MonoBehaviour
         //THIS ONLY WORKS AGAINST CONVEX COLLIDERS 
         Collider[] colliders = Physics.OverlapSphere(waterEdgeChecker.position, checkRadius, edgeMask);
 
-        isOnEdge = colliders.Length > 0? true : false;
+        isOnEdge = colliders.Length > 0 ? true : false;
 
         switch (isOnEdge)
         {
             case true:
-                minRollLimit = Mathf.Lerp(minRollLimit,edgeLimit, Time.deltaTime * 5f);
+                minRollLimit = Mathf.Lerp(minRollLimit, edgeLimit, Time.deltaTime * 5f);
                 maxRollLimit = Mathf.Lerp(maxRollLimit, edgeLimit, Time.deltaTime * 5f);
                 break;
 
@@ -91,7 +91,7 @@ public class CamBehavior : MonoBehaviour
                 minRollLimit = Mathf.Lerp(minRollLimit, normalMin, Time.deltaTime * 5f);
                 maxRollLimit = Mathf.Lerp(maxRollLimit, normalMax, Time.deltaTime * 5f);
                 break;
-               
+
         }
 
 
