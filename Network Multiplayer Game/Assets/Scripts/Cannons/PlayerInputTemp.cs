@@ -12,7 +12,7 @@ public class PlayerInputTemp : NetworkBehaviour
     public GameObject cannonMenu;
     public GameObject playerHUD;
     public GameObject pauseMenu;
-
+    public GameObject mainMap;
     public GameObject presetsPanel;
     public GameObject loadingPanel;
 
@@ -360,6 +360,23 @@ public class PlayerInputTemp : NetworkBehaviour
                 cannonHolder.UsePresetToLoad();
             }
         }
+    }
+
+    public void mainMapToogle(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            if(mainMap.activeSelf)
+            {
+                mainMap.SetActive(false);
+            }
+            else
+            {
+                mainMap.SetActive(true);
+            }
+           
+        }
+      
     }
 
 }
