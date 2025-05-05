@@ -31,11 +31,17 @@ public class ScoreboardManager : NetworkBehaviour
     }
 
     public override void OnStartLocalPlayer()
-    {
-        base.OnStartLocalPlayer();
+{
+    base.OnStartLocalPlayer();
+    CmdSetPlayerName($"Player {netId}");
+}
 
-        playerName = $"Player {netId}";
-    }
+[Command]
+void CmdSetPlayerName(string name)
+{
+    playerName = name;
+}
+
 
     [Command]
     public void CmdIncreaseScore(int amount)
