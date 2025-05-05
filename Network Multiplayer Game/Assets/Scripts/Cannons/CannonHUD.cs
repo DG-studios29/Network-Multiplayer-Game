@@ -1,9 +1,10 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Mirror;
 using System.Collections.Generic;
 
-public class CannonHUD : MonoBehaviour
+public class CannonHUD : NetworkBehaviour
 {
     [SerializeField]private CannonLinq cannonLinq;
     private CannonHolder cannonHolder;
@@ -28,6 +29,10 @@ public class CannonHUD : MonoBehaviour
 
     int loadTextMessage;
     bool cannonsToLoad;
+
+
+    [SerializeField] private TMP_Text netMessages; 
+    [SerializeField] private TMP_Text netName;
 
     [SerializeField] private NetTempFinder netTempFinder;
 
@@ -58,8 +63,11 @@ public class CannonHUD : MonoBehaviour
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [ClientCallback]
     void Start()
     {
+        if (!isLocalPlayer) return;
+
         cannonHolder = cannonLinq.CannonHolder; //lol
 
         linksAssigned = false;
@@ -67,12 +75,31 @@ public class CannonHUD : MonoBehaviour
     }
 
     // Update is called once per frame
+    [ClientCallback]
     void Update()
     {
+        if (!isLocalPlayer) return;
+
         LoadFillAmountUpdate();
         CheckListLength();
         
     }
+
+
+    [TargetRpc]
+    public void TargetShowWelcomeMessage(NetworkConnection target, string message)
+    {
+        /* if (uiManager != null)
+         {
+             uiManager.ShowMessage(message);
+         }*/
+
+        netMessages.text = message;
+
+
+    }
+
+
 
     public void SyncAmmoChange(CannonData cnData)
     {
