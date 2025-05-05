@@ -1,12 +1,11 @@
-using Mirror;
+﻿using Mirror;
 using UnityEngine;
 
 public class Boat_Controller : NetworkBehaviour
-
 {
     #region Custom Variables
 
-    private PirateInput pirateInput;
+    [SerializeField] private PirateInput pirateInput;
     private Rigidbody rb;
 
     [Header("Floats/ numbers"), Space(5f)]
@@ -42,23 +41,30 @@ public class Boat_Controller : NetworkBehaviour
     #endregion
 
     #region Built-In Methods
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
 
+        if (rb == null) { Debug.Log("No RD"); }
+    }
     void OnEnable()
     {
         if (!isLocalPlayer) return;
-        rb = GetComponent<Rigidbody>();
-        pirateInput = GetComponent<PirateInput>();
 
+        //pirateInput = GetComponent<PirateInput>();
+        Debug.Log("Local is Connected");
 
-        if(waterSFx != null)
-        waterSFx.volume = .01f;
+        if (waterSFx != null)
+            waterSFx.volume = .01f;
     }
 
+    [ClientCallback]
     void FixedUpdate()
     {
         if (!isLocalPlayer) return;
         ShipSail();
         HandleSailing();
+        
     }
 
     #endregion
@@ -67,7 +73,7 @@ public class Boat_Controller : NetworkBehaviour
 
     private void ShipSail()
     {
-        if(rb == null || pirateInput == null || waterSFx == null) return;
+        if (rb == null || pirateInput == null || waterSFx == null) return;
 
         float v = pirateInput.sailInput.y;
         float h = pirateInput.sailInput.x;
@@ -99,7 +105,7 @@ public class Boat_Controller : NetworkBehaviour
         //seed gauge
         speedInKm = Mathf.Abs(rb.linearVelocity.magnitude);
 
-        speedNeedleUI.localRotation = Quaternion.Euler(0f, 0f, Mathf.Lerp(minNeedleRot, maxNeedleRot, speedInKm/17.5f)); //roughly 23
+        speedNeedleUI.localRotation = Quaternion.Euler(0f, 0f, Mathf.Lerp(minNeedleRot, maxNeedleRot, speedInKm / 17.5f)); //roughly 23
 
         float sqrSpeed = Mathf.Max(rb.linearVelocity.sqrMagnitude, 0.0001f);
         float clampedSqrSpeed = Mathf.Clamp01(sqrSpeed);
@@ -121,11 +127,11 @@ public class Boat_Controller : NetworkBehaviour
 
         Quaternion windDirRelativeToPlayer = playerInverseEulerAngles * normalizedWindDir;
 
-        if(sailIndicatorUI && windDirIndicatorUI)
+        if (sailIndicatorUI && windDirIndicatorUI)
         {
             windDirIndicatorUI.localRotation = Quaternion.Euler(0f, 0f, -windDirRelativeToPlayer.eulerAngles.y);
 
-            sailAngle = Quaternion.Angle(sailIndicatorUI.localRotation, 
+            sailAngle = Quaternion.Angle(sailIndicatorUI.localRotation,
                 windDirIndicatorUI.localRotation) * Mathf.Deg2Rad;
 
             sailsAssist += sailMultiplier * pirateInput.sailingInput;

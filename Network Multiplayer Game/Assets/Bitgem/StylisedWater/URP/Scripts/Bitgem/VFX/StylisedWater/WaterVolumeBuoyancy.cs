@@ -23,20 +23,33 @@ public class BuoyantObject : NetworkBehaviour
 
     public WaterVolumeHelper WaterVolumeHelper = null;
 
-    private Rigidbody rb;
+    [SerializeField]private Rigidbody rb;
     private Vector3 smoothedNormal = Vector3.up;
 
-    // Only run this on the server:
-    public override void OnStartServer()
+    void Awake()
     {
-        base.OnStartServer();
-        rb = GetComponent<Rigidbody>();
-        rb.useGravity = true;
-        rb.centerOfMass = Vector3.down * 0.5f;
+        if (!isLocalPlayer) return;
+        //base.OnStartServer();
+        //rb = GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            Debug.Log("RB?");
+            rb.useGravity = true;
+            rb.centerOfMass = Vector3.down * 0.5f;
+        }
+       
     }
 
+    //public override void OnStartServer()
+    //{
+    //    base.OnStartServer();
+    //    rb = GetComponent<Rigidbody>();
+    //    rb.useGravity = true;
+    //    rb.centerOfMass = Vector3.down * 0.5f;
+    //}
+
     // Only the server drives the physics simulation
-    [ServerCallback]
+    [ClientCallback]
     void FixedUpdate()
     {
         var helper = WaterVolumeHelper != null ? WaterVolumeHelper : WaterVolumeHelper.Instance;

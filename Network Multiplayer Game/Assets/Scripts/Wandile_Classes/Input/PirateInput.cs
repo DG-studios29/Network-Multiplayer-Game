@@ -1,11 +1,12 @@
+using Mirror;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PirateInput : MonoBehaviour
+public class PirateInput : NetworkBehaviour
 {
     #region Custom Variables
 
-    private PlayerInput playerInput;
+    [SerializeField] private PlayerInput playerInput;
 
     private InputActionMap currentMap;
     private InputAction SailAction;
@@ -21,7 +22,8 @@ public class PirateInput : MonoBehaviour
 
     private void Awake()
     {
-        playerInput = GetComponent<PlayerInput>();
+        //if (!isLocalPlayer) return;
+        //playerInput = GetComponent<PlayerInput>();
         currentMap = playerInput.currentActionMap;
 
         //playerInput.defaultControlScheme = currentMap.controlSchemes[0].name;
@@ -42,11 +44,13 @@ public class PirateInput : MonoBehaviour
 
     private void OnEnable()
     {
+        
         currentMap.Enable();
     }
 
     private void OnDisable()
     {
+        
         currentMap.Disable();
     }
 
@@ -56,31 +60,37 @@ public class PirateInput : MonoBehaviour
 
     public void OnSail(InputAction.CallbackContext context)
     {
+        if (!isLocalPlayer) return;
         sailInput = context.ReadValue<Vector2>();
     }
 
     public void NoSail(InputAction.CallbackContext context)
     {
+        if (!isLocalPlayer) return;
         sailInput = Vector2.zero;
     }
 
     public void OnCamera(InputAction.CallbackContext context)
     {
+        if (!isLocalPlayer) return;
         camInput = context.ReadValue<Vector2>();
     }
 
     public void NoCamera(InputAction.CallbackContext context)
     {
+        if (!isLocalPlayer) return;
         camInput = Vector2.zero;
     }
 
     public void OnSailing(InputAction.CallbackContext context)
     {
+        if (!isLocalPlayer) return;
         sailingInput = context.ReadValue<float>();
     }
 
     public void NoSailing(InputAction.CallbackContext context)
     {
+        if (!isLocalPlayer) return;
         sailingInput = 0f;
     }
 
