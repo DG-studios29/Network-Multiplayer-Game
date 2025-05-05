@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: BaseCannonBall
   m_EditorClassIdentifier: 
   cannonName: BaseCannonBall
-  ballPrefab: {fileID: 3630204142601734126, guid: 1fed68ae8fe134042aa5758f58748c57, type: 3}
+  ballPrefab: {fileID: 4193620958866771453, guid: 72730504b4608c04884b56042b14e795, type: 3}
   launchAngle: 30
-  rangeZ: 70
+  rangeZ: 90
   heightY: 0
   timeTaken: 1.5
   lifespan: 20

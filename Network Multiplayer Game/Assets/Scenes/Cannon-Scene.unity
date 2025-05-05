@@ -487,11 +487,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8065123414641077060, guid: 7f29cd3baa7c91e4693df20e824a173b, type: 3}
   m_PrefabInstance: {fileID: 7025967580088724478}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1337165385 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5513204218831989144, guid: 7f29cd3baa7c91e4693df20e824a173b, type: 3}
-  m_PrefabInstance: {fileID: 7025967580088724478}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1360015090
 GameObject:
   m_ObjectHideFlags: 0
@@ -819,7 +814,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67f3e14129c36394c91eb2419f22c1a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pauseBtn: {fileID: 1337165385}
   cannonBtn: {fileID: 918618830}
   presetsBtn: {fileID: 1688905405}
 --- !u!1 &1992691134

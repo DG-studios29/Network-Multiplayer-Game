@@ -4,7 +4,7 @@ using Mirror;
 [RequireComponent(typeof(NetworkIdentity))]
 public class CannonCollision : NetworkBehaviour
 {
-    public GameObject parentObj;
+    public NetworkIdentity parentNetID;
 
     public float cannonLifeSpan;
     public float cannonDamage;
@@ -13,10 +13,15 @@ public class CannonCollision : NetworkBehaviour
     private float globalGravity;
     private Rigidbody rb;
 
+    //public GameObject 
 
+    float lifeTotal;
+    float percentage;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        lifeTotal = cannonLifeSpan;
+
         rb = GetComponent<Rigidbody>();
         rb.useGravity = false;
         globalGravity = -9.81f;
@@ -47,15 +52,50 @@ public class CannonCollision : NetworkBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
           
+            if(cannonLifeSpan/lifeTotal >= 0.99f)
+            {
+                Debug.Log("Escape this");
+                return;
+            }
+
             PlayerHealthUI playerHealth = collision.gameObject.GetComponent<PlayerHealthUI>();
             if (playerHealth != null)
             {
                 playerHealth.TakeDamage((int)cannonDamage);
             }
+
+            // Destroy the cannonball on all clients
+            NetworkServer.Destroy(gameObject);
         }
 
-        // Destroy the cannonball on all clients
-        NetworkServer.Destroy(gameObject);
+     /*   else if (collision.gameObject.CompareTag("Island"))
+        {
+            // Do stuff
+
+
+            // Destroy the cannonball on all clients
+            NetworkServer.Destroy(gameObject);
+        }
+        else if(collision.gameObject.CompareTag("EnemyAI"))
+        {
+            //Do stuff
+
+            // Destroy the cannonball on all clients
+            NetworkServer.Destroy(gameObject);
+        }*/
+        else
+        {
+            // Destroy the cannonball on all clients
+            if (cannonLifeSpan / lifeTotal >= 0.99f)
+            {
+                Debug.Log("Escape this");
+                return;
+            }
+            NetworkServer.Destroy(gameObject);
+        }
+
+
+    
     }
 
 

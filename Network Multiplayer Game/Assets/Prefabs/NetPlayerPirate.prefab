@@ -401,7 +401,7 @@ MonoBehaviour:
   waterAngularDrag: 5
   rotationSmoothSpeed: 3
   maxTiltAngle: 1
-  WaterVolumeHelper: {fileID: 7158919299287046807, guid: c9193ed5302b97341846216c44dd6d23, type: 3}
+  WaterVolumeHelper: {fileID: 0}
 --- !u!114 &6431747577933797129
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -707,6 +707,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b58bcab33fe04fa43b458c749192de92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
   cannonMenu: {fileID: 2303260967014304045}
   playerHUD: {fileID: 8496321792754212544}
   pauseMenu: {fileID: 2829004293470013305}
@@ -737,6 +740,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecf66daeee4b530449e2d12bf0eb3215, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
   shipSpeed: 50
   shipSteerMultiplier: 30
   turningThreshhold: 0.1
@@ -803,6 +809,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b58bcab33fe04fa43b458c749192de92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
   cannonMenu: {fileID: 2303260967014304045}
   playerHUD: {fileID: 8496321792754212544}
   pauseMenu: {fileID: 2829004293470013305}
@@ -2969,6 +2978,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3102646198078976024, guid: 73e9d5012e82e164082eb5d340f32b49, type: 3}
+      propertyPath: m_fontSize
+      value: 20.55
+      objectReference: {fileID: 0}
     - target: {fileID: 3105816064009307334, guid: 73e9d5012e82e164082eb5d340f32b49, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -3812,6 +3825,10 @@ PrefabInstance:
     - target: {fileID: 8507615864869915821, guid: 73e9d5012e82e164082eb5d340f32b49, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8731701780138456430, guid: 73e9d5012e82e164082eb5d340f32b49, type: 3}
+      propertyPath: m_fontSize
+      value: 20.5
       objectReference: {fileID: 0}
     - target: {fileID: 9154843635808412935, guid: 73e9d5012e82e164082eb5d340f32b49, type: 3}
       propertyPath: m_AnchorMax.y

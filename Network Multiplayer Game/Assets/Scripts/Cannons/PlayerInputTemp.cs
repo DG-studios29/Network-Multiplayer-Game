@@ -1,10 +1,11 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Mirror;
 
 
 public enum ActivePanel { PAUSE, CANNON , PRESETS};
 
-public class PlayerInputTemp : MonoBehaviour
+public class PlayerInputTemp : NetworkBehaviour
 {
 
     [Header("Menu and Button Stuff")]
@@ -32,8 +33,15 @@ public class PlayerInputTemp : MonoBehaviour
     private PresetInput presetInput;
     private bool isPresetLoading;
 
+
+    [SerializeField] private NetworkIdentity netID;
+
+    public NetworkIdentity NetID;
+
+
     private void Awake()
     {
+        
 
         pInputAction = new InputSystem_Actions();
 
@@ -54,6 +62,12 @@ public class PlayerInputTemp : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+
+        if (!isLocalPlayer)
+        {
+            return;
+        }
+
         activePanel = ActivePanel.CANNON;
 
         cannonMenu.SetActive(false);
@@ -62,16 +76,29 @@ public class PlayerInputTemp : MonoBehaviour
     }
 
     // Update is called once per frame
+    
     void Update()
     {
-        
+        if (!isLocalPlayer)
+        {
+            return;
+        }
     }
+
+    void MultiplayerBlock()
+    {
+        if (!isLocalPlayer)
+        {
+            return;
+        }
+    }
+
 
     void SwitchToUI()
     {
         //pInputAction.UI.Enable();
         //pInputAction.Player.Disable();
-
+        MultiplayerBlock();
 
         playerInput.SwitchCurrentActionMap("UI");
 
@@ -84,15 +111,20 @@ public class PlayerInputTemp : MonoBehaviour
         //pInputAction.Player.Enable();
         //pInputAction.UI.Disable();
 
+        MultiplayerBlock();
+
         playerInput.SwitchCurrentActionMap("Player");
     }
 
 
-
+    [ClientCallback] 
     public void ToggleCannonMenu(InputAction.CallbackContext context)
     {
+     
         if (context.performed)
         {
+            MultiplayerBlock();
+
             if (cannonMenu.activeSelf)
             {
                 cannonMenu.SetActive(false);
@@ -135,9 +167,11 @@ public class PlayerInputTemp : MonoBehaviour
   
     public void AttackTest(InputAction.CallbackContext context)
     {
+
         if (context.performed)
         {
-           
+            MultiplayerBlock();
+
             cannonHolder.FireLoadedCannon();
             
 
@@ -150,8 +184,12 @@ public class PlayerInputTemp : MonoBehaviour
 
     public void YouCantPauseOnline(InputAction.CallbackContext context)
     {
+       
+
         if (context.performed)
         {
+            MultiplayerBlock();
+
             if (!pauseMenu.activeSelf)
             {
                 pauseMenu.SetActive(true);
@@ -174,8 +212,12 @@ public class PlayerInputTemp : MonoBehaviour
 
     public void OpenPresetsMenu(InputAction.CallbackContext context)
     {
+      
+
         if (context.performed)
         {
+            MultiplayerBlock();
+
             if (loadingPanel.activeSelf)
             {
                 loadingPanel.SetActive(false);
@@ -194,8 +236,12 @@ public class PlayerInputTemp : MonoBehaviour
 
     public void OpenLoadoutMenu(InputAction.CallbackContext context)
     {
+       
+
         if (context.performed)
         {
+            MultiplayerBlock();
+
             if (presetsPanel.activeSelf)
             {
                 loadingPanel.SetActive(true);
@@ -213,8 +259,12 @@ public class PlayerInputTemp : MonoBehaviour
 
     public void LoadCannon(InputAction.CallbackContext context)
     {
+      
+
         if (context.performed)
         {
+            MultiplayerBlock();
+
             cannonHolder.AddToLoadedList();
         }
     }
@@ -222,8 +272,12 @@ public class PlayerInputTemp : MonoBehaviour
 
     public void ClearLoadedCannon(InputAction.CallbackContext context)
     {
+      
+
         if (context.performed)
         {
+            MultiplayerBlock();
+
             cannonHolder.RemoveFromLoadedList();
         }
     }
@@ -231,6 +285,8 @@ public class PlayerInputTemp : MonoBehaviour
 
     public void ClearAllCannons()
     {
+        MultiplayerBlock();
+
         cannonHolder.ClearLoadedList();
     }
 
@@ -240,8 +296,11 @@ public class PlayerInputTemp : MonoBehaviour
 
     public void ChangeCannonType(InputAction.CallbackContext context)
     {
+
         if (context.performed)
         {
+
+            MultiplayerBlock();
             cannonLinq.ChangeCannonType();
         }
     }
@@ -249,6 +308,8 @@ public class PlayerInputTemp : MonoBehaviour
 
     public void ActivePanelSet(ActivePanel active)
     {
+        MultiplayerBlock();
+
         activePanel = active;
 
         handleEvent.ChangeFirstSelected(active);
@@ -257,13 +318,19 @@ public class PlayerInputTemp : MonoBehaviour
 
     public void PresetHold(InputAction.CallbackContext context)
     {
+    
+
         if (context.performed)
         {
+            MultiplayerBlock();
+
             presetInput.HoldActivated();
             isPresetLoading = true;
         }
         if (context.canceled)
         {
+            MultiplayerBlock();
+
             presetInput.HoldDropped();
             isPresetLoading = false;
         }
@@ -271,9 +338,13 @@ public class PlayerInputTemp : MonoBehaviour
 
     public void AutoLoadPreset(InputAction.CallbackContext context)
     {
+
+       
         if (context.performed)
         {
-            if(isPresetLoading == true)
+            MultiplayerBlock();
+
+            if (isPresetLoading == true)
             {
                 //presetInput.LoadUpPreset();
                 cannonHolder.UsePresetToLoad();

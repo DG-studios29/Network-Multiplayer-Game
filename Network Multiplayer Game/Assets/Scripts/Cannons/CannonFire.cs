@@ -1,6 +1,7 @@
 using UnityEngine;
+using Mirror;
 
-public class CannonFire : MonoBehaviour
+public class CannonFire : NetworkBehaviour
 {
 
     [SerializeField] private int index;
@@ -31,7 +32,9 @@ public class CannonFire : MonoBehaviour
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private float gravityScale = 1.4f;
 
+    [SerializeField] private NetworkIdentity netID;
 
+    public NetworkIdentity NetID;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -52,6 +55,10 @@ public class CannonFire : MonoBehaviour
 
     private void InitialzeVariables()
     {
+        if (!isLocalPlayer)
+        {
+            return;
+        }
 
         if(ballType != null)
         {
@@ -63,6 +70,10 @@ public class CannonFire : MonoBehaviour
             lifespan = ballType.Lifespan;
             damage = ballType.Damage;
 
+
+            gravityScale = ballType.GravityScale;
+
+            netID = this.netIdentity;
         }
 
         gravity = Physics.gravity.y;
@@ -123,7 +134,7 @@ public class CannonFire : MonoBehaviour
         cannonCtrl.cannonLifeSpan = lifespan;
         cannonCtrl.cannonDamage = damage;
         cannonCtrl.gravityScale = 2f;
-        cannonCtrl.parentObj = this.gameObject;
+        cannonCtrl.parentNetID = netID;
         cannonCtrl.gravityScale = gravityScale * gravityScale;
 
 
