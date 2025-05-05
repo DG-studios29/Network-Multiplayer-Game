@@ -8,32 +8,36 @@ public class NetworkManagerTemp : NetworkManager
 
     public override void OnServerAddPlayer(NetworkConnectionToClient conn)
     {
-       
+        //safety checks
+        if (playerPrefab == null)
+        {
+            Debug.LogError("No players assigned!");
+            return;
+        }
+
         base.OnServerAddPlayer(conn); //base method will spawn the player prefab in
 
 
         GameObject player = conn.identity.gameObject; //get the player game object
        // from its ID
-        CannonHUD playerHUD = player.GetComponent<CannonHUD>(); //get the exmaple script
+        PlayerInputTemp playerCTRL = player.GetComponent<PlayerInputTemp>(); //get the exmaple script
+        playerCTRL.SetPlayerName(conn,player_Name,numPlayers);
+
         //on the player prefab
         if (numPlayers == 1) //the very first player to join the game, numPlayers
-                             //is a property from the Network Manager script from Mirror
+                           
         {
             // First player (usually the host)
-            playerHUD.TargetShowWelcomeMessage(conn, "You are the host! Lets hope you dont have treasure finding cheats.");
+             playerCTRL.TargetShowWelcomeMessage(conn, "You are the host! Lets hope you dont have hacks to find that treasure.");
          }
         else
         {
             // Any player after that
-            playerHUD.TargetShowWelcomeMessage(conn, "You are a client. Get ready to find yourself some treasure!");
+             playerCTRL.TargetShowWelcomeMessage(conn, "You are a client. Get ready to find yourself some treasure!");
          }
 
 
-        /* if (playerPrefab == null)
-        {
-            Debug.LogError("No players assigned!");
-            return;
-        }
+        /* 
 
         GameObject player = Instantiate(playerPrefab);
 

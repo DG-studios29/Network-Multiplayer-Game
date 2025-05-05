@@ -6,6 +6,7 @@ using System.Linq;
 
 public class ScoreboardManager : NetworkBehaviour
 {
+
     [Header("Scoreboard UI")]
     [SerializeField] private TMP_Text[] playerNameTexts; 
     [SerializeField] private TMP_Text[] playerScoreTexts; 
@@ -14,7 +15,10 @@ public class ScoreboardManager : NetworkBehaviour
 
     [Header("Player Settings")]
     [SyncVar(hook = nameof(OnScoreChanged))] public string playerName; 
-    [SyncVar(hook = nameof(OnScoreChanged))] public int playerScore; 
+    [SyncVar(hook = nameof(OnScoreChanged))] public int playerScore;
+
+    [SerializeField] private PlayerInputTemp playerData;
+    [SerializeField] private CannonHUD hud;
 
     private static List<ScoreboardManager> allPlayers = new List<ScoreboardManager>(); 
 
@@ -35,7 +39,44 @@ public class ScoreboardManager : NetworkBehaviour
         base.OnStartLocalPlayer();
 
         playerName = $"Player {netId}";
+        //playerName = playerData.CaptainName;
+
+
+        //PlayerInputTemp playerDat = this.GetComponentInParent<PlayerInputTemp>();
+
+        if (playerData != null)
+        {
+            playerName = playerData.CaptainName;
+            RefreshScoreboard();
+
+        }
+       
+      
     }
+
+
+    [Server]
+    public void ScoreNameChange()
+    {
+
+        playerName = hud.GetCustomName();
+        Debug.Log("Back and forth");
+        clientScoreNameChange();
+    }
+
+    [ClientRpc]
+    public void clientScoreNameChange()
+    {
+
+        playerName = hud.GetCustomName();
+        Debug.Log("Back and forth");
+        RefreshScoreboard();
+    }
+
+
+
+
+
 
     [Command]
     public void CmdIncreaseScore(int amount)
@@ -109,6 +150,16 @@ public class ScoreboardManager : NetworkBehaviour
   
         RpcUpdateScoreboardUI();
     }
+
+
+
+
+
+
+
+
+
+
 
     [Command]
     private void CmdRequestScoreboardUpdate()

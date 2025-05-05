@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using Mirror;
 using System.Collections.Generic;
+using System.Collections;
 
 public class CannonHUD : NetworkBehaviour
 {
@@ -30,9 +31,12 @@ public class CannonHUD : NetworkBehaviour
     int loadTextMessage;
     bool cannonsToLoad;
 
-
+    [SerializeField] private GameObject netMessagesPopUp;
     [SerializeField] private TMP_Text netMessages; 
     [SerializeField] private TMP_Text netName;
+
+    //[S]
+    //[SerializeField] private ScoreboardManager scoreboardManager;
 
     [SerializeField] private NetTempFinder netTempFinder;
 
@@ -69,6 +73,7 @@ public class CannonHUD : NetworkBehaviour
         if (!isLocalPlayer) return;
 
         cannonHolder = cannonLinq.CannonHolder; //lol
+        
 
         linksAssigned = false;
         AssignLinks();
@@ -86,19 +91,51 @@ public class CannonHUD : NetworkBehaviour
     }
 
 
-    [TargetRpc]
-    public void TargetShowWelcomeMessage(NetworkConnection target, string message)
+
+
+    public void UIManage(string message)
     {
-        /* if (uiManager != null)
-         {
-             uiManager.ShowMessage(message);
-         }*/
-
-        netMessages.text = message;
-
-
+        if(!isLocalPlayer) return;
+        Debug.Log("Call made");
+        StartCoroutine(ShowMessage(message));
     }
 
+    public void UIName(string name)
+    {
+        if(!isLocalPlayer) return ;
+        netName.text = name;
+
+        ResetLocalName();
+    }
+
+
+  
+
+
+    IEnumerator ShowMessage(string msg)
+    {
+        netMessagesPopUp.SetActive(true);
+        netMessages.text = msg + netName.text;
+        yield return new WaitForSeconds(10f);
+
+        netMessages.text = " " ;
+        netMessagesPopUp.SetActive(false);
+    }
+
+    [Command]
+    public void ResetLocalName()
+    {
+
+        ScoreboardManager scoreboardManager = GetComponentInParent<ScoreboardManager>();
+
+        scoreboardManager.ScoreNameChange();
+    }
+
+    public string GetCustomName()
+    {
+        return netName.text;
+    }
+    
 
 
     public void SyncAmmoChange(CannonData cnData)
