@@ -60,7 +60,7 @@ public class PlayerHealthUI : NetworkBehaviour
     {
         if (!isLocalPlayer) return;
 
-        
+       
         if (currentHealth <= 0 && Input.GetKey(repairKey) && !isRepairing)
         {
             isRepairing = true;
@@ -69,7 +69,7 @@ public class PlayerHealthUI : NetworkBehaviour
             Debug.Log("Repair started.");
         }
 
-       
+        // If repair key is released, stop repairing
         if (isRepairing && Input.GetKeyUp(repairKey))
         {
             isRepairing = false;
@@ -78,7 +78,6 @@ public class PlayerHealthUI : NetworkBehaviour
             Debug.Log("Repair cancelled.");
         }
 
-    
         if (isRepairing)
         {
             repairTimer += Time.deltaTime;

@@ -478,7 +478,7 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  playerInput: {fileID: 6200132072751145265}
+  playerHealthUI: {fileID: 6751560860948979733}
 --- !u!114 &5424925223759254863
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -495,6 +495,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   pirateInput: {fileID: 3336482206297351787}
+  playerHealthUI: {fileID: 6751560860948979733}
   shipSpeed: 70
   shipSteerMultiplier: 20
   turningThreshhold: 0.1
