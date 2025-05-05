@@ -31,7 +31,7 @@ public class Boat_Controller : NetworkBehaviour
 
 
     [Header("Audio"), Space(5f)]
-    [SerializeField] private AudioSource waterSFx;
+    [SerializeField] private AudioSource waterSFx, sailSFx;
 
     [Header("All About Speed Gauge"), Space(5f)]
     [SerializeField] private Transform speedNeedleUI;
@@ -53,7 +53,6 @@ public class Boat_Controller : NetworkBehaviour
 
         //pirateInput = GetComponent<PirateInput>();
         Debug.Log("Local is Connected");
-
         if (waterSFx != null)
             waterSFx.volume = .01f;
     }
@@ -103,13 +102,13 @@ public class Boat_Controller : NetworkBehaviour
         rb.AddForce(forward * v * speed, ForceMode.Acceleration);
 
         //seed gauge
-        speedInKm = Mathf.Abs(rb.linearVelocity.magnitude);
+        speedInKm = Mathf.Abs(Mathf.Ceil(rb.linearVelocity.magnitude));
 
-        speedNeedleUI.localRotation = Quaternion.Euler(0f, 0f, Mathf.Lerp(minNeedleRot, maxNeedleRot, speedInKm / 17.5f)); //roughly 23
+        speedNeedleUI.localRotation = Quaternion.Euler(0f, 0f, Mathf.Lerp(minNeedleRot, maxNeedleRot, speedInKm / 64));
 
         float sqrSpeed = Mathf.Max(rb.linearVelocity.sqrMagnitude, 0.0001f);
         float clampedSqrSpeed = Mathf.Clamp01(sqrSpeed);
-        waterSFx.volume = Mathf.Lerp(waterSFx.volume, clampedSqrSpeed * 1f, Time.deltaTime);
+        waterSFx.volume = Mathf.Lerp(waterSFx.volume, clampedSqrSpeed * .1f, Time.deltaTime);
 
         float shipDir = Vector3.Dot(shipVel, forward);
 
@@ -136,6 +135,9 @@ public class Boat_Controller : NetworkBehaviour
 
             sailsAssist += sailMultiplier * pirateInput.sailingInput;
             sailIndicatorUI.localRotation = Quaternion.Euler(0f, 0f, -sailsAssist);
+
+            if(sailSFx!= null)
+            sailSFx.volume = pirateInput.sailingInput > 0.5f || pirateInput.sailingInput < -0.5f ? .06f : 0f;
         }
     }
 
