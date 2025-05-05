@@ -1,6 +1,8 @@
+using Mirror;
 using UnityEngine;
 
-public class Boat_Controller : MonoBehaviour
+public class Boat_Controller : NetworkBehaviour
+
 {
     #region Custom Variables
 
@@ -11,9 +13,9 @@ public class Boat_Controller : MonoBehaviour
     [SerializeField] private float shipSpeed = 5f;
     [SerializeField] private float shipSteerMultiplier = 3f;
 
-    private float speed;
-    private float sailsAssist = 0f;
-    private float sailAngle = 0f;
+    [SyncVar]private float speed;
+    [SyncVar]private float sailsAssist = 0f;
+    [SyncVar]private float sailAngle = 0f;
     private const float acceptableAngle = .7f;
 
     [Header("Sliders && numbers"), Space(5f)]
@@ -34,12 +36,14 @@ public class Boat_Controller : MonoBehaviour
 
     void Start()
     {
+        if (!isLocalPlayer) return;
         rb = GetComponent<Rigidbody>();
         pirateInput = GetComponent<PirateInput>();
     }
 
     void FixedUpdate()
     {
+        if (!isLocalPlayer) return;
         ShipSail();
         HandleSailing();
     }

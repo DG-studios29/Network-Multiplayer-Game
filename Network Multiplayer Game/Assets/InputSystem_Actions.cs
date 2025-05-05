@@ -189,6 +189,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DropBait"",
+                    ""type"": ""Button"",
+                    ""id"": ""1645dc80-2bd7-4106-8ec3-e3ad43438f53"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -635,13 +644,35 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""positive"",
                     ""id"": ""d4107f8c-4e74-4cd3-bdf4-914f899b8c22"",
-                    ""path"": """",
+                    ""path"": ""<Keyboard>/rightBracket"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""Sailing"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5371a7d9-1e29-4a73-aaa4-f5cd0e8fb4e6"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""DropBait"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""11b67e3e-817a-4e75-9791-75ab21459df5"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""DropBait"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -1404,6 +1435,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_LoadPreset = m_Player.FindAction("LoadPreset", throwIfNotFound: true);
         m_Player_HoldPreset = m_Player.FindAction("HoldPreset", throwIfNotFound: true);
         m_Player_Sailing = m_Player.FindAction("Sailing", throwIfNotFound: true);
+        m_Player_DropBait = m_Player.FindAction("DropBait", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1513,6 +1545,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_LoadPreset;
     private readonly InputAction m_Player_HoldPreset;
     private readonly InputAction m_Player_Sailing;
+    private readonly InputAction m_Player_DropBait;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -1568,6 +1601,10 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/Sailing".
         /// </summary>
         public InputAction @Sailing => m_Wrapper.m_Player_Sailing;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/DropBait".
+        /// </summary>
+        public InputAction @DropBait => m_Wrapper.m_Player_DropBait;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1627,6 +1664,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Sailing.started += instance.OnSailing;
             @Sailing.performed += instance.OnSailing;
             @Sailing.canceled += instance.OnSailing;
+            @DropBait.started += instance.OnDropBait;
+            @DropBait.performed += instance.OnDropBait;
+            @DropBait.canceled += instance.OnDropBait;
         }
 
         /// <summary>
@@ -1671,6 +1711,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Sailing.started -= instance.OnSailing;
             @Sailing.performed -= instance.OnSailing;
             @Sailing.canceled -= instance.OnSailing;
+            @DropBait.started -= instance.OnDropBait;
+            @DropBait.performed -= instance.OnDropBait;
+            @DropBait.canceled -= instance.OnDropBait;
         }
 
         /// <summary>
@@ -2103,6 +2146,13 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnSailing(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "DropBait" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnDropBait(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.

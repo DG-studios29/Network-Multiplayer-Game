@@ -1,20 +1,28 @@
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.UI;
+using Mirror;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 [RequireComponent(typeof(SphereCollider))]
-public class Island : MonoBehaviour
+[RequireComponent(typeof(NetworkIdentity))]
+public class Island : NetworkBehaviour
 {
+    [Header("References")]
+    public Slider healthSlider;
+    public Slider lootSlider;
+    public LootRadiusVisualizer lootRadiusVisualizer;
+
     [HideInInspector] public IslandManager manager;
     [HideInInspector] public GameObject islandPrefab;
 
-    public bool isLooted = false;
-    private bool playerNearby = false;
-    private bool isDestroyed = false;
+    [SyncVar] public bool isLooted = false;
+    [SyncVar] private bool isDestroyed = false;
 
     [Header("Island Settings")]
     public float maxHealth = 100f;
-    private float currentHealth;
+    [SyncVar(hook = nameof(OnHealthChanged))] private float currentHealth;
 
     [Header("Treasure Settings")]
     public float treasureCollectionTime = 5f;
@@ -23,73 +31,123 @@ public class Island : MonoBehaviour
     public List<CannonDefence> cannons;
 
     private Coroutine lootCoroutine;
+    private HashSet<GameObject> playersInside = new HashSet<GameObject>();
+    private float currentLootProgress = 0f;
 
-    private void Start()
+    private SphereCollider myCollider;
+
+    public override void OnStartServer()
     {
+        base.OnStartServer();
         currentHealth = maxHealth;
 
-        SphereCollider myCollider = GetComponent<SphereCollider>();
+        myCollider = GetComponent<SphereCollider>();
         myCollider.radius = 100f;
         myCollider.isTrigger = true;
-
-      
     }
 
+    private void Update()
+    {
+        if (healthSlider != null)
+        {
+            healthSlider.value = currentHealth;
+        }
+
+        if (lootSlider != null)
+        {
+            lootSlider.gameObject.SetActive(playersInside.Count == 1 && isDestroyed && !isLooted);
+            lootSlider.value = currentLootProgress / treasureCollectionTime;
+        }
+    }
+
+    private void OnHealthChanged(float oldHealth, float newHealth)
+    {
+        currentHealth = newHealth;
+
+        if (healthSlider != null)
+        {
+            healthSlider.value = currentHealth / maxHealth;
+        }
+    }
+
+    [ServerCallback]
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Player entered island radius.");
-            playerNearby = true;
+            playersInside.Add(other.gameObject);
 
-           
-            if (isDestroyed && !isLooted && lootCoroutine == null)
+            // Notify LootRadiusVisualizer that the player is inside
+            LootRadiusVisualizer radiusVisualizer = GetComponentInChildren<LootRadiusVisualizer>();
+            if (radiusVisualizer != null)
+            {
+                radiusVisualizer.SetPlayerInside(true);
+            }
+
+            if (isDestroyed && !isLooted && playersInside.Count == 1 && lootCoroutine == null)
             {
                 lootCoroutine = StartCoroutine(CollectTreasureRoutine());
             }
         }
     }
 
+
+    [ServerCallback]
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            playerNearby = false;
-            Debug.Log("Player left island radius.");
+            playersInside.Remove(other.gameObject);
 
-           
-            if (isDestroyed && !isLooted && lootCoroutine != null)
+            // Notify LootRadiusVisualizer that the player is no longer inside
+            LootRadiusVisualizer radiusVisualizer = GetComponentInChildren<LootRadiusVisualizer>();
+            if (radiusVisualizer != null)
+            {
+                radiusVisualizer.SetPlayerInside(false);
+            }
+
+            if (lootCoroutine != null)
             {
                 StopCoroutine(lootCoroutine);
                 lootCoroutine = null;
+                currentLootProgress = 0f;
+            }
+
+            if (isDestroyed && !isLooted)
+            {
                 StartCoroutine(WaitBeforeDespawn());
+
+                if (playersInside.Count == 1)
+                {
+                    lootCoroutine = StartCoroutine(CollectTreasureRoutine());
+                }
             }
         }
     }
 
+    [Server]
     private IEnumerator WaitBeforeDespawn()
     {
-        yield return new WaitForSeconds(10f); 
+        yield return new WaitForSeconds(10f);
 
-        if (!playerNearby) // Only despawn if the player is still not in range
+        if (playersInside.Count == 0)
         {
-            Debug.Log("Player didn't stay nearby to loot. Despawning island...");
             StartCoroutine(DespawnAfterDelay());
         }
     }
 
+    [Server]
     private IEnumerator CollectTreasureRoutine()
     {
-        float timer = 0f;
+        currentLootProgress = 0f;
 
-        // Collect treasure only if player is still nearby
-        while (playerNearby && timer < treasureCollectionTime)
+        while (playersInside.Count == 1 && currentLootProgress < treasureCollectionTime)
         {
-            timer += Time.deltaTime;
+            currentLootProgress += Time.deltaTime;
             yield return null;
         }
 
-        if (timer >= treasureCollectionTime)
+        if (currentLootProgress >= treasureCollectionTime)
         {
             LootIsland();
             StartCoroutine(DespawnAfterDelay());
@@ -98,35 +156,65 @@ public class Island : MonoBehaviour
         lootCoroutine = null;
     }
 
+    [Server]
     public void TakeDamage(float damage)
     {
         if (isDestroyed) return;
 
         currentHealth -= damage;
-        Debug.Log("Island took damage. Current HP: " + currentHealth);
 
         if (currentHealth <= 0f)
         {
             isDestroyed = true;
-            Debug.Log("Island destroyed! Stay nearby to loot.");
 
-            // If player is already nearby, start looting right away
-            if (playerNearby && lootCoroutine == null)
+            if (playersInside.Count == 1 && lootCoroutine == null)
             {
                 lootCoroutine = StartCoroutine(CollectTreasureRoutine());
             }
         }
     }
 
+    [Server]
     public void LootIsland()
     {
         isLooted = true;
-        Debug.Log("Island looted!");
 
-        int lootAmount = Random.Range(100, 1001);  
-        Debug.Log("Loot collected: " + lootAmount);
+        int lootAmount = Random.Range(100, 1001);
+
+        // Get the player who looted
+        GameObject player = playersInside.FirstOrDefault();
+        if (player != null)
+        {
+            // Try to get ScoreboardManager
+            ScoreboardManager scoreboard = player.GetComponent<ScoreboardManager>();
+            if (scoreboard != null)
+            {
+                scoreboard.CmdIncreaseScore(lootAmount);
+            }
+
+            // Optional: Notify the specific client
+            TargetShowLootPopup(player.GetComponent<NetworkIdentity>().connectionToClient, lootAmount);
+        }
+
+        RpcNotifyLootCollected(lootAmount);
     }
 
+    [TargetRpc]
+    private void TargetShowLootPopup(NetworkConnection target, int amount)
+    {
+        Debug.Log($"[UI] You looted {amount} gold!");
+        LootPopupManager.Instance?.ShowLootPopup(amount);
+
+    }
+
+
+    [ClientRpc]
+    private void RpcNotifyLootCollected(int amount)
+    {
+        Debug.Log("Island looted! Loot collected: " + amount);
+    }
+
+    [Server]
     private IEnumerator DespawnAfterDelay()
     {
         manager?.NotifyIslandDespawn(this);
@@ -137,6 +225,6 @@ public class Island : MonoBehaviour
             manager.SpawnIsland(islandPrefab);
         }
 
-        Destroy(gameObject);
+        NetworkServer.Destroy(gameObject);
     }
 }

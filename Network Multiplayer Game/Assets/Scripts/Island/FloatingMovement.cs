@@ -21,7 +21,7 @@ public class FloatingMovement : MonoBehaviour
         island = GetComponent<Island>();
         // Set up input actions
         var gameplayMap = inputActions.FindActionMap("Player");
-        moveAction = gameplayMap.FindAction("Move");
+        moveAction = gameplayMap.FindAction("Sail");
         turnAction = gameplayMap.FindAction("Turn");
         
     }

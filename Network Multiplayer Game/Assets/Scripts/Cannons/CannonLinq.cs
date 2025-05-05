@@ -106,6 +106,7 @@ public class CannonLinq : MonoBehaviour
 
     public void FireCannonCalled(int callIndex)
     {
+
         
             for (int i = 0; i < realCannons.Length; i++)
             {
@@ -117,7 +118,8 @@ public class CannonLinq : MonoBehaviour
 
             LinkHUD();
             loadTimer = 0;
-     
+
+        
 
     }
 

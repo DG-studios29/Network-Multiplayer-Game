@@ -6,27 +6,33 @@ public class CannonFire : MonoBehaviour
     [SerializeField] private int index;
 
 
-    [SerializeField] private GameObject ballPrefab;
+    private GameObject ballPrefab;
     private Rigidbody rb;
 
 
     [Header("Projectile Motion")]
     [SerializeField] private CannonData ballType;
 
-    [SerializeField] private float launchAngle; //will say in inspector
+    private float launchAngle; //will say in inspector
     private float tanAlpha, cosAlpha,sinAlpha;
-    [SerializeField] private float rangeZ;  //will say in inspector
-    [SerializeField] private float Uz, Uy, Uo;
-    [SerializeField] private float gravity;
-    [SerializeField] private float heightY;
-    [SerializeField] private float heightMax;
-    [SerializeField] private float timeTaken;
+    private float rangeZ;  //will say in inspector
+    private float Uz, Uy, Uo;
+    private float gravity;
+    private float heightY;
+    private float heightMax;
+    private float timeTaken;
+
+    private float lifespan;
+    private float damage;
 
     [SerializeField] private Vector3 initialVelocity;
     [SerializeField] private Vector3 globalVelocity;
 
+    [SerializeField] private Transform spawnPoint;
+    [SerializeField] private float gravityScale = 1.4f;
 
-    
+
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -34,6 +40,7 @@ public class CannonFire : MonoBehaviour
         //ballType = 
 
         InitialzeVariables();
+        
     }
 
     // Update is called once per frame
@@ -53,6 +60,8 @@ public class CannonFire : MonoBehaviour
             rangeZ = ballType.RangeZ;
             heightY = ballType.HeightY;
             timeTaken = ballType.TimeTaken;
+            lifespan = ballType.Lifespan;
+            damage = ballType.Damage;
 
         }
 
@@ -78,7 +87,7 @@ public class CannonFire : MonoBehaviour
         Uy = Uo * sinAlpha;
 
        
-        initialVelocity = new Vector3(0, Uy , Uz);
+        initialVelocity = new Vector3(0, Uy , Uz) * gravityScale;
       
 
     }
@@ -104,12 +113,25 @@ public class CannonFire : MonoBehaviour
 
     public void FireProjectile()
     {
-        Debug.Log("Look who finally made some progress " + this.name);
+        Debug.Log("FIVE STAR " + this.name);
 
-        globalVelocity = transform.TransformDirection(initialVelocity);
-        GameObject cannonObj = Instantiate(ballPrefab,transform.position,transform.parent.transform.rotation);
+        globalVelocity = spawnPoint.transform.TransformDirection(initialVelocity);
+        GameObject cannonObj = Instantiate(ballPrefab,spawnPoint.position,spawnPoint.transform.rotation);
+
+        CannonCollision cannonCtrl = cannonObj.GetComponent<CannonCollision>();
+
+        cannonCtrl.cannonLifeSpan = lifespan;
+        cannonCtrl.cannonDamage = damage;
+        cannonCtrl.gravityScale = 2f;
+        cannonCtrl.parentObj = this.gameObject;
+        cannonCtrl.gravityScale = gravityScale * gravityScale;
+
+
         rb = cannonObj.GetComponent<Rigidbody>();
         rb.linearVelocity = globalVelocity;
+
+      
+
         
         
 

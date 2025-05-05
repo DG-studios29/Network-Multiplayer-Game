@@ -7,6 +7,7 @@ TagManager:
   - Island
   - MinimapCamera
   - MapCamera
+  - Cannonball
   layers:
   - Default
   - TransparentFX

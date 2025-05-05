@@ -103,6 +103,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "DropBait",
+                    "type": "Button",
+                    "id": "1645dc80-2bd7-4106-8ec3-e3ad43438f53",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -549,13 +558,35 @@
                 {
                     "name": "positive",
                     "id": "d4107f8c-4e74-4cd3-bdf4-914f899b8c22",
-                    "path": "",
+                    "path": "<Keyboard>/rightBracket",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "Sailing",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "5371a7d9-1e29-4a73-aaa4-f5cd0e8fb4e6",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "DropBait",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "11b67e3e-817a-4e75-9791-75ab21459df5",
+                    "path": "<Gamepad>/dpad/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "DropBait",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },

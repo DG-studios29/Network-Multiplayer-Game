@@ -18,3 +18,5 @@ MonoBehaviour:
   rangeZ: 70
   heightY: 0
   timeTaken: 1.5
+  lifespan: 20
+  damage: 10

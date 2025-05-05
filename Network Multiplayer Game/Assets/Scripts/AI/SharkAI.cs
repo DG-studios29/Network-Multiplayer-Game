@@ -1,25 +1,25 @@
 using UnityEngine;
 using UnityEngine.AI;
+using Mirror;
 
-public class SharkAI : MonoBehaviour
+public class SharkAI : NetworkBehaviour
 {
     [Header("Waypoints")]
     public Transform[] patrolPoints;
 
     [Header("Player Info")]
-    public Transform player;
-    PlayerHealth playerHealth;
+    private Transform player;
+    private PlayerHealthUI playerHealth;
     private float lastAttackTime;
     public int attackDamage = 10;
     public float attackCooldown = 5f;
     public bool playerIsDead = false;
 
-
     [Header("Attacking Setup")]
     public float chaseRange = 100f;
     public float attackRange = 3f;
-    public float attackOffset = 1.5f; 
-    public float chaseOffset = -2f;   
+    public float attackOffset = 1.5f;
+    public float chaseOffset = -2f;
     public float offsetSmoothSpeed = 2f;
 
     [Header("A.I Setup")]
@@ -30,26 +30,55 @@ public class SharkAI : MonoBehaviour
     private bool isReturningToPortal;
     private bool isChasing;
     private bool isAttacking;
+    private bool isDistracted = false;
+    private float distractionTimer = 0f;
 
     private float targetOffset;
 
     void Start()
     {
+        if (!isServer) return;
+
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         GoToNextPatrolPoint();
 
-        if(player != null )
+        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+        if (playerObj != null)
         {
-            playerHealth = player.GetComponent<PlayerHealth>();
+            player = playerObj.transform;
+            playerHealth = player.GetComponent<PlayerHealthUI>();
         }
     }
 
     void Update()
     {
-        if ((player == null || playerHealth == null))
+        if (!isServer) return;
+        
+        if (isDistracted)
         {
-            return;
+            distractionTimer -= Time.deltaTime;
+            if (distractionTimer <= 0f)
+            {
+                isDistracted = false;
+            }
+            else
+            {
+                return; 
+            }
+        }
+
+        if (player == null || playerHealth == null)
+        {
+            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+            if (playerObj != null)
+            {
+                player = playerObj.transform;
+                playerHealth = player.GetComponent<PlayerHealthUI>();
+            }
+
+            if (player == null || playerHealth == null)
+                return;
         }
 
         playerIsDead = playerHealth.currentHealth <= 0;
@@ -68,34 +97,25 @@ public class SharkAI : MonoBehaviour
             }
         }
 
-        // Smoothly adjust base offset always (even when dead)
         targetOffset = isAttacking ? attackOffset : chaseOffset;
         agent.baseOffset = Mathf.Lerp(agent.baseOffset, targetOffset, Time.deltaTime * offsetSmoothSpeed);
 
-        // Don't run further AI logic if dead
-        if (playerIsDead)
-            return;
-
+        if (playerIsDead) return;
 
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
-        // State logic
         if (distanceToPlayer <= attackRange)
         {
             isAttacking = true;
             isChasing = false;
             agent.SetDestination(transform.position);
 
-            if (!hasAttacked)
+            if (!hasAttacked && Time.time - lastAttackTime >= attackCooldown)
             {
-                if (Time.time - lastAttackTime >= attackCooldown)
-                {
-                    animator.SetTrigger("Attack");
-                    lastAttackTime = Time.time;
-                    playerHealth.TakeDamage(attackDamage);
-                }
+                animator.SetTrigger("Attack");
+                lastAttackTime = Time.time;
+                playerHealth.TakeDamage(attackDamage);
             }
-
         }
         else if (distanceToPlayer <= chaseRange)
         {
@@ -114,21 +134,17 @@ public class SharkAI : MonoBehaviour
                 GoToNextPatrolPoint();
         }
 
-      
-        if (agent.velocity.sqrMagnitude > 0.01f)
-        {
-            Quaternion targetRotation = Quaternion.LookRotation(agent.velocity.normalized);
-            targetRotation *= Quaternion.Euler(0, 180f, 0); 
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
-        }
-
-        // Smoothly transition baseOffset
         targetOffset = isAttacking ? attackOffset : chaseOffset;
         agent.baseOffset = Mathf.Lerp(agent.baseOffset, targetOffset, Time.deltaTime * offsetSmoothSpeed);
 
-     
-        animator.SetBool("isChasing", isChasing);
+        if (agent.velocity.sqrMagnitude > 0.01f)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(agent.velocity.normalized);
+            targetRotation *= Quaternion.Euler(0, 180f, 0);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
+        }
 
+        animator.SetBool("isChasing", isChasing);
     }
 
     void GoToNextPatrolPoint()
@@ -143,7 +159,6 @@ public class SharkAI : MonoBehaviour
     {
         if (patrolPoints.Length == 0) return;
 
-        // Find the nearest portal by comparing distances
         Transform nearestPortal = patrolPoints[0];
         float nearestDistance = Vector3.Distance(transform.position, patrolPoints[0].position);
 
@@ -157,9 +172,17 @@ public class SharkAI : MonoBehaviour
             }
         }
 
-        
         agent.SetDestination(nearestPortal.position);
-        isChasing = false; 
-
+        isChasing = false;
     }
+
+    public void Distract(float duration)
+    {
+        isDistracted = true;
+        distractionTimer = duration;
+        agent.SetDestination(transform.position);
+        animator.SetBool("isChasing", false);
+        animator.ResetTrigger("Attack");
+    }
+
 }
