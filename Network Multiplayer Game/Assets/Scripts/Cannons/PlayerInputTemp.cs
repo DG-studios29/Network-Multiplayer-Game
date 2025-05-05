@@ -76,8 +76,10 @@ public class PlayerInputTemp : NetworkBehaviour
     void Start()
     {
 
-        if (!isLocalPlayer)
+        if (!isLocalPlayer && playerHUD != null && cannonMenu != null)
         {
+            playerHUD.SetActive(false);
+            cannonMenu.SetActive(false);
             return;
         }
 

@@ -59,8 +59,8 @@ public class ScoreboardManager : NetworkBehaviour
     public void ScoreNameChange()
     {
 
-        playerName = hud.GetCustomName();
-        Debug.Log("Back and forth");
+        //playerName = hud.GetCustomName();
+        //Debug.Log("Back and forth");
         clientScoreNameChange();
     }
 

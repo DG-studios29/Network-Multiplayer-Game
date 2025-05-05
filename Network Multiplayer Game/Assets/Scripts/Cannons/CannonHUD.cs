@@ -52,9 +52,7 @@ public class CannonHUD : NetworkBehaviour
             cannonLinq = GameObject.FindAnyObjectByType<CannonLinq>();
         }
         
-        
-
-
+       
         ballTexts = new LoadText[6];
 
         ballTexts[0] = ballTxt1;
