@@ -20,3 +20,5 @@ MonoBehaviour:
   timeTaken: 1.5
   lifespan: 20
   damage: 10
+  gravityScale: 1
+  particleFX: {fileID: 0}

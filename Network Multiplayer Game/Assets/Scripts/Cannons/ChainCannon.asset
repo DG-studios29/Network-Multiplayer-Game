@@ -14,9 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cannonName: ChainCannon
   ballPrefab: {fileID: 3630204142601734126, guid: 1fed68ae8fe134042aa5758f58748c57, type: 3}
-  launchAngle: 60
-  rangeZ: 40
+  launchAngle: 70
+  rangeZ: 30
   heightY: 0
   timeTaken: 1
   lifespan: 20
   damage: 10
+  gravityScale: 1.4
+  particleFX: {fileID: 0}
