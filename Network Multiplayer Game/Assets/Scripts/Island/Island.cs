@@ -21,7 +21,7 @@ public class Island : NetworkBehaviour
     [SyncVar] private bool isDestroyed = false;
 
     [Header("Island Settings")]
-    public float maxHealth = 100f;
+    public float maxHealth = 10f;
     [SyncVar(hook = nameof(OnHealthChanged))] private float currentHealth;
 
     [Header("Treasure Settings")]
@@ -84,9 +84,13 @@ public class Island : NetworkBehaviour
                 radiusVisualizer.SetPlayerInside(true);
             }
 
-            if (isDestroyed && !isLooted && playersInside.Count == 1 && lootCoroutine == null)
+            if (isDestroyed && !isLooted && lootCoroutine == null)
             {
-                lootCoroutine = StartCoroutine(CollectTreasureRoutine());
+                if (playersInside.Count == 1)
+                {
+                    Debug.Log("Start looting island is destroyed");
+                    lootCoroutine = StartCoroutine(CollectTreasureRoutine());
+                }
             }
         }
     }
@@ -139,6 +143,7 @@ public class Island : NetworkBehaviour
     [Server]
     private IEnumerator CollectTreasureRoutine()
     {
+        isLooted = true;
         currentLootProgress = 0f;
 
         while (playersInside.Count == 1 && currentLootProgress < treasureCollectionTime)
@@ -166,12 +171,14 @@ public class Island : NetworkBehaviour
         if (currentHealth <= 0f)
         {
             isDestroyed = true;
-
+            Debug.Log("island Destroyed");
             if (playersInside.Count == 1 && lootCoroutine == null)
             {
+                Debug.Log("Player inside on destruction — starting loot coroutine.");
                 lootCoroutine = StartCoroutine(CollectTreasureRoutine());
             }
         }
+
     }
 
     [Server]
@@ -192,7 +199,7 @@ public class Island : NetworkBehaviour
                 scoreboard.CmdIncreaseScore(lootAmount);
             }
 
-            // Optional: Notify the specific client
+          
             TargetShowLootPopup(player.GetComponent<NetworkIdentity>().connectionToClient, lootAmount);
         }
 
