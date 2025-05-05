@@ -15,8 +15,10 @@ MonoBehaviour:
   cannonName: BundleShot
   ballPrefab: {fileID: 3630204142601734126, guid: 1fed68ae8fe134042aa5758f58748c57, type: 3}
   launchAngle: 40
-  rangeZ: 40
+  rangeZ: 60
   heightY: 0
   timeTaken: 1
   lifespan: 20
   damage: 10
+  gravityScale: 1.1
+  particleFX: {fileID: 0}

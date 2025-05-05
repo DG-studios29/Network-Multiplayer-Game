@@ -19,8 +19,8 @@ public class CannonLinq : MonoBehaviour
     //public List<CannonSlot> cSlots;
     //public List<CannonFire> cFires;
 
-    private CannonHolder cannonHolder;
-    private CannonHUD cannonHUD;
+    [SerializeField]private CannonHolder cannonHolder;
+    [SerializeField]private CannonHUD cannonHUD;
 
     public CannonHolder CannonHolder => cannonHolder;
 
@@ -32,12 +32,24 @@ public class CannonLinq : MonoBehaviour
     public float LoadTimeMax => loadTimeMax;
 
 
+    [SerializeField] NetTempFinder netTempFinder;
+
+
     private void Awake()
     {
         realCannons = new CannonFire[6];
 
-        cannonHolder = GameObject.FindAnyObjectByType<CannonHolder>();//Cannon GUI needs to be active at this point
-        cannonHUD = GameObject.FindAnyObjectByType<CannonHUD>();
+        if(netTempFinder == null)
+        {
+
+        }
+        else
+        {
+            cannonHolder = GameObject.FindAnyObjectByType<CannonHolder>();//Cannon GUI needs to be active at this point
+            cannonHUD = GameObject.FindAnyObjectByType<CannonHUD>();
+        }
+
+       
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
