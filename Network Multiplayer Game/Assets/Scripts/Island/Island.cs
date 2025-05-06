@@ -22,10 +22,14 @@ public class Island : NetworkBehaviour
 
     [SyncVar] public bool isLooted = false;
     [SyncVar] private bool isDestroyed = false;
+    [SyncVar] private bool isDespawning = false;
+    [SyncVar] private float syncedLootProgress;
+
 
     [Header("Island Settings")]
-    public float maxHealth = 10f;
+    public float maxHealth = 30f;
     [SyncVar(hook = nameof(OnHealthChanged))] private float currentHealth;
+    [SyncVar(hook = nameof(OnRadiusVisibilityChanged))] private bool showRadius = false;
 
     [Header("Treasure Settings")]
     public float treasureCollectionTime = 5f;
@@ -77,30 +81,43 @@ public class Island : NetworkBehaviour
         }
     }
 
+
+
     private void OnHealthChanged(float oldHealth, float newHealth)
     {
         currentHealth = newHealth;
 
         if (healthSlider != null)
         {
-            healthSlider.value = currentHealth / maxHealth;
+            healthSlider.maxValue = maxHealth;            
+            healthSlider.value = currentHealth;           
+        }
+    }
+
+
+    private void OnRadiusVisibilityChanged(bool _old, bool newVal)
+    {
+        if (lootRadiusVisualizer != null)
+        {
+            lootRadiusVisualizer.SetVisible(newVal);
         }
     }
 
     [ServerCallback]
     private void OnTriggerEnter(Collider other)
     {
+        GameObject root = other.transform.root.gameObject;
+
         if (other.CompareTag("Player"))
         {
             playersInside.Add(other.gameObject);
 
-            // Notify LootRadiusVisualizer that the player is inside
             LootRadiusVisualizer radiusVisualizer = GetComponentInChildren<LootRadiusVisualizer>();
             if (radiusVisualizer != null)
             {
-                radiusVisualizer.SetPlayerInside(true);
+                radiusVisualizer.SetVisible(true);
             }
-
+            if (!showRadius) showRadius = true;
             if (isDestroyed && !isLooted && playersInside.Count == 1 && lootCoroutine == null)
             {
                 lootCoroutine = StartCoroutine(CollectTreasureRoutine());
@@ -112,33 +129,44 @@ public class Island : NetworkBehaviour
     [ServerCallback]
     private void OnTriggerExit(Collider other)
     {
+        GameObject root = other.transform.root.gameObject;
         if (other.CompareTag("Player"))
         {
             playersInside.Remove(other.gameObject);
+            
 
-            // Notify LootRadiusVisualizer that the player is no longer inside
             LootRadiusVisualizer radiusVisualizer = GetComponentInChildren<LootRadiusVisualizer>();
             if (radiusVisualizer != null)
             {
-                radiusVisualizer.SetPlayerInside(false);
+                radiusVisualizer.SetVisible(false);
             }
 
-            if (lootCoroutine != null)
+            if (playersInside.Count == 0 && !isDespawning && isDestroyed)
             {
-                StopCoroutine(lootCoroutine);
-                lootCoroutine = null;
-                currentLootProgress = 0f;
-            }
-
-            if (isDestroyed && !isLooted)
-            {
-                StartCoroutine(WaitBeforeDespawn());
-
-                if (playersInside.Count == 1)
+                showRadius = false;
+                if (lootCoroutine != null)
                 {
-                    lootCoroutine = StartCoroutine(CollectTreasureRoutine());
+                    StopCoroutine(lootCoroutine);
+                    lootCoroutine = null;
+                    currentLootProgress = 0f;
                 }
+
+
+                if (isDestroyed && !isLooted)
+                {
+                    StartCoroutine(WaitBeforeDespawn());
+
+                    if (playersInside.Count == 1)
+                    {
+                        lootCoroutine = StartCoroutine(CollectTreasureRoutine());
+                    }
+
+                }
+
+                isDespawning = true;
+                StartCoroutine(DespawnAfterDelay());
             }
+
         }
     }
 
@@ -153,7 +181,7 @@ public class Island : NetworkBehaviour
         }
     }
 
-    [Server]
+    [ServerCallback]
     private IEnumerator CollectTreasureRoutine()
     {
         currentLootProgress = 0f;
@@ -161,6 +189,7 @@ public class Island : NetworkBehaviour
         while (playersInside.Count == 1 && currentLootProgress < treasureCollectionTime)
         {
             currentLootProgress += Time.deltaTime;
+            syncedLootProgress = currentLootProgress; // sync value to all clients
             yield return null;
         }
 
@@ -172,6 +201,7 @@ public class Island : NetworkBehaviour
 
         lootCoroutine = null;
     }
+
 
     [Server]
     public void TakeDamage(float amount)
@@ -211,8 +241,6 @@ public class Island : NetworkBehaviour
         isLooted = true;
 
         int lootAmount = Random.Range(100, 1001);
-
-        // Get the player who looted
         GameObject player = playersInside.FirstOrDefault();
         if (player != null)
         {
@@ -223,8 +251,12 @@ public class Island : NetworkBehaviour
                 scoreboard.CmdIncreaseScore(lootAmount);
             }
 
+            var conn = player.GetComponent<NetworkIdentity>()?.connectionToClient;
+            if (conn != null)
+            {
+                TargetShowLootPopup(conn, lootAmount);
+            }
 
-            //TargetShowLootPopup(player.GetComponent<NetworkIdentity>().connectionToClient, lootAmount);
         }
 
         RpcNotifyLootCollected(lootAmount);
@@ -233,10 +265,19 @@ public class Island : NetworkBehaviour
     [TargetRpc]
     private void TargetShowLootPopup(NetworkConnection target, int amount)
     {
-        Debug.Log($"[UI] You looted {amount} gold!");
-        LootPopupManager.Instance?.ShowLootPopup(amount);
+        Debug.Log($"[CLIENT] You looted {amount} gold!");
 
+        var player = NetworkClient.localPlayer;
+        if (player != null)
+        {
+            var ui = player.GetComponent<PlayerIslandUI>();
+            if (ui != null)
+            {
+                ui.UpdateLootCollected(amount); 
+            }
+        }
     }
+
 
 
     [ClientRpc]
@@ -249,31 +290,30 @@ public class Island : NetworkBehaviour
     private IEnumerator DespawnAfterDelay()
     {
         Debug.Log("Despawn coroutine started");
-
-        manager?.NotifyIslandDespawn(this);
-
         yield return new WaitForSeconds(5f);
 
-        if (manager != null && islandPrefab != null)
+        if (playersInside.Count == 0)
         {
+            manager?.NotifyIslandDespawn(this); 
             Debug.Log("Spawning new island...");
-            manager.SpawnIsland(islandPrefab);
-        }
-        else
-        {
-            Debug.LogWarning("Island prefab or manager missing!");
-        }
+            if (manager != null && islandPrefab != null)
+            {
+                manager.SpawnIsland(islandPrefab);
+            }
 
-        if (isServer)
-        {
-            Debug.Log("Destroying island on server...");
-            NetworkServer.Destroy(gameObject);
+            if (isServer)
+            {
+                Debug.Log("Destroying island on server...");
+                NetworkServer.Destroy(gameObject);
+            }
         }
         else
         {
-            Debug.LogWarning("Tried to destroy island from a client!");
+            Debug.LogWarning("Players returned before despawn. Canceling.");
+            isDespawning = false;
         }
     }
+
 
 
     private IEnumerator ShowLootBarWithDelay()
@@ -287,4 +327,10 @@ public class Island : NetworkBehaviour
         }
     }
 
+    public float GetCurrentHealth() => currentHealth;
+    public float GetLootProgress()
+    {
+        return syncedLootProgress / treasureCollectionTime;
+    }
+    
 }
