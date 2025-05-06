@@ -20,6 +20,7 @@ public class Boat_Controller : NetworkBehaviour
     [Header("Sliders && numbers"), Space(5f)]
     [Range(0f, .5f)] public float turningThreshhold;
     [Range(0f, 10f)] public float sailMultiplier;
+    [Range(0f, 100f)] public float nonPhysicsSteerMltiplier = 60;
 
     [Header("Animation Curves"), Space(5f)]
     [SerializeField] private AnimationCurve speedCurve;
@@ -37,6 +38,7 @@ public class Boat_Controller : NetworkBehaviour
     [SerializeField] private Transform speedNeedleUI;
     [SerializeField] private float minNeedleRot, maxNeedleRot;
     private float speedInKm;
+    private float nonPhysicsSteerFactor;
 
     #endregion
 
@@ -108,14 +110,21 @@ public class Boat_Controller : NetworkBehaviour
 
         float sqrSpeed = Mathf.Max(rb.linearVelocity.sqrMagnitude, 0.0001f);
         float clampedSqrSpeed = Mathf.Clamp01(sqrSpeed);
-        waterSFx.volume = Mathf.Lerp(waterSFx.volume, clampedSqrSpeed * .1f, Time.deltaTime);
+        waterSFx.volume = Mathf.Lerp(waterSFx.volume, clampedSqrSpeed * .1f, Time.fixedDeltaTime);
 
         float shipDir = Vector3.Dot(shipVel, forward);
 
-        if (shipVel.sqrMagnitude != 0)
+        if (shipVel.sqrMagnitude != 0 && v> 0.2f || v< -0.2f)
         {
             rb.AddRelativeTorque(new Vector3(0, turnCurve.Evaluate(Mathf.Abs(shipDir))
                 * shipSteerMultiplier, 0) * h, ForceMode.Acceleration);
+        }
+
+        //Non-Physics Steer
+        if(shipVel.sqrMagnitude<= Mathf.Abs(1) && v < 0.1f || v > -0.1f)
+        {
+            nonPhysicsSteerFactor += Time.fixedDeltaTime * h * nonPhysicsSteerMltiplier;
+            transform.rotation = Quaternion.Euler(0f, nonPhysicsSteerFactor, 0f);
         }
     }
 

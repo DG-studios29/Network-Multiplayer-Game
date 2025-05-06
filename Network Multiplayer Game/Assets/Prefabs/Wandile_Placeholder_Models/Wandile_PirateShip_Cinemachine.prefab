@@ -20264,6 +20264,7 @@ MonoBehaviour:
   shipSteerMultiplier: 20
   turningThreshhold: 0.1
   sailMultiplier: 2
+  nonPhysicsSteerMltiplier: 60
   speedCurve:
     serializedVersion: 2
     m_Curve:
