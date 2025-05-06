@@ -48,16 +48,33 @@ public class NetworkTempHUD : MonoBehaviour
     {
         // If the IP input field is not empty, update the network address with the value
         if (!string.IsNullOrEmpty(ipInputField.text))
+        
+        { 
             networkManager.networkAddress = ipInputField.text;
+        }
+        else 
+        {
+            networkManager.networkAddress = "localhost";
+        }
 
         // Try to convert the port input (string) into a number if successful, set it on the transport component
         if (ushort.TryParse(portInputField.text, out ushort port))
-            transport.port = port;
+        { transport.port = port; }
+        else
+        {
+            transport.port = 7777;
+        }
 
         //testing
-        if(!string.IsNullOrEmpty(nameInputField.text))
-            networkManager.player_Name = nameInputField.text;
-
+        if (!string.IsNullOrEmpty(ipInputField.text))
+        {
+            //networkManager.player_Name = "Nobody";
+            networkManager.PlayerNewName(nameInputField.text);
+            //networkManager.player_Name = nameInputField.text;
+        }
+          
+       
+    
 
     }
 

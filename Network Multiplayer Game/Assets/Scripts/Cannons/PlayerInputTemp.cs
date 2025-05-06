@@ -37,6 +37,12 @@ public class PlayerInputTemp : NetworkBehaviour
     private NetworkIdentity netID;
 
     public NetworkIdentity NetID;
+    [SerializeField]private string captainName;
+    [SerializeField]private int numJoined;
+
+    public string CaptainName => CaptainName;
+    public int NumJoined => numJoined;
+
 
     [SerializeField] private NetTempFinder netTempFinder;
 
@@ -70,8 +76,10 @@ public class PlayerInputTemp : NetworkBehaviour
     void Start()
     {
 
-        if (!isLocalPlayer)
+        if (!isLocalPlayer && playerHUD != null && cannonMenu != null)
         {
+            playerHUD.SetActive(false);
+            cannonMenu.SetActive(false);
             return;
         }
 
@@ -169,9 +177,44 @@ public class PlayerInputTemp : NetworkBehaviour
 
 
 
+    [TargetRpc]
+    public void TargetShowWelcomeMessage(NetworkConnection target, string message)
+    {
+       /*  if (target.identity != this.NetID)
+         {
+            //uiManager.ShowMessage(message);
+            return;
+         }
+*/
+        //StartCoroutine(ShowMessage(message));
+        cannonLinq.MsgHUD(message);
+
+    }
 
 
-  
+    [TargetRpc]
+    public void SetPlayerName(NetworkConnection target, string name, int count)
+    {
+        /* if (uiManager != null)
+         {
+             uiManager.ShowMessage(message);
+         }*/
+        /*     if (target.identity != this.NetID)
+             {
+                 //uiManager.ShowMessage(message);
+                 return;
+             }*/
+
+
+        //StartCoroutine(ShowMessage(message));
+        captainName = name;
+        numJoined = count;
+        cannonLinq.NameHUD($"Player {count.ToString()}");
+        
+
+    }
+
+
     public void AttackTest(InputAction.CallbackContext context)
     {
 
@@ -235,7 +278,7 @@ public class PlayerInputTemp : NetworkBehaviour
 
                 activePanel = ActivePanel.PRESETS;
                
-                handleEvent.ChangeFirstSelected(activePanel);
+                handleEvent.ChangeFirstSelected(ActivePanel.PRESETS);
 
                 canvasLoadHUD.ShowOpenedPanel(activePanel);
             }
