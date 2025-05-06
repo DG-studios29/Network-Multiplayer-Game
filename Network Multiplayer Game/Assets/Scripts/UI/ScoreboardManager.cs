@@ -10,7 +10,7 @@ public class ScoreboardManager : NetworkBehaviour
     [Header("Scoreboard UI")]
     [SerializeField] private TMP_Text[] playerNameTexts; 
     [SerializeField] private TMP_Text[] playerScoreTexts; 
-    [SerializeField] private Color highlightColor = Color.yellow; 
+    [SerializeField] private Color highlightColor = Color.green; 
     [SerializeField] private Color defaultColor = Color.black; 
 
     [Header("Player Settings")]
@@ -20,12 +20,32 @@ public class ScoreboardManager : NetworkBehaviour
     //[SerializeField] private PlayerInputTemp playerData;
     [SerializeField] private CannonHUD hud;
 
-    private static List<ScoreboardManager> allPlayers = new List<ScoreboardManager>(); 
+    private static List<ScoreboardManager> allPlayers = new List<ScoreboardManager>();
+
+    //[SerializeField]private LBController controller;
+
+
+/*    [Server]
+    public void GetController(ScoreboardManager entry)
+    {
+        //controller = 
+        LBController.Instance.playerScores.Add(entry);
+    }
+    
+    [ClientRpc]
+    public void RcpGetController(ScoreboardManager entry)
+    {
+        LBController.Instance.playerScores.Add(entry);
+    }
+*/
+
 
     public override void OnStartServer()
     {
         base.OnStartServer();
         allPlayers.Add(this);
+
+       
     }
 
     public override void OnStopServer()
@@ -34,34 +54,60 @@ public class ScoreboardManager : NetworkBehaviour
         allPlayers.Remove(this);
     }
 
+    [Command]
+    public void AddToServerList(ScoreboardManager player)
+    {
+        //bool check = false;
+        /*    foreach (ScoreboardManager entry in allPlayers)
+            {
+                if(entry != player)
+                {
+
+                     check = false
+                    //LBController.Instance.
+                }
+            }*/
+
+        allPlayers.Add(player);
+        //controller.playerScores.Add(player);
+        //GetController(player);
+
+    }
+
     public override void OnStartLocalPlayer()
     {
         base.OnStartLocalPlayer();
+        
 
-        playerName = $"Player {netId}";
+
+        //playerName = $"Player {netId}";
+        playerName = hud.GetCustomName();
+        AddToServerList(this);
+        //AddToServerList(this);
+        //ScoreNameChange();
+        
         //playerName = playerData.CaptainName;
 
         //PlayerInputTemp playerDat = NetworkClient.localPlayer.gameObject.GetComponent<PlayerInputTemp>();
         //playerName = playerDat.CaptainName;
 
-        if (isLocalPlayer)
-        {
-            
-        }
+     
         // = this.GetComponentInParent<PlayerInputTemp>();
 
-      /*  if (playerData != null)
-        {
-            playerName = playerData.CaptainName;
-            RefreshScoreboard();
+        /*  if (playerData != null)
+          {
+              playerName = playerData.CaptainName;
+              RefreshScoreboard();
 
-        }*/
-       
-      
+          }*/
+        //add but set name and scores first
+        
+        RefreshScoreboard();
+
     }
 
 
-    
+    [Command]
     public void ScoreNameChange()
     {
 
@@ -70,8 +116,8 @@ public class ScoreboardManager : NetworkBehaviour
         clientScoreNameChange();
     }
 
-    
-    public void clientScoreNameChange()
+   [Server]
+   public void clientScoreNameChange()
     {
 
         playerName = hud.GetCustomName();
@@ -118,8 +164,9 @@ public class ScoreboardManager : NetworkBehaviour
     [Server]
     private void UpdateScoreboard()
     {
-      
+
         var sortedPlayers = allPlayers.OrderByDescending(p => p.playerScore).ToList();
+
 
         for (int i = 0; i < playerNameTexts.Length; i++)
         {
@@ -127,11 +174,11 @@ public class ScoreboardManager : NetworkBehaviour
             {
                 var player = sortedPlayers[i];
 
-              
+
                 playerNameTexts[i].text = player.playerName;
                 playerScoreTexts[i].text = player.playerScore.ToString();
 
-        
+
                 if (i == 0)
                 {
                     playerNameTexts[i].color = highlightColor;
@@ -145,7 +192,7 @@ public class ScoreboardManager : NetworkBehaviour
             }
             else
             {
-              
+
                 playerNameTexts[i].text = "Waiting...";
                 playerScoreTexts[i].text = "0";
                 playerNameTexts[i].color = defaultColor;
@@ -153,12 +200,31 @@ public class ScoreboardManager : NetworkBehaviour
             }
         }
 
-  
+        //for (int i = 0; i < LBController.Instance.playerScores.Count; i++)
+        //{
+        //    playerNameTexts[i].text = LBController.Instance.playerScores[i].name;
+        //    playerScoreTexts[i].text = LBController.Instance.playerScores[i].playerScore.ToString();
+
+        //    if (playerName == LBController.Instance.playerScores[i].playerName)
+        //    {
+        //        playerNameTexts[i].color = highlightColor;
+        //        playerScoreTexts[i].color = highlightColor;
+        //    }
+        //    else
+        //    {
+        //        playerNameTexts[i].color = defaultColor;
+        //        playerScoreTexts[i].color = defaultColor;
+        //    }
+
+        //}
+
+
+
         RpcUpdateScoreboardUI();
     }
 
 
-
+  
 
 
 
@@ -176,7 +242,7 @@ public class ScoreboardManager : NetworkBehaviour
     [ClientRpc]
     private void RpcUpdateScoreboardUI()
     {
-        
+
         var sortedPlayers = allPlayers.OrderByDescending(p => p.playerScore).ToList();
 
         for (int i = 0; i < playerNameTexts.Length; i++)
@@ -185,11 +251,11 @@ public class ScoreboardManager : NetworkBehaviour
             {
                 var player = sortedPlayers[i];
 
-              
+
                 playerNameTexts[i].text = player.playerName;
                 playerScoreTexts[i].text = player.playerScore.ToString();
 
-              
+
                 if (i == 0)
                 {
                     playerNameTexts[i].color = highlightColor;
@@ -203,13 +269,31 @@ public class ScoreboardManager : NetworkBehaviour
             }
             else
             {
-          
+
                 playerNameTexts[i].text = "Waiting...";
                 playerScoreTexts[i].text = "0";
                 playerNameTexts[i].color = defaultColor;
                 playerScoreTexts[i].color = defaultColor;
             }
         }
+
+        //for (int i = 0; i < LBController.Instance.playerScores.Count; i++)
+        //{
+        //    playerNameTexts[i].text = LBController.Instance.playerScores[i].name;
+        //    playerScoreTexts[i].text = LBController.Instance.playerScores[i].ToString();
+
+        //    if (playerName == LBController.Instance.playerScores[i].playerName)
+        //    {
+        //        playerNameTexts[i].color = highlightColor;
+        //        playerScoreTexts[i].color = highlightColor;
+        //    }
+        //    else
+        //    {
+        //        playerNameTexts[i].color = defaultColor;
+        //        playerScoreTexts[i].color = defaultColor;
+        //    }
+
+        //}
     }
 
     

@@ -34,7 +34,7 @@ public class CannonHUD : NetworkBehaviour
     [SerializeField] private GameObject netMessagesPopUp;
     [SerializeField] private TMP_Text netMessages; 
     [SerializeField] private TMP_Text netName;
-    private string nameStr;
+    [SerializeField]private string nameStr;
 
     
     //[SerializeField] private ScoreboardManager scoreboardManager;
@@ -103,8 +103,9 @@ public class CannonHUD : NetworkBehaviour
     {
       //  if(!isLocalPlayer) return ;
         netName.text = name;
+        nameStr = name;
 
-        ResetLocalName();
+        //ResetLocalName();
     }
 
 
@@ -123,17 +124,17 @@ public class CannonHUD : NetworkBehaviour
     }
 
     
-    public void ResetLocalName()
+/*    public void ResetLocalName()
     {
         if (!isLocalPlayer) { return; }
         ScoreboardManager scoreboardManager = GetComponentInParent<ScoreboardManager>();
 
-        scoreboardManager.ScoreNameChange();
-    }
+        //scoreboardManager.ScoreNameChange();
+    }*/
 
     public string GetCustomName()
     {
-        return netName.text;
+        return nameStr;
     }
     
 

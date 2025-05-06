@@ -40,7 +40,7 @@ public class PlayerInputTemp : NetworkBehaviour
     [SerializeField]private string captainName;
     [SerializeField]private int numJoined;
 
-    public string CaptainName => CaptainName;
+    public string CaptainName => captainName;
     public int NumJoined => numJoined;
 
 
@@ -193,7 +193,7 @@ public class PlayerInputTemp : NetworkBehaviour
 
 
     [TargetRpc]
-    public void SetPlayerName(NetworkConnection target, string name, int count)
+    public void SetPlayerName(NetworkConnection target, int count)
     {
         /* if (uiManager != null)
          {
@@ -207,11 +207,11 @@ public class PlayerInputTemp : NetworkBehaviour
 
 
         //StartCoroutine(ShowMessage(message));
-        captainName = name;
+        //captainName = name;
         numJoined = count;
-        cannonLinq.NameHUD($"Player {count.ToString()}");
+        cannonLinq.NameHUD($"Captain {count.ToString()}");
         
-
+        //cannonLinq.NameHUD(name);
     }
 
 

@@ -7,7 +7,7 @@ public class NetworkTempHUD : MonoBehaviour
 {
     public TMP_InputField ipInputField;
     public TMP_InputField portInputField;
-    public TMP_InputField nameInputField;
+    //public TMP_InputField nameInputField;
     private string nameText;
     public GameObject lobbyPanel;
     public GameObject lobbyCam;
@@ -66,12 +66,17 @@ public class NetworkTempHUD : MonoBehaviour
         }
 
         //testing
-        if (!string.IsNullOrEmpty(ipInputField.text))
+       /* if (!string.IsNullOrEmpty(nameInputField.text))
         {
-            //networkManager.player_Name = "Nobody";
-            networkManager.PlayerNewName(nameInputField.text);
-            //networkManager.player_Name = nameInputField.text;
+          
+            networkManager.player_Name = nameInputField.text;
+            
         }
+        else
+        {
+            networkManager.player_Name = "Captain John Doe";
+            
+        }*/
           
        
     

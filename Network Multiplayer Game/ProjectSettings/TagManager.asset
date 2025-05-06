@@ -8,8 +8,7 @@ TagManager:
   - MinimapCamera
   - MapCamera
   - Cannonball
-  - KrakenAI
-  - BigIsland
+  - LB
   layers:
   - Default
   - TransparentFX
