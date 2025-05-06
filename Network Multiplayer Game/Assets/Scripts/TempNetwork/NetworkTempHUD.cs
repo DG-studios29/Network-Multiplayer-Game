@@ -66,12 +66,14 @@ public class NetworkTempHUD : MonoBehaviour
         }
 
         //testing
-         if (!string.IsNullOrEmpty(nameInputField.text))
-            networkManager.player_Name = nameInputField.text;
-        else
+        if (!string.IsNullOrEmpty(ipInputField.text))
         {
-            networkManager.player_Name = "Captain Banjo";
+            //networkManager.player_Name = "Nobody";
+            networkManager.PlayerNewName(nameInputField.text);
+            //networkManager.player_Name = nameInputField.text;
         }
+          
+       
     
 
     }

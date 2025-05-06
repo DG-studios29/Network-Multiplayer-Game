@@ -17,7 +17,7 @@ public class ScoreboardManager : NetworkBehaviour
     [SyncVar(hook = nameof(OnScoreChanged))] public string playerName; 
     [SyncVar(hook = nameof(OnScoreChanged))] public int playerScore;
 
-    [SerializeField] private PlayerInputTemp playerData;
+    //[SerializeField] private PlayerInputTemp playerData;
     [SerializeField] private CannonHUD hud;
 
     private static List<ScoreboardManager> allPlayers = new List<ScoreboardManager>(); 
@@ -41,21 +41,27 @@ public class ScoreboardManager : NetworkBehaviour
         playerName = $"Player {netId}";
         //playerName = playerData.CaptainName;
 
+        //PlayerInputTemp playerDat = NetworkClient.localPlayer.gameObject.GetComponent<PlayerInputTemp>();
+        //playerName = playerDat.CaptainName;
 
-        //PlayerInputTemp playerDat = this.GetComponentInParent<PlayerInputTemp>();
+        if (isLocalPlayer)
+        {
+            
+        }
+        // = this.GetComponentInParent<PlayerInputTemp>();
 
-        if (playerData != null)
+      /*  if (playerData != null)
         {
             playerName = playerData.CaptainName;
             RefreshScoreboard();
 
-        }
+        }*/
        
       
     }
 
 
-    [Server]
+    
     public void ScoreNameChange()
     {
 
@@ -64,7 +70,7 @@ public class ScoreboardManager : NetworkBehaviour
         clientScoreNameChange();
     }
 
-    [ClientRpc]
+    
     public void clientScoreNameChange()
     {
 

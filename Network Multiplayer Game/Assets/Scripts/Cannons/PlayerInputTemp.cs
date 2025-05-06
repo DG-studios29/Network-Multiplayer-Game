@@ -180,11 +180,12 @@ public class PlayerInputTemp : NetworkBehaviour
     [TargetRpc]
     public void TargetShowWelcomeMessage(NetworkConnection target, string message)
     {
-        /* if (uiManager != null)
+       /*  if (target.identity != this.NetID)
          {
-             uiManager.ShowMessage(message);
-         }*/
-
+            //uiManager.ShowMessage(message);
+            return;
+         }
+*/
         //StartCoroutine(ShowMessage(message));
         cannonLinq.MsgHUD(message);
 
@@ -198,11 +199,18 @@ public class PlayerInputTemp : NetworkBehaviour
          {
              uiManager.ShowMessage(message);
          }*/
+        /*     if (target.identity != this.NetID)
+             {
+                 //uiManager.ShowMessage(message);
+                 return;
+             }*/
+
 
         //StartCoroutine(ShowMessage(message));
-        cannonLinq.nameHUD(name);
         captainName = name;
         numJoined = count;
+        cannonLinq.NameHUD($"Player {count.ToString()}");
+        
 
     }
 

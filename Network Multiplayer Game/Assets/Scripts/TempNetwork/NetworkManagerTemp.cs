@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class NetworkManagerTemp : NetworkManager
 {
+    //public List<string> player_Names = new List<string>();
     public string player_Name;
 
     public override void OnServerAddPlayer(NetworkConnectionToClient conn)
@@ -16,6 +17,8 @@ public class NetworkManagerTemp : NetworkManager
         }
 
         base.OnServerAddPlayer(conn); //base method will spawn the player prefab in
+
+        ///player_Names.Add(player_Name);
 
 
         GameObject player = conn.identity.gameObject; //get the player game object
@@ -42,6 +45,13 @@ public class NetworkManagerTemp : NetworkManager
         GameObject player = Instantiate(playerPrefab);
 
         NetworkServer.AddPlayerForConnection(conn, player);*/
+
+    }
+
+
+    public void PlayerNewName(string name)
+    {
+        player_Name = name;
     }
 }
 

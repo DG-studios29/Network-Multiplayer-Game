@@ -34,8 +34,9 @@ public class CannonHUD : NetworkBehaviour
     [SerializeField] private GameObject netMessagesPopUp;
     [SerializeField] private TMP_Text netMessages; 
     [SerializeField] private TMP_Text netName;
+    private string nameStr;
 
-    //[S]
+    
     //[SerializeField] private ScoreboardManager scoreboardManager;
 
     [SerializeField] private NetTempFinder netTempFinder;
@@ -65,7 +66,7 @@ public class CannonHUD : NetworkBehaviour
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    [ClientCallback]
+    //[ClientCallback]
     void Start()
     {
         if (!isLocalPlayer) return;
@@ -78,10 +79,10 @@ public class CannonHUD : NetworkBehaviour
     }
 
     // Update is called once per frame
-    [ClientCallback]
+    //[ClientCallback]
     void Update()
     {
-        if (!isLocalPlayer) return;
+      if (!isLocalPlayer) return;
 
         LoadFillAmountUpdate();
         CheckListLength();
@@ -93,14 +94,14 @@ public class CannonHUD : NetworkBehaviour
 
     public void UIManage(string message)
     {
-        if(!isLocalPlayer) return;
+        //if(!isLocalPlayer) return;
         Debug.Log("Call made");
         StartCoroutine(ShowMessage(message));
     }
 
     public void UIName(string name)
     {
-        if(!isLocalPlayer) return ;
+      //  if(!isLocalPlayer) return ;
         netName.text = name;
 
         ResetLocalName();
@@ -113,17 +114,18 @@ public class CannonHUD : NetworkBehaviour
     IEnumerator ShowMessage(string msg)
     {
         netMessagesPopUp.SetActive(true);
-        netMessages.text = msg + netName.text;
-        yield return new WaitForSeconds(10f);
+        netMessages.text = msg + "  " + netName.text;
+
+        yield return new WaitForSeconds(15f);
 
         netMessages.text = " " ;
         netMessagesPopUp.SetActive(false);
     }
 
-    [Command]
+    
     public void ResetLocalName()
     {
-
+        if (!isLocalPlayer) { return; }
         ScoreboardManager scoreboardManager = GetComponentInParent<ScoreboardManager>();
 
         scoreboardManager.ScoreNameChange();

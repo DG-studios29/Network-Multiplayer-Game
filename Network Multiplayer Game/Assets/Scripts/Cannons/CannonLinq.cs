@@ -180,7 +180,7 @@ public class CannonLinq : MonoBehaviour
         cannonHUD.UIManage(message);
     }
 
-    public void nameHUD(string name)
+    public void NameHUD(string name)
     {
         cannonHUD.UIName(name);
     }
