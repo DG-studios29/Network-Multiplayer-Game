@@ -62,6 +62,8 @@ public class CannonCollision : NetworkBehaviour
             if (playerHealth != null)
             {
                 playerHealth.TakeDamage((int)cannonDamage);
+                
+                Debug.Log("Cannon hit a player!");
             }
         }
         else if (target.CompareTag("Island"))
@@ -85,11 +87,17 @@ public class CannonCollision : NetworkBehaviour
             BigIslandHealth islandBig = target.GetComponent<BigIslandHealth>();
             if (islandBig != null)
             {
-                islandBig.TakeDamage((int)cannonDamage);
+                Debug.Log("Escape this");
+                return;
             }
+            NetworkServer.Destroy(gameObject);
         }
 
-        // Destroy cannonball after hitting any valid target
-        NetworkServer.Destroy(gameObject);
+
+    
     }
+
+    
+
+
 }

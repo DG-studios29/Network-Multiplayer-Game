@@ -8,202 +8,93 @@ public class ScoreboardManager : NetworkBehaviour
 {
 
     [Header("Scoreboard UI")]
-    [SerializeField] private TMP_Text[] playerNameTexts; 
-    [SerializeField] private TMP_Text[] playerScoreTexts; 
-    [SerializeField] private Color highlightColor = Color.yellow; 
-    [SerializeField] private Color defaultColor = Color.black; 
+    [SerializeField] private TMP_Text[] playerNameTexts;
+    [SerializeField] private TMP_Text[] playerScoreTexts;
+    [SerializeField] private Color highlightColor = Color.yellow;
+    [SerializeField] private Color defaultColor = Color.black;
 
     [Header("Player Settings")]
-    [SyncVar(hook = nameof(OnScoreChanged))] public string playerName; 
+    [SyncVar(hook = nameof(OnNameChanged))] public string playerName;
     [SyncVar(hook = nameof(OnScoreChanged))] public int playerScore;
 
     //[SerializeField] private PlayerInputTemp playerData;
     [SerializeField] private CannonHUD hud;
 
-    private static List<ScoreboardManager> allPlayers = new List<ScoreboardManager>(); 
+    private static readonly List<ScoreboardManager> allPlayers = new List<ScoreboardManager>();
 
     public override void OnStartServer()
     {
-        base.OnStartServer();
         allPlayers.Add(this);
     }
 
     public override void OnStopServer()
     {
-        base.OnStopServer();
         allPlayers.Remove(this);
     }
 
     public override void OnStartLocalPlayer()
     {
-        base.OnStartLocalPlayer();
-
-        playerName = $"Player {netId}";
-        //playerName = playerData.CaptainName;
-
-        //PlayerInputTemp playerDat = NetworkClient.localPlayer.gameObject.GetComponent<PlayerInputTemp>();
-        //playerName = playerDat.CaptainName;
-
-        if (isLocalPlayer)
-        {
-            
-        }
-        // = this.GetComponentInParent<PlayerInputTemp>();
-
-      /*  if (playerData != null)
-        {
-            playerName = playerData.CaptainName;
-            RefreshScoreboard();
-
-        }*/
-       
-      
+        CmdSetPlayerName($"Player {netId}");
     }
 
-
-    
-    public void ScoreNameChange()
+    [Command]
+    private void CmdSetPlayerName(string name)
     {
-
-        //playerName = hud.GetCustomName();
-        //Debug.Log("Back and forth");
-        clientScoreNameChange();
+        playerName = name;
+        UpdateScoreboardForAllClients();
     }
-
-    
-    public void clientScoreNameChange()
-    {
-
-        playerName = hud.GetCustomName();
-        Debug.Log("Back and forth");
-        RefreshScoreboard();
-    }
-
-
-
-
-
 
     [Command]
     public void CmdIncreaseScore(int amount)
     {
         playerScore += amount;
-        Debug.Log($"[Server] {playerName} score increased to {playerScore}");
+        UpdateScoreboardForAllClients();
     }
 
-    private void OnScoreChanged(string oldValue, string newValue)
+    private void OnNameChanged(string oldName, string newName)
     {
-        Debug.Log($"[Client] Player name changed from {oldValue} to {newValue}");
-        RefreshScoreboard();
+        UpdateScoreboardForAllClients();
     }
 
-    private void OnScoreChanged(int oldValue, int newValue)
+    private void OnScoreChanged(int oldScore, int newScore)
     {
-        Debug.Log($"[Client] Player score changed from {oldValue} to {newValue}");
-        RefreshScoreboard();
-    }
-
-    private void RefreshScoreboard()
-    {
-        if (isServer)
-        {
-            UpdateScoreboard();
-        }
-        else
-        {
-            CmdRequestScoreboardUpdate();
-        }
+        UpdateScoreboardForAllClients();
     }
 
     [Server]
-    private void UpdateScoreboard()
+    private void UpdateScoreboardForAllClients()
     {
-      
-        var sortedPlayers = allPlayers.OrderByDescending(p => p.playerScore).ToList();
+        // Prepare data to send to all clients
+        List<string> names = new List<string>();
+        List<int> scores = new List<int>();
 
-        for (int i = 0; i < playerNameTexts.Length; i++)
+        var sorted = allPlayers.OrderByDescending(p => p.playerScore).ToList();
+
+        foreach (var player in sorted)
         {
-            if (i < sortedPlayers.Count)
-            {
-                var player = sortedPlayers[i];
-
-              
-                playerNameTexts[i].text = player.playerName;
-                playerScoreTexts[i].text = player.playerScore.ToString();
-
-        
-                if (i == 0)
-                {
-                    playerNameTexts[i].color = highlightColor;
-                    playerScoreTexts[i].color = highlightColor;
-                }
-                else
-                {
-                    playerNameTexts[i].color = defaultColor;
-                    playerScoreTexts[i].color = defaultColor;
-                }
-            }
-            else
-            {
-              
-                playerNameTexts[i].text = "Waiting...";
-                playerScoreTexts[i].text = "0";
-                playerNameTexts[i].color = defaultColor;
-                playerScoreTexts[i].color = defaultColor;
-            }
+            names.Add(player.playerName);
+            scores.Add(player.playerScore);
         }
 
-  
-        RpcUpdateScoreboardUI();
-    }
-
-
-
-
-
-
-
-
-
-
-
-    [Command]
-    private void CmdRequestScoreboardUpdate()
-    {
-        UpdateScoreboard();
+        RpcUpdateScoreboard(names.ToArray(), scores.ToArray());
     }
 
     [ClientRpc]
-    private void RpcUpdateScoreboardUI()
+    private void RpcUpdateScoreboard(string[] names, int[] scores)
     {
-        
-        var sortedPlayers = allPlayers.OrderByDescending(p => p.playerScore).ToList();
-
         for (int i = 0; i < playerNameTexts.Length; i++)
         {
-            if (i < sortedPlayers.Count)
+            if (i < names.Length)
             {
-                var player = sortedPlayers[i];
+                playerNameTexts[i].text = names[i];
+                playerScoreTexts[i].text = scores[i].ToString();
 
-              
-                playerNameTexts[i].text = player.playerName;
-                playerScoreTexts[i].text = player.playerScore.ToString();
-
-              
-                if (i == 0)
-                {
-                    playerNameTexts[i].color = highlightColor;
-                    playerScoreTexts[i].color = highlightColor;
-                }
-                else
-                {
-                    playerNameTexts[i].color = defaultColor;
-                    playerScoreTexts[i].color = defaultColor;
-                }
+                bool isTop = i == 0;
+                playerNameTexts[i].color = isTop ? highlightColor : defaultColor;
+                playerScoreTexts[i].color = isTop ? highlightColor : defaultColor;
             }
             else
             {
-          
                 playerNameTexts[i].text = "Waiting...";
                 playerScoreTexts[i].text = "0";
                 playerNameTexts[i].color = defaultColor;
@@ -212,11 +103,20 @@ public class ScoreboardManager : NetworkBehaviour
         }
     }
 
-    
     [ContextMenu("Manual Refresh Scoreboard")]
     public void ManualRefreshScoreboard()
     {
-        Debug.Log("[Inspector] Manual refresh triggered.");
-        RefreshScoreboard();
+        if (isServer)
+        {
+            UpdateScoreboardForAllClients();
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (isServer)
+        {
+            allPlayers.Remove(this);
+        }
     }
 }

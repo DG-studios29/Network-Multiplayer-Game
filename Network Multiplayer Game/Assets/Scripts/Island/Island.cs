@@ -125,7 +125,6 @@ public class Island : NetworkBehaviour
         }
     }
 
-
     [ServerCallback]
     private void OnTriggerExit(Collider other)
     {
@@ -249,6 +248,7 @@ public class Island : NetworkBehaviour
             ScoreboardManager scoreboard = player.GetComponent<ScoreboardManager>();
             if (scoreboard != null)
             {
+                // Calling the CmdIncreaseScore on the correct player instance
                 scoreboard.CmdIncreaseScore(lootAmount);
             }
 

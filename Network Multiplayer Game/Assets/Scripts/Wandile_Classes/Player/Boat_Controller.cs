@@ -8,6 +8,9 @@ public class Boat_Controller : NetworkBehaviour
     [SerializeField] private PirateInput pirateInput;
     private Rigidbody rb;
 
+    [Header("Health Settings")]
+    [SerializeField] private PlayerHealthUI playerHealthUI;  
+
     [Header("Floats/ numbers"), Space(5f)]
     [SerializeField] private float shipSpeed = 5f;
     [SerializeField] private float shipSteerMultiplier = 3f;
@@ -53,7 +56,9 @@ public class Boat_Controller : NetworkBehaviour
     {
         if (!isLocalPlayer) return;
 
-        //pirateInput = GetComponent<PirateInput>();
+       
+        playerHealthUI = GetComponent<PlayerHealthUI>();  
+
         Debug.Log("Local is Connected");
         if (waterSFx != null)
             waterSFx.volume = .01f;
@@ -62,19 +67,15 @@ public class Boat_Controller : NetworkBehaviour
     [ClientCallback]
     void FixedUpdate()
     {
-        if (!isLocalPlayer) return;
+        if (!isLocalPlayer || playerHealthUI.currentHealth <= 0) return;  // Don't handle move inptus if health is 0
+
         ShipSail();
         HandleSailing();
-        
     }
-
-    #endregion
-
-    #region Custom Methods
 
     private void ShipSail()
     {
-        if (rb == null || pirateInput == null || waterSFx == null) return;
+        if (rb == null || pirateInput == null || waterSFx == null || playerHealthUI.currentHealth <= 0) return;  // Deactiveing movement if health is 0
 
         float v = pirateInput.sailInput.y;
         float h = pirateInput.sailInput.x;
@@ -103,8 +104,8 @@ public class Boat_Controller : NetworkBehaviour
 
         rb.AddForce(forward * v * speed, ForceMode.Acceleration);
 
-        //seed gauge
-        speedInKm = Mathf.Abs(Mathf.Ceil(rb.linearVelocity.magnitude));
+        //speed gauge
+        speedInKm = Mathf.Abs(rb.linearVelocity.magnitude);
 
         speedNeedleUI.localRotation = Quaternion.Euler(0f, 0f, Mathf.Lerp(minNeedleRot, maxNeedleRot, speedInKm / 64));
 
