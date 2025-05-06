@@ -11,34 +11,35 @@ public class PlayerIslandUI : NetworkBehaviour
     public TMP_Text lootCollectedText;
 
     private Island targetIsland;
+    private BigIslandHealth targetBigIsland;
 
     private void Start()
     {
         if (!isLocalPlayer) return;
-        ShowUI(false); // hide at start
+        ShowUI(false);
     }
 
     private void Update()
     {
-        if (!isLocalPlayer || targetIsland == null) return;
+        if (!isLocalPlayer) return;
 
-        // Update health
-        float health = targetIsland.GetCurrentHealth();
-        float max = targetIsland.maxHealth;
-        UpdateIslandHealth(health, max);
-
-        // Update loot progress
-        float progress = targetIsland.GetLootProgress();
-        UpdateLootProgress(progress);
-
-        UpdateIslandHealth(targetIsland.GetCurrentHealth(), targetIsland.maxHealth);
-        UpdateLootProgress(targetIsland.GetLootProgress());
+        if (targetIsland != null)
+        {
+            UpdateIslandHealth(targetIsland.GetCurrentHealth(), targetIsland.maxHealth);
+            UpdateLootProgress(targetIsland.GetLootProgress());
+        }
+        else if (targetBigIsland != null)
+        {
+            UpdateIslandHealth(targetBigIsland.GetCurrentHealth(), targetBigIsland.maxHealth);
+            UpdateLootProgress(targetBigIsland.GetLootProgress());
+        }
     }
 
-
+    // Set Island target (standard island)
     public void SetTargetIsland(Island island)
     {
         targetIsland = island;
+        targetBigIsland = null;
 
         if (island != null)
         {
@@ -52,28 +53,59 @@ public class PlayerIslandUI : NetworkBehaviour
         }
     }
 
+    // Set BigIsland target (boss island)
+    public void SetTargetBigIsland(BigIslandHealth bigIsland)
+    {
+        targetBigIsland = bigIsland;
+        targetIsland = null;
+
+        if (bigIsland != null)
+        {
+            ShowUI(true);
+            UpdateIslandHealth(bigIsland.GetCurrentHealth(), bigIsland.maxHealth);
+            UpdateLootProgress(bigIsland.GetLootProgress());
+        }
+        else
+        {
+            ShowUI(false);
+        }
+    }
 
     public void ShowUI(bool show)
     {
+        Debug.Log($"[UI] ShowUI({show}) called");
         if (islandUIRoot != null)
             islandUIRoot.SetActive(show);
+        else
+            Debug.LogWarning("[UI] islandUIRoot is NOT assigned!");
     }
 
     public void UpdateIslandHealth(float current, float max)
     {
+        Debug.Log($"[UI] Slider updated to: {current}/{max}");
+
         if (islandHealthSlider != null)
         {
             islandHealthSlider.maxValue = max;
             islandHealthSlider.value = current;
         }
+        else
+        {
+            Debug.LogWarning("[UI] islandHealthSlider is NOT assigned!");
+        }
     }
-
 
     public void UpdateLootProgress(float progress)
     {
+        Debug.Log($"[UI] Setting loot progress: {progress}");
+
         if (lootingProgressSlider != null)
         {
             lootingProgressSlider.value = progress;
+        }
+        else
+        {
+            Debug.LogWarning("[UI] lootingProgressSlider is NOT assigned!");
         }
     }
 
@@ -84,10 +116,10 @@ public class PlayerIslandUI : NetworkBehaviour
             lootCollectedText.text = $"Loot: {amount}";
         }
     }
+
     public void ShowLootPopup(int amount)
     {
         UpdateLootCollected(amount);
         Debug.Log($"[CLIENT] Loot popup: {amount}");
     }
-
 }

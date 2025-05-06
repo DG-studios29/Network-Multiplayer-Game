@@ -242,6 +242,7 @@ public class Island : NetworkBehaviour
 
         int lootAmount = Random.Range(100, 1001);
         GameObject player = playersInside.FirstOrDefault();
+        Debug.Log($"[SERVER] LootIsland: Found player = {player?.name}");
         if (player != null)
         {
             // Try to get ScoreboardManager
@@ -251,21 +252,15 @@ public class Island : NetworkBehaviour
                 scoreboard.CmdIncreaseScore(lootAmount);
             }
 
-            var conn = player.GetComponent<NetworkIdentity>()?.connectionToClient;
-            if (conn != null)
-            {
-                TargetShowLootPopup(conn, lootAmount);
-            }
-
         }
 
         RpcNotifyLootCollected(lootAmount);
     }
 
-    [TargetRpc]
-    private void TargetShowLootPopup(NetworkConnection target, int amount)
+    [ClientRpc]
+    private void RpcNotifyLootCollected(int amount)
     {
-        Debug.Log($"[CLIENT] You looted {amount} gold!");
+
 
         var player = NetworkClient.localPlayer;
         if (player != null)
@@ -273,16 +268,15 @@ public class Island : NetworkBehaviour
             var ui = player.GetComponent<PlayerIslandUI>();
             if (ui != null)
             {
-                ui.UpdateLootCollected(amount); 
+                Debug.Log("Updating loot collected UI");
+                ui.ShowUI(true);
+                ui.UpdateLootCollected(amount);
+            }
+            else
+            {
+                Debug.LogWarning("No PlayerIslandUI found!");
             }
         }
-    }
-
-
-
-    [ClientRpc]
-    private void RpcNotifyLootCollected(int amount)
-    {
         Debug.Log("Island looted! Loot collected: " + amount);
     }
 

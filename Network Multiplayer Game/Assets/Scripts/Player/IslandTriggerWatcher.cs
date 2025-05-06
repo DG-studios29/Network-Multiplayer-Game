@@ -1,31 +1,52 @@
 using UnityEngine;
 using Mirror;
 
+[RequireComponent(typeof(PlayerConnectionTracker))]
 public class IslandTriggerWatcher : NetworkBehaviour
 {
+    private PlayerConnectionTracker tracker;
+
+    private void Awake()
+    {
+        tracker = GetComponent<PlayerConnectionTracker>();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        if (!isLocalPlayer) return;
+        if (!isLocalPlayer || tracker == null) return;
 
         if (other.CompareTag("Island"))
         {
             Island island = other.GetComponentInParent<Island>();
             if (island != null)
             {
-                Debug.Log("[CLIENT] Entered island trigger, calling CmdAssignIslandUI");
-                GetComponent<PlayerConnectionTracker>()?.CmdAssignIslandUI(island.netIdentity);
+                tracker.CmdAssignIslandUI(island.netIdentity);
+            }
+        }
+        else if (other.CompareTag("BigIsland"))
+        {
+            Debug.Log("[DEBUG] BigIsland trigger logic hit!");
+
+            BigIslandHealth bigIsland = other.GetComponentInParent<BigIslandHealth>();
+            if (bigIsland != null)
+            {
+                Debug.Log("[DEBUG] BigIslandHealth component found, assigning UI.");
+                tracker.CmdAssignBigIslandUI(bigIsland.netIdentity);
+            }
+            else
+            {
+                Debug.LogWarning("[DEBUG] BigIslandHealth component NOT found!");
             }
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (!isLocalPlayer) return;
+        if (!isLocalPlayer || tracker == null) return;
 
-        if (other.CompareTag("Island"))
+        if (other.CompareTag("Island") || other.CompareTag("BigIsland"))
         {
-            Debug.Log("[CLIENT] Exited island trigger, calling CmdClearIslandUI");
-            GetComponent<PlayerConnectionTracker>()?.CmdClearIslandUI();
+            tracker.CmdClearIslandUI();
         }
     }
 }

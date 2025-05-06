@@ -99,7 +99,7 @@ public class SpawnManager : NetworkBehaviour
 
         foreach (Transform spawn in playerSpawnPoints)
         {
-            Gizmos.DrawWireSphere(spawn.position, 150f);
+            Gizmos.DrawWireSphere(spawn.position, 50);
         }
 
         if (bigIsland != null)
@@ -107,6 +107,15 @@ public class SpawnManager : NetworkBehaviour
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireSphere(bigIsland.position, avoidBigIslandRadius);
         }
-    }
 
+        
+    
+        Gizmos.color = Color.red;
+        foreach (Vector3 pos in occupiedPositions)
+        {
+            Gizmos.DrawWireSphere(pos, minDistanceBetweenObjects / 2f);
+        }
+    }
 }
+
+

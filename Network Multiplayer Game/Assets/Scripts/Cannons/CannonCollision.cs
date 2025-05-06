@@ -91,6 +91,19 @@ public class CannonCollision : NetworkBehaviour
 
             NetworkServer.Destroy(gameObject);
         }
+        else if (collision.gameObject.CompareTag("BigIsland"))
+        {
+            Debug.Log("Cannon hit an Island!");
+
+            BigIslandHealth islandBig = collision.gameObject.GetComponent<BigIslandHealth>();
+            if (islandBig != null)
+            {
+                islandBig.TakeDamage((int)cannonDamage);
+            }
+
+            // Destroy the cannonball on all clients
+            NetworkServer.Destroy(gameObject);
+        }
         else
         {
             // Destroy the cannonball on all clients

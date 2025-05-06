@@ -52,7 +52,7 @@ public class PlayerHealthUI : NetworkBehaviour
             healthBar.value = currentHealth;
         }
 
-        Debug.Log($"Player took {damage} damage. Current health: {currentHealth}/{maxHealth}");
+        
     }
 
     private void OnHealthChanged(int oldHealth, int newHealth)

@@ -13,22 +13,24 @@ public class PlayerConnectionTracker : NetworkBehaviour
     [Command]
     public void CmdAssignIslandUI(NetworkIdentity islandIdentity)
     {
-        Debug.Log("[SERVER] CmdAssignIslandUI received from client");
-        TargetAssignIslandUI(islandIdentity); // will go back to correct client
+        TargetAssignIslandUI(connectionToClient, islandIdentity);
+    }
+
+    [Command]
+    public void CmdAssignBigIslandUI(NetworkIdentity bigIslandIdentity)
+    {
+        TargetAssignBigIslandUI(connectionToClient, bigIslandIdentity);
     }
 
     [TargetRpc]
-    private void TargetAssignIslandUI(NetworkIdentity islandIdentity)
+    private void TargetAssignIslandUI(NetworkConnection target, NetworkIdentity islandIdentity)
     {
-        Debug.Log("[CLIENT] TargetAssignIslandUI CALLED");
-
         Island island = islandIdentity.GetComponent<Island>();
         PlayerIslandUI ui = GetComponent<PlayerIslandUI>();
 
         if (ui != null)
         {
             ui.SetTargetIsland(island);
-            Debug.Log("[CLIENT] UI updated with island");
         }
         else
         {
@@ -36,24 +38,44 @@ public class PlayerConnectionTracker : NetworkBehaviour
         }
     }
 
+    [TargetRpc]
+    private void TargetAssignBigIslandUI(NetworkConnection target, NetworkIdentity bigIslandIdentity)
+    {
+        Debug.Log("[CLIENT] TargetAssignBigIslandUI called");
 
+        if (!isLocalPlayer) return;
 
+        BigIslandHealth bigIsland = bigIslandIdentity.GetComponent<BigIslandHealth>();
+        PlayerIslandUI ui = GetComponent<PlayerIslandUI>();
+
+        if (ui != null)
+        {
+            ui.SetTargetBigIsland(bigIsland);
+            Debug.Log($"[UI] SetTargetBigIsland with health: {bigIsland.currentHealth}/{bigIsland.maxHealth}");
+        }
+        else
+        {
+            Debug.LogWarning("[CLIENT] PlayerIslandUI not found for BigIsland!");
+        }
+    }
 
     [Command]
     public void CmdClearIslandUI()
     {
-        TargetClearIslandUI();
+        TargetClearIslandUI(connectionToClient);
     }
 
     [TargetRpc]
-    private void TargetClearIslandUI()
+    private void TargetClearIslandUI(NetworkConnection target)
     {
-        Debug.Log("[CLIENT] Clearing island UI");
-
         PlayerIslandUI ui = GetComponent<PlayerIslandUI>();
         if (ui != null)
         {
             ui.SetTargetIsland(null);
+            ui.ShowUI(false);
         }
     }
+
+
+  
 }
