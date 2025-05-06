@@ -62,6 +62,8 @@ public class CannonCollision : NetworkBehaviour
             if (playerHealth != null)
             {
                 playerHealth.TakeDamage((int)cannonDamage);
+                
+                Debug.Log("Cannon hit a player!");
             }
 
             // Destroy the cannonball on all clients
@@ -102,6 +104,8 @@ public class CannonCollision : NetworkBehaviour
 
     
     }
+
+    
 
 
 }

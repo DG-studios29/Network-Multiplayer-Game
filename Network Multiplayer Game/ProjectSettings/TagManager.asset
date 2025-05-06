@@ -8,6 +8,7 @@ TagManager:
   - MinimapCamera
   - MapCamera
   - Cannonball
+  - EnemyAI
   layers:
   - Default
   - TransparentFX

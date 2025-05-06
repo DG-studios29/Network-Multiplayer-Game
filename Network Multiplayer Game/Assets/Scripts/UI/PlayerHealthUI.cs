@@ -119,10 +119,13 @@ public class PlayerHealthUI : NetworkBehaviour
         }
     }
 
-    [Server]
+    [Command]
     public void TakeDamage(int damage)
     {
         if (currentHealth <= 0) return;
+        
+        RpcTakeDamage();
+        OnHealthChanged(currentHealth, currentHealth - damage);
 
         currentHealth -= damage;
         if (currentHealth <= 0)
@@ -154,6 +157,33 @@ public class PlayerHealthUI : NetworkBehaviour
         if (isLocalPlayer)
         {
             Debug.Log("You died!");
+        }
+    }
+
+    [ClientRpc]
+    private void RpcTakeDamage()
+    {
+        if (isLocalPlayer)
+        {
+            if (currentHealth <= 0) return;
+
+            currentHealth -= 10;
+            if (currentHealth <= 0)
+            {
+                currentHealth = 0;
+                RpcHandleDeath();
+            }
+
+              if (healthBar != null)
+        {
+            healthBar.value = currentHealth;
+        }
+        else
+        {
+            Debug.LogWarning($"{gameObject.name} has no health bar assigned!");
+        }
+
+        Debug.Log($"{gameObject.name} took {10} damage. Now at {currentHealth}/{maxHealth}.");
         }
     }
 }
