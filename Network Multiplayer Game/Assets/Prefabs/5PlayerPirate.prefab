@@ -4013,7 +4013,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3102646198078976024, guid: 73e9d5012e82e164082eb5d340f32b49, type: 3}
       propertyPath: m_fontSize
-      value: 20.55
+      value: 20.75
       objectReference: {fileID: 0}
     - target: {fileID: 3105816064009307334, guid: 73e9d5012e82e164082eb5d340f32b49, type: 3}
       propertyPath: m_AnchorMax.y
@@ -5081,7 +5081,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8731701780138456430, guid: 73e9d5012e82e164082eb5d340f32b49, type: 3}
       propertyPath: m_fontSize
-      value: 20.45
+      value: 20.9
       objectReference: {fileID: 0}
     - target: {fileID: 8929408949065273747, guid: 73e9d5012e82e164082eb5d340f32b49, type: 3}
       propertyPath: m_IsActive

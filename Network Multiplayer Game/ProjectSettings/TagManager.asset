@@ -8,6 +8,7 @@ TagManager:
   - MinimapCamera
   - MapCamera
   - Cannonball
+  - LB
   layers:
   - Default
   - TransparentFX
