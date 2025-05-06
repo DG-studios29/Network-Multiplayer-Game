@@ -68,7 +68,7 @@ public class CamBehavior : MonoBehaviour
             yRot -= 360f;
         }
 
-        localPivotPoint.rotation = Quaternion.Lerp(localPivotPoint.rotation, Quaternion.Euler(xRot +transform.eulerAngles.x, yRot + transform.eulerAngles.y, 0), Time.deltaTime * 2f); ;
+        localPivotPoint.rotation = Quaternion.Euler(xRot + transform.eulerAngles.x, yRot + transform.eulerAngles.y, 0);
     }
 
     private void SwitchToTopViewIfNecessary()
