@@ -10,7 +10,7 @@ public class ScoreboardManager : NetworkBehaviour
     [Header("Scoreboard UI")]
     [SerializeField] private TMP_Text[] playerNameTexts; 
     [SerializeField] private TMP_Text[] playerScoreTexts; 
-    [SerializeField] private Color highlightColor = Color.yellow; 
+    [SerializeField] private Color highlightColor = Color.green; 
     [SerializeField] private Color defaultColor = Color.black; 
 
     [Header("Player Settings")]
@@ -34,9 +34,23 @@ public class ScoreboardManager : NetworkBehaviour
         allPlayers.Remove(this);
     }
 
+
+    public void AddToServerList(ScoreboardManager player)
+    {
+        foreach (ScoreboardManager entry in allPlayers)
+        {
+            if(entry != player)
+            {
+                allPlayers.Add(player);
+            }
+        }
+     
+    }
+
     public override void OnStartLocalPlayer()
     {
         base.OnStartLocalPlayer();
+        AddToServerList(this);
 
         playerName = $"Player {netId}";
         //playerName = playerData.CaptainName;
