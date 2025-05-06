@@ -30,6 +30,8 @@ public class Boat_Controller : NetworkBehaviour
     [SerializeField] private Transform windDirIndicatorUI;
     [SerializeField] private Transform sailIndicatorUI;
 
+    [Header("Health Settings")]
+    [SerializeField] private PlayerHealthUI playerHealthUI;
 
     [Header("Audio"), Space(5f)]
     [SerializeField] private AudioSource waterSFx, sailSFx;
@@ -52,8 +54,8 @@ public class Boat_Controller : NetworkBehaviour
     void OnEnable()
     {
         if (!isLocalPlayer) return;
-
-        //pirateInput = GetComponent<PirateInput>();
+        playerHealthUI = GetComponent<PlayerHealthUI>();
+        pirateInput = GetComponent<PirateInput>();
         Debug.Log("Local is Connected");
         if (waterSFx != null)
             waterSFx.volume = .01f;
@@ -62,7 +64,7 @@ public class Boat_Controller : NetworkBehaviour
     [ClientCallback]
     void FixedUpdate()
     {
-        if (!isLocalPlayer) return;
+        if (!isLocalPlayer || playerHealthUI.currentHealth <= 0) return;
         ShipSail();
         HandleSailing();
         
@@ -74,7 +76,7 @@ public class Boat_Controller : NetworkBehaviour
 
     private void ShipSail()
     {
-        if (rb == null || pirateInput == null || waterSFx == null) return;
+        if (rb == null || pirateInput == null || waterSFx == null || playerHealthUI.currentHealth <= 0) return;
 
         float v = pirateInput.sailInput.y;
         float h = pirateInput.sailInput.x;

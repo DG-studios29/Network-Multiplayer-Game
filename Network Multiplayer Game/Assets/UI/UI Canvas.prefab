@@ -18103,6 +18103,7 @@ MonoBehaviour:
   netMessagesPopUp: {fileID: 0}
   netMessages: {fileID: 0}
   netName: {fileID: 0}
+  nameStr: 
   netTempFinder: {fileID: 0}
 --- !u!1 &5295358875731649114
 GameObject:
@@ -29962,6 +29963,10 @@ PrefabInstance:
     - target: {fileID: 607538866736331146, guid: 21634d839c6d7a54295f881813f998db, type: 3}
       propertyPath: m_Name
       value: FoamTrail_stern
+      objectReference: {fileID: 0}
+    - target: {fileID: 769306560327346702, guid: 21634d839c6d7a54295f881813f998db, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89deedfca9031944da2e08edcef47203, type: 3}
   m_Name: ChainCannon
   m_EditorClassIdentifier: 
-  cannonName: ChainCannon
-  ballPrefab: {fileID: 7714745663990363299, guid: 6e5dae929cf2fe547937c5f5f6a9dc30, type: 3}
+  cannonName: Bullet
+  ballPrefab: {fileID: 4193620958866771453, guid: 72730504b4608c04884b56042b14e795, type: 3}
   launchAngle: 70
   rangeZ: 30
   heightY: 0

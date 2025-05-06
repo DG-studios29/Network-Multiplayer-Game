@@ -8,6 +8,9 @@ public class PirateInput : NetworkBehaviour
 
     [SerializeField] private PlayerInput playerInput;
 
+    [SerializeField] private PlayerHealthUI playerHealthUI;
+
+
     private InputActionMap currentMap;
     private InputAction SailAction;
     private InputAction SailingAction;
@@ -22,8 +25,8 @@ public class PirateInput : NetworkBehaviour
 
     private void Awake()
     {
-        //if (!isLocalPlayer) return;
-        //playerInput = GetComponent<PlayerInput>();
+        if (!isLocalPlayer) return;
+        playerInput = GetComponent<PlayerInput>();
         currentMap = playerInput.currentActionMap;
 
         //playerInput.defaultControlScheme = currentMap.controlSchemes[0].name;
@@ -40,18 +43,35 @@ public class PirateInput : NetworkBehaviour
 
         CamAction.performed += OnCamera;
         CamAction.canceled += NoCamera;
+
+        currentMap.Enable();
     }
 
     private void OnEnable()
     {
-        
+        if (isLocalPlayer && currentMap != null)
         currentMap.Enable();
     }
 
     private void OnDisable()
     {
-        
-        currentMap.Disable();
+        if (isLocalPlayer && currentMap != null)
+            currentMap.Disable();
+    }
+
+    private void Update()
+    {
+        if (!isLocalPlayer || SailAction == null|| SailingAction == null ||playerHealthUI == null) return;
+
+        sailInput = SailAction.ReadValue<Vector2>();
+        sailingInput = SailingAction.ReadValue<float>();
+
+
+        if (playerHealthUI.currentHealth <= 0)
+        {
+            sailInput = Vector2.zero;
+            sailingInput = 0f;
+        }
     }
 
     #endregion

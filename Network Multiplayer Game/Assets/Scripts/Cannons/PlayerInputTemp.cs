@@ -177,7 +177,7 @@ public class PlayerInputTemp : NetworkBehaviour
 
 
 
-    [TargetRpc]
+    //[TargetRpc]
     public void TargetShowWelcomeMessage(NetworkConnection target, string message)
     {
        /*  if (target.identity != this.NetID)
@@ -192,7 +192,7 @@ public class PlayerInputTemp : NetworkBehaviour
     }
 
 
-    [TargetRpc]
+    //[TargetRpc]
     public void SetPlayerName(NetworkConnection target, int count)
     {
         /* if (uiManager != null)

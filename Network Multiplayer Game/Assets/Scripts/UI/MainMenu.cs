@@ -2,7 +2,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Mirror;
-using UnityEngine.SceneManagement; 
+using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 
 public class MainMenu : MonoBehaviour
 {
@@ -15,6 +16,9 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private TMP_InputField ipInputField;
     [SerializeField] private GameObject controlsPanel;
 
+    [Header("Controller Navigation")]
+    [SerializeField] private GameObject firstSelected;
+
     private void Start()
     {
         hostButton?.onClick.AddListener(OnHostClicked);
@@ -24,47 +28,52 @@ public class MainMenu : MonoBehaviour
         exitButton?.onClick.AddListener(OnExitClicked);
 
         controlsPanel?.SetActive(false);
+
+
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(firstSelected);
     }
 
-  private void OnHostClicked()
-{
-    Debug.Log("Starting as Host");
-    if (NetworkManager.singleton != null)
+    private void OnHostClicked()
     {
-        NetworkManager.singleton.StartHost();
-       
+        Debug.Log("Starting as Host");
+        if (NetworkManager.singleton != null)
+        {
+            NetworkManager.singleton.StartHost();
+        }
+        else
+        {
+            Debug.LogError("No NetworkManager found.");
+        }
     }
-    else
-    {
-        Debug.LogError("No NetworkManager found.");
-    }
-}
 
-private void OnJoinClicked()
-{
-    Debug.Log("Attempting to join as Client");
-    if (NetworkManager.singleton != null)
+    private void OnJoinClicked()
     {
-        string ip = ipInputField != null ? ipInputField.text : "localhost";
-        NetworkManager.singleton.networkAddress = ip;
-        NetworkManager.singleton.StartClient();
-        
+        Debug.Log("Attempting to join as Client");
+        if (NetworkManager.singleton != null)
+        {
+            string ip = ipInputField != null ? ipInputField.text : "localhost";
+            NetworkManager.singleton.networkAddress = ip;
+            NetworkManager.singleton.StartClient();
+        }
+        else
+        {
+            Debug.LogError("No NetworkManager found.");
+        }
     }
-    else
-    {
-        Debug.LogError("No NetworkManager found.");
-    }
-}
-
 
     private void OnControlsClicked()
     {
         controlsPanel?.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(backButton.gameObject);
     }
 
     private void OnBackClicked()
     {
         controlsPanel?.SetActive(false);
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(firstSelected);
     }
 
     private void OnExitClicked()

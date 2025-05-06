@@ -200,15 +200,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""New action"",
-                    ""type"": ""Button"",
-                    ""id"": ""b1a7bc0e-49c6-4ebb-af4c-e0460edfd38c"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""MainMapToggle"",
                     ""type"": ""Button"",
                     ""id"": ""d6b2ee6b-b763-4628-96fe-c5e20e8461be"",
@@ -689,17 +680,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
                     ""action"": ""DropBait"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""a1c335f7-4386-47d5-b938-365932afb2be"",
-                    ""path"": """",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""New action"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1487,7 +1467,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_HoldPreset = m_Player.FindAction("HoldPreset", throwIfNotFound: true);
         m_Player_Sailing = m_Player.FindAction("Sailing", throwIfNotFound: true);
         m_Player_DropBait = m_Player.FindAction("DropBait", throwIfNotFound: true);
-        m_Player_Newaction = m_Player.FindAction("New action", throwIfNotFound: true);
         m_Player_MainMapToggle = m_Player.FindAction("MainMapToggle", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
@@ -1599,7 +1578,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_HoldPreset;
     private readonly InputAction m_Player_Sailing;
     private readonly InputAction m_Player_DropBait;
-    private readonly InputAction m_Player_Newaction;
     private readonly InputAction m_Player_MainMapToggle;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
@@ -1660,10 +1638,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/DropBait".
         /// </summary>
         public InputAction @DropBait => m_Wrapper.m_Player_DropBait;
-        /// <summary>
-        /// Provides access to the underlying input action "Player/Newaction".
-        /// </summary>
-        public InputAction @Newaction => m_Wrapper.m_Player_Newaction;
         /// <summary>
         /// Provides access to the underlying input action "Player/MainMapToggle".
         /// </summary>
@@ -1730,9 +1704,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @DropBait.started += instance.OnDropBait;
             @DropBait.performed += instance.OnDropBait;
             @DropBait.canceled += instance.OnDropBait;
-            @Newaction.started += instance.OnNewaction;
-            @Newaction.performed += instance.OnNewaction;
-            @Newaction.canceled += instance.OnNewaction;
             @MainMapToggle.started += instance.OnMainMapToggle;
             @MainMapToggle.performed += instance.OnMainMapToggle;
             @MainMapToggle.canceled += instance.OnMainMapToggle;
@@ -1783,9 +1754,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @DropBait.started -= instance.OnDropBait;
             @DropBait.performed -= instance.OnDropBait;
             @DropBait.canceled -= instance.OnDropBait;
-            @Newaction.started -= instance.OnNewaction;
-            @Newaction.performed -= instance.OnNewaction;
-            @Newaction.canceled -= instance.OnNewaction;
             @MainMapToggle.started -= instance.OnMainMapToggle;
             @MainMapToggle.performed -= instance.OnMainMapToggle;
             @MainMapToggle.canceled -= instance.OnMainMapToggle;
@@ -2228,13 +2196,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnDropBait(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "New action" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnNewaction(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "MainMapToggle" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

@@ -150,7 +150,7 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  parentNetID: {fileID: 0}
+  parentNetID: {fileID: -2387296427687565261}
   cannonLifeSpan: 0
   cannonDamage: 0
   gravityScale: 0

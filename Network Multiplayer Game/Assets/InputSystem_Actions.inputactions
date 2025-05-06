@@ -114,15 +114,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "New action",
-                    "type": "Button",
-                    "id": "b1a7bc0e-49c6-4ebb-af4c-e0460edfd38c",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "MainMapToggle",
                     "type": "Button",
                     "id": "d6b2ee6b-b763-4628-96fe-c5e20e8461be",
@@ -603,17 +594,6 @@
                     "processors": "",
                     "groups": ";Gamepad",
                     "action": "DropBait",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "a1c335f7-4386-47d5-b938-365932afb2be",
-                    "path": "",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "New action",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

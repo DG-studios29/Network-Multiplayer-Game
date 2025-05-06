@@ -22,8 +22,8 @@ public class CamBehavior : MonoBehaviour
     public LayerMask edgeMask;
 
     private float xRot, yRot;
-    private float normalMin = -15f;
-    private float normalMax = 20f;
+    public float normalMin = -15f;
+    public float normalMax = 20f;
 
     private float edgeLimit = 40f;
 
@@ -36,8 +36,8 @@ public class CamBehavior : MonoBehaviour
     void Start()
     {
         if (cam != null)
-            cam.localRotation = Quaternion.Euler(40, 0, 0);
-        cam.localPosition = new Vector3(0, 50, -50);
+            cam.localRotation = Quaternion.Euler(15, 0, 0);
+        cam.localPosition = new Vector3(0, 20, -54);
     }
 
     void LateUpdate()
