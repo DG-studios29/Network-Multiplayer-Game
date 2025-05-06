@@ -2,7 +2,6 @@
 using UnityEngine;
 using TMPro;
 using System.Collections;
-using System.Linq;
 
 public class GameTimer : NetworkBehaviour
 {
@@ -12,6 +11,8 @@ public class GameTimer : NetworkBehaviour
     [SyncVar(hook = nameof(OnTimerChanged))]
     private float remainingTime;
 
+    // if you *do* want to assign it manually in the Inspector, you still can—
+    // otherwise we'll try to find it at runtime
     public TextMeshProUGUI timerText;
 
     private bool gameOver = false;
@@ -20,6 +21,7 @@ public class GameTimer : NetworkBehaviour
     public override void OnStartServer()
     {
         remainingTime = matchDuration;
+        // tick every second
         InvokeRepeating(nameof(ServerUpdateTimer), 1f, 1f);
     }
 
@@ -32,7 +34,6 @@ public class GameTimer : NetworkBehaviour
         if (remainingTime <= 0f)
         {
             RpcOnGameOver("Time's Up! Game Over.");
-            FindAndAnnounceWinner();
             gameOver = true;
             CancelInvoke(nameof(ServerUpdateTimer));
         }
@@ -43,34 +44,8 @@ public class GameTimer : NetworkBehaviour
     {
         if (gameOver) return;
         RpcOnGameOver(reason);
-        FindAndAnnounceWinner();
         gameOver = true;
         CancelInvoke(nameof(ServerUpdateTimer));
-    }
-
-    [Server]
-    void FindAndAnnounceWinner()
-    {
-        var players = FindObjectsOfType<ScoreboardManager>();
-        var winner = players.OrderByDescending(p => p.playerScore).FirstOrDefault();
-
-        if (winner != null && !string.IsNullOrEmpty(winner.playerName))
-        {
-            var endManager = FindObjectOfType<EndGameManager>();
-            if (endManager != null)
-            {
-                Debug.Log("[GameTimer] Announcing winner: " + winner.playerName);
-                endManager.ShowWinner(winner.playerName);
-            }
-            else
-            {
-                Debug.LogError("EndGameManager not found in scene.");
-            }
-        }
-        else
-        {
-            Debug.LogWarning("[GameTimer] No winner found or name is null/empty.");
-        }
     }
     #endregion
 
@@ -79,12 +54,16 @@ public class GameTimer : NetworkBehaviour
     {
         base.OnStartClient();
 
+        // if someone forgot to hook it up in the Inspector, try to find it for them
         if (timerText == null)
             FindTimerText();
 
+        // initialize the UI to the current time
         OnTimerChanged(0, remainingTime);
     }
 
+    // sometimes your UI prefab takes one frame to spawn in; if you 
+    // still don’t find it, try again after a tiny delay:
     IEnumerator RetryFindTimerText()
     {
         yield return null;
@@ -94,6 +73,7 @@ public class GameTimer : NetworkBehaviour
 
     void FindTimerText()
     {
+        // look for an object called "TimerText" (you can also use tags)
         var go = GameObject.Find("TimerText");
         if (go != null)
         {
@@ -102,10 +82,12 @@ public class GameTimer : NetworkBehaviour
         else
         {
             Debug.LogWarning("[GameTimer] Couldn't find GameObject named 'TimerText'; retrying next frame.");
+            // if you want, kick off the retry coroutine
             StartCoroutine(RetryFindTimerText());
         }
     }
 
+    // SyncVar hook will update every client automatically
     void OnTimerChanged(float oldTime, float newTime)
     {
         if (timerText == null) return;
@@ -118,8 +100,8 @@ public class GameTimer : NetworkBehaviour
     [ClientRpc]
     void RpcOnGameOver(string reason)
     {
-        Debug.Log("[GameTimer] " + reason);
-        
+        Debug.Log(reason);
+        // TODO: trigger whatever end‑game UI / freeze logic you need
     }
     #endregion
 }
