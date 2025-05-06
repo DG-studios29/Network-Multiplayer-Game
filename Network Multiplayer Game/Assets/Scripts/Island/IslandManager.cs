@@ -38,10 +38,10 @@ public class IslandManager : NetworkBehaviour
 
             if (SpawnManager.Instance.IsPositionAvailable(pos))
             {
-                GameObject islandObj = Instantiate(prefab, pos, Quaternion.identity);
-                NetworkServer.Spawn(islandObj); // ?? Mirror-safe spawn
+                SpawnManager.Instance.RegisterPosition(pos);  
 
-                SpawnManager.Instance.RegisterPosition(pos);
+                GameObject islandObj = Instantiate(prefab, pos, Quaternion.identity);
+                NetworkServer.Spawn(islandObj);
 
                 Island islandScript = islandObj.GetComponent<Island>();
                 if (islandScript != null)
@@ -66,4 +66,6 @@ public class IslandManager : NetworkBehaviour
         Vector3 oldPos = island.transform.position;
         usedPositions.Remove(oldPos);
     }
+
+
 }

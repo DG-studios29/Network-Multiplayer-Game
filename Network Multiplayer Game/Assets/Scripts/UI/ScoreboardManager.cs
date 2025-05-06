@@ -6,6 +6,7 @@ using System.Linq;
 
 public class ScoreboardManager : NetworkBehaviour
 {
+
     [Header("Scoreboard UI")]
     [SerializeField] private TMP_Text[] playerNameTexts;
     [SerializeField] private TMP_Text[] playerScoreTexts;
@@ -15,6 +16,9 @@ public class ScoreboardManager : NetworkBehaviour
     [Header("Player Settings")]
     [SyncVar(hook = nameof(OnNameChanged))] public string playerName;
     [SyncVar(hook = nameof(OnScoreChanged))] public int playerScore;
+
+    //[SerializeField] private PlayerInputTemp playerData;
+    [SerializeField] private CannonHUD hud;
 
     private static readonly List<ScoreboardManager> allPlayers = new List<ScoreboardManager>();
 

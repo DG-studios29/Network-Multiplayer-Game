@@ -35,11 +35,7 @@ public class HandleEvent : MonoBehaviour
     //Just remembered you can't pause online
     public void ChangeFirstSelected(ActivePanel activePanel) 
     { 
-     /*   if(activePanel == ActivePanel.PAUSE)
-        {
-            PauseActive();
-        }
-        else */
+     
         
         if(activePanel == ActivePanel.CANNON)
         {
@@ -93,6 +89,22 @@ public class HandleEvent : MonoBehaviour
                 preset.HighlightActive();
             }
 
+        }
+        else
+        {
+            eSystem.firstSelectedGameObject = presetsBtn;
+            Button button = eSystem.firstSelectedGameObject.GetComponent<Button>();
+            button.Select();
+
+            PresetsBtn preset = button.GetComponent<PresetsBtn>();
+            preset.SwitchSelection();
+
+
+            if (!preset.GetAllHighlightStatus())
+            {
+                //if no presets are selected, select the first
+                preset.HighlightActive();
+            }
         }
     }
 

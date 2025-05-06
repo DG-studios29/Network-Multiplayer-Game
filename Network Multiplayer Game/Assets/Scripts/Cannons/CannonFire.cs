@@ -36,6 +36,8 @@ public class CannonFire : NetworkBehaviour
 
     public NetworkIdentity NetID;
 
+    public AudioSource cannonSFX;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -141,9 +143,9 @@ public class CannonFire : NetworkBehaviour
         rb = cannonObj.GetComponent<Rigidbody>();
         rb.linearVelocity = globalVelocity;
 
-      
 
-        
+        if(cannonSFX!=null)
+        cannonSFX.Play();
         
 
     }

@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89deedfca9031944da2e08edcef47203, type: 3}
+  m_Name: BundleCannon
+  m_EditorClassIdentifier: 
+  cannonName: Spike
+  ballPrefab: {fileID: 7986884217874321437, guid: 05da8a73a62ad5f46ab476feb1c8a240, type: 3}
+  launchAngle: 40
+  rangeZ: 60
+  heightY: 0
+  timeTaken: 1
+  lifespan: 20
+  damage: 10
+  gravityScale: 1.1
+  particleFX: {fileID: 0}

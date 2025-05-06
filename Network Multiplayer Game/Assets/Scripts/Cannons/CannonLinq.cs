@@ -175,8 +175,15 @@ public class CannonLinq : MonoBehaviour
         cannonHUD.SyncLoadDisplay();
     }
 
+    public void MsgHUD(string message)
+    {
+        cannonHUD.UIManage(message);
+    }
 
-
+    public void NameHUD(string name)
+    {
+        cannonHUD.UIName(name);
+    }
 
 
 }

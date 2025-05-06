@@ -1,99 +1,91 @@
-using UnityEngine;
 using Mirror;
+using UnityEngine;
 
 [RequireComponent(typeof(NetworkIdentity))]
 public class CannonCollision : NetworkBehaviour
 {
     public NetworkIdentity parentNetID;
 
-    public float cannonLifeSpan;
-    public float cannonDamage;
+    public float cannonLifeSpan = 5f;
+    public float cannonDamage = 10f;
 
-    public float gravityScale;
-    private float globalGravity;
+    public float gravityScale = 1f;
+    private float globalGravity = -9.81f;
     private Rigidbody rb;
 
-    //public GameObject 
+    private float lifeTotal;
 
-    float lifeTotal;
-    float percentage;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         lifeTotal = cannonLifeSpan;
 
         rb = GetComponent<Rigidbody>();
         rb.useGravity = false;
-        globalGravity = -9.81f;
-       
     }
 
-    // Update is called once per frame
     void Update()
     {
+        if (!isServer) return; 
+
         cannonLifeSpan -= Time.deltaTime;
-        if(cannonLifeSpan <= 0)
+        if (cannonLifeSpan <= 0f)
         {
-           NetworkServer.Destroy(this.gameObject);
+            NetworkServer.Destroy(gameObject);
         }
     }
 
-    private void FixedUpdate()
+    void FixedUpdate()
     {
-        Vector3 gravity = globalGravity * Vector3.up * gravityScale;
-        rb.AddForce(gravity, ForceMode.Acceleration);
+        if (rb != null)
+        {
+            Vector3 gravity = globalGravity * Vector3.up * gravityScale;
+            rb.AddForce(gravity, ForceMode.Acceleration);
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        // Only the server should process collisions to avoid desync
-        //if (!isServer) return;
+        if (!isServer) return; 
 
-        if (collision.gameObject.CompareTag("Player"))
+        
+        if ((cannonLifeSpan / lifeTotal) >= 0.99f)
         {
-          
-            if(cannonLifeSpan/lifeTotal >= 0.99f)
-            {
-                Debug.Log("Escape this");
-                return;
-            }
+            Debug.Log("Skipping early collision.");
+            return;
+        }
 
-            PlayerHealthUI playerHealth = collision.gameObject.GetComponent<PlayerHealthUI>();
+        GameObject target = collision.gameObject;
+
+        if (target.CompareTag("Player"))
+        {
+            PlayerHealthUI playerHealth = target.GetComponent<PlayerHealthUI>();
             if (playerHealth != null)
             {
                 playerHealth.TakeDamage((int)cannonDamage);
                 
                 Debug.Log("Cannon hit a player!");
             }
-
-            // Destroy the cannonball on all clients
-            NetworkServer.Destroy(gameObject);
         }
-
-       else if (collision.gameObject.CompareTag("Island"))
+        else if (target.CompareTag("Island"))
         {
-            Debug.Log("Cannon hit an Island!");
-
-            Island island = collision.gameObject.GetComponent<Island>();
+            Island island = target.GetComponent<Island>();
             if (island != null)
             {
                 island.TakeDamage(cannonDamage);
             }
-
-            // Destroy the cannonball on all clients
-            NetworkServer.Destroy(gameObject);
         }
-        else if(collision.gameObject.CompareTag("EnemyAI"))
+        else if (target.CompareTag("KrakenAI"))
         {
-            //Do stuff
-
-            // Destroy the cannonball on all clients
-            NetworkServer.Destroy(gameObject);
+            KrakenHealth kraken = target.GetComponent<KrakenHealth>();
+            if (kraken != null)
+            {
+                kraken.TakeDamage((int)cannonDamage);
+            }
         }
-        else
+        else if (target.CompareTag("BigIsland"))
         {
-            // Destroy the cannonball on all clients
-            if (cannonLifeSpan / lifeTotal >= 0.99f)
+            BigIslandHealth islandBig = target.GetComponent<BigIslandHealth>();
+            if (islandBig != null)
             {
                 Debug.Log("Escape this");
                 return;

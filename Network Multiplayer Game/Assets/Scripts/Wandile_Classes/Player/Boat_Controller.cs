@@ -23,6 +23,7 @@ public class Boat_Controller : NetworkBehaviour
     [Header("Sliders && numbers"), Space(5f)]
     [Range(0f, .5f)] public float turningThreshhold;
     [Range(0f, 10f)] public float sailMultiplier;
+    [Range(0f, 100f)] public float nonPhysicsSteerMltiplier = 60;
 
     [Header("Animation Curves"), Space(5f)]
     [SerializeField] private AnimationCurve speedCurve;
@@ -34,12 +35,13 @@ public class Boat_Controller : NetworkBehaviour
 
 
     [Header("Audio"), Space(5f)]
-    [SerializeField] private AudioSource waterSFx;
+    [SerializeField] private AudioSource waterSFx, sailSFx;
 
     [Header("All About Speed Gauge"), Space(5f)]
     [SerializeField] private Transform speedNeedleUI;
     [SerializeField] private float minNeedleRot, maxNeedleRot;
     private float speedInKm;
+    private float nonPhysicsSteerFactor;
 
     #endregion
 
@@ -58,7 +60,6 @@ public class Boat_Controller : NetworkBehaviour
         playerHealthUI = GetComponent<PlayerHealthUI>();  
 
         Debug.Log("Local is Connected");
-
         if (waterSFx != null)
             waterSFx.volume = .01f;
     }
@@ -106,18 +107,25 @@ public class Boat_Controller : NetworkBehaviour
         //speed gauge
         speedInKm = Mathf.Abs(rb.linearVelocity.magnitude);
 
-        speedNeedleUI.localRotation = Quaternion.Euler(0f, 0f, Mathf.Lerp(minNeedleRot, maxNeedleRot, speedInKm / 17.5f)); //roughly 23
+        speedNeedleUI.localRotation = Quaternion.Euler(0f, 0f, Mathf.Lerp(minNeedleRot, maxNeedleRot, speedInKm / 64));
 
         float sqrSpeed = Mathf.Max(rb.linearVelocity.sqrMagnitude, 0.0001f);
         float clampedSqrSpeed = Mathf.Clamp01(sqrSpeed);
-        waterSFx.volume = Mathf.Lerp(waterSFx.volume, clampedSqrSpeed * 1f, Time.deltaTime);
+        waterSFx.volume = Mathf.Lerp(waterSFx.volume, clampedSqrSpeed * .1f, Time.fixedDeltaTime);
 
         float shipDir = Vector3.Dot(shipVel, forward);
 
-        if (shipVel.sqrMagnitude != 0)
+        if (shipVel.sqrMagnitude != 0 && v> 0.2f || v< -0.2f)
         {
             rb.AddRelativeTorque(new Vector3(0, turnCurve.Evaluate(Mathf.Abs(shipDir))
                 * shipSteerMultiplier, 0) * h, ForceMode.Acceleration);
+        }
+
+        //Non-Physics Steer
+        if(shipVel.sqrMagnitude<= Mathf.Abs(1) && v < 0.1f || v > -0.1f)
+        {
+            nonPhysicsSteerFactor += Time.fixedDeltaTime * h * nonPhysicsSteerMltiplier;
+            transform.rotation = Quaternion.Euler(0f, nonPhysicsSteerFactor, 0f);
         }
     }
 
@@ -137,6 +145,9 @@ public class Boat_Controller : NetworkBehaviour
 
             sailsAssist += sailMultiplier * pirateInput.sailingInput;
             sailIndicatorUI.localRotation = Quaternion.Euler(0f, 0f, -sailsAssist);
+
+            if(sailSFx!= null)
+            sailSFx.volume = pirateInput.sailingInput > 0.5f || pirateInput.sailingInput < -0.5f ? .06f : 0f;
         }
     }
 
