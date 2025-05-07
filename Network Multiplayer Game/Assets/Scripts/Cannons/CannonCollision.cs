@@ -13,6 +13,9 @@ public class CannonCollision : NetworkBehaviour
     private float globalGravity = -9.81f;
     private Rigidbody rb;
 
+    public GameObject impactFX;
+    public GameObject waterSplashFX;
+
     private float lifeTotal;
 
     void Start()
@@ -45,7 +48,7 @@ public class CannonCollision : NetworkBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (!isServer) return;
+        //if (!isServer) return;
 
 
         if ((cannonLifeSpan / lifeTotal) >= 0.99f)
@@ -63,6 +66,10 @@ public class CannonCollision : NetworkBehaviour
             if (playerHealth != null)
             {
                 playerHealth.TakeDamage((int)cannonDamage);
+
+                //Impact 
+                GameObject hit = Instantiate(impactFX,this.transform.position,Quaternion.identity);
+                Destroy(hit, 2f);
             }
         }
 
@@ -72,6 +79,10 @@ public class CannonCollision : NetworkBehaviour
             if (island != null)
             {
                 island.TakeDamage(cannonDamage);
+
+                //Impact 
+                GameObject hit = Instantiate(impactFX, this.transform.position, Quaternion.identity);
+                Destroy(hit, 2f);
             }
         }
 
@@ -81,6 +92,10 @@ public class CannonCollision : NetworkBehaviour
             if (kraken != null)
             {
                 kraken.TakeDamage((int)cannonDamage);
+
+                //Impact 
+                GameObject hit = Instantiate(impactFX, this.transform.position, Quaternion.identity);
+                Destroy(hit, 2f);
             }
         }
 
@@ -90,7 +105,18 @@ public class CannonCollision : NetworkBehaviour
             if (islandBig != null)
             {
                 islandBig.TakeDamage((int)cannonDamage);
+
+                //Impact 
+                GameObject hit = Instantiate(impactFX, this.transform.position, Quaternion.identity);
+                Destroy(hit, 1.5f);
             }
+        }
+
+        else if (target.CompareTag("Water"))
+        {
+            //Impact Splash
+            GameObject splash = Instantiate(waterSplashFX, this.transform.position, Quaternion.identity);
+            Destroy(splash, 1f);
         }
 
 
