@@ -1,6 +1,5 @@
-using UnityEngine;
 using System.Collections.Generic;
-using System;
+using UnityEngine;
 
 public class CannonLinq : MonoBehaviour
 {
@@ -14,18 +13,18 @@ public class CannonLinq : MonoBehaviour
     [SerializeField] private CannonFire cannon5;
     [SerializeField] private CannonFire cannon6;
 
-    [SerializeField]private List<CannonData> cannonOptions;
+    [SerializeField] private List<CannonData> cannonOptions;
     private int cannonChoice;
     //public List<CannonSlot> cSlots;
     //public List<CannonFire> cFires;
 
-    [SerializeField]private CannonHolder cannonHolder;
-    [SerializeField]private CannonHUD cannonHUD;
+    [SerializeField] private CannonHolder cannonHolder;
+    [SerializeField] private CannonHUD cannonHUD;
 
     public CannonHolder CannonHolder => cannonHolder;
 
 
-    [SerializeField]private float loadTimeMax;
+    [SerializeField] private float loadTimeMax;
     private float loadTimer = 0;
 
     public float LoadTimer => loadTimer;
@@ -39,7 +38,7 @@ public class CannonLinq : MonoBehaviour
     {
         realCannons = new CannonFire[6];
 
-        if(netTempFinder == null)
+        if (netTempFinder == null)
         {
 
         }
@@ -49,7 +48,7 @@ public class CannonLinq : MonoBehaviour
             cannonHUD = GameObject.FindAnyObjectByType<CannonHUD>();
         }
 
-       
+
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -59,7 +58,7 @@ public class CannonLinq : MonoBehaviour
 
         MakeRealCannonArray();
 
-        if(cannonHolder == null)
+        if (cannonHolder == null)
         {
             Debug.Log("Couldnt find");
 
@@ -76,7 +75,7 @@ public class CannonLinq : MonoBehaviour
 
         cannonHUD.SyncAmmoChange(cannonOptions[cannonChoice]);
 
-        
+
 
     }
 
@@ -84,7 +83,7 @@ public class CannonLinq : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(cannonHolder.CountLoadedCannons() > 0)
+        if (cannonHolder.CountLoadedCannons() > 0)
         {
             loadTimer += Time.deltaTime;
 
@@ -101,7 +100,7 @@ public class CannonLinq : MonoBehaviour
         realCannons[4] = cannon5;
         realCannons[5] = cannon6;
 
-        for(int i = 0; i < 6; i++)
+        for (int i = 0; i < 6; i++)
         {
             realCannons[i].SetIndex(i + 1);
         }
@@ -119,19 +118,19 @@ public class CannonLinq : MonoBehaviour
     public void FireCannonCalled(int callIndex)
     {
 
-        
-            for (int i = 0; i < realCannons.Length; i++)
+
+        for (int i = 0; i < realCannons.Length; i++)
+        {
+            if (realCannons[i].GetIndex() == callIndex)
             {
-                if (realCannons[i].GetIndex() == callIndex)
-                {
-                    realCannons[i].FireProjectile();
-                }
+                realCannons[i].FireProjectile();
             }
+        }
 
-            LinkHUD();
-            loadTimer = 0;
+        LinkHUD();
+        loadTimer = 0;
 
-        
+
 
     }
 
@@ -149,11 +148,11 @@ public class CannonLinq : MonoBehaviour
         }
     }
 
-        public void ChangeCannonType()
+    public void ChangeCannonType()
     {
-      
+        
         cannonChoice++;
-        if(cannonChoice > 2)
+        if (cannonChoice > cannonOptions.Count -1)
         {
             cannonChoice = 0;
         }

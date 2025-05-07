@@ -2676,10 +2676,6 @@ MonoBehaviour:
   player2NameText: {fileID: 7393887674144072110}
   player3NameText: {fileID: 2984868756767205152}
   player4NameText: {fileID: 3942832263281302460}
-  incrementPlayer1Button: {fileID: 148457387869567331}
-  incrementPlayer2Button: {fileID: 148457387869567331}
-  incrementPlayer3Button: {fileID: 148457387869567331}
-  incrementPlayer4Button: {fileID: 148457387869567331}
 --- !u!114 &7845275466920606660
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3032,10 +3028,6 @@ MonoBehaviour:
   player2NameText: {fileID: 0}
   player3NameText: {fileID: 0}
   player4NameText: {fileID: 0}
-  incrementPlayer1Button: {fileID: 0}
-  incrementPlayer2Button: {fileID: 0}
-  incrementPlayer3Button: {fileID: 0}
-  incrementPlayer4Button: {fileID: 0}
 --- !u!114 &3359966296782713955
 MonoBehaviour:
   m_ObjectHideFlags: 0

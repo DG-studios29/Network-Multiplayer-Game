@@ -19,7 +19,7 @@ public class Cannonball : NetworkBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (!isServer) return;
+        //if (!isServer) return;
 
         if (collision.gameObject.CompareTag("Player"))
         {

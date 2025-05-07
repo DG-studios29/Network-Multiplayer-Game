@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 9193080164514647532}
   - component: {fileID: 583916742203292211}
   - component: {fileID: 3543004508833584816}
-  - component: {fileID: -1598043340498933843}
+  - component: {fileID: -6165512211762640819}
   m_Layer: 0
   m_Name: Rocket
   m_TagString: Cannonball
@@ -178,8 +178,9 @@ MonoBehaviour:
   cannonDamage: 0
   gravityScale: 0
   impactFX: {fileID: 0}
-  waterSplashFX: {fileID: 0}
---- !u!114 &-1598043340498933843
+  smallImpactFX: {fileID: 0}
+  parentPos: {fileID: 0}
+--- !u!114 &-6165512211762640819
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -188,7 +189,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8026786210976124078}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb803efbe62c34d7baece46c9ffebad9, type: 3}
+  m_Script: {fileID: 11500000, guid: 8ff3ba0becae47b8b9381191598957c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   syncDirection: 1

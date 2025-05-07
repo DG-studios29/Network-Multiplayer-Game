@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6463783700714095166}
   - component: {fileID: 8483122629105856472}
   - component: {fileID: 3121848464498944005}
-  - component: {fileID: -5548430199581402826}
+  - component: {fileID: 4537929511014305015}
   m_Layer: 0
   m_Name: Chain
   m_TagString: Cannonball
@@ -129,7 +129,8 @@ MonoBehaviour:
   cannonDamage: 0
   gravityScale: 0
   impactFX: {fileID: 0}
-  waterSplashFX: {fileID: 0}
+  smallImpactFX: {fileID: 0}
+  parentPos: {fileID: 0}
 --- !u!54 &8483122629105856472
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -179,7 +180,7 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -6553964628485423319, guid: 6cd7a30801d219b4fa44e919e1919fa3, type: 3}
---- !u!114 &-5548430199581402826
+--- !u!114 &4537929511014305015
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -188,7 +189,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7714745663990363299}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb803efbe62c34d7baece46c9ffebad9, type: 3}
+  m_Script: {fileID: 11500000, guid: 8ff3ba0becae47b8b9381191598957c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   syncDirection: 1

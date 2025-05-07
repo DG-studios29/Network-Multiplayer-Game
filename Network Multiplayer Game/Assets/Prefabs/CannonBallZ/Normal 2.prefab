@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3185384545281940849}
   - component: {fileID: 779918811357772916}
   - component: {fileID: 5923336392108577586}
-  - component: {fileID: -1368424690190948709}
+  - component: {fileID: 2479378417221411100}
   m_Layer: 0
   m_Name: Normal 2
   m_TagString: Cannonball
@@ -177,8 +177,9 @@ MonoBehaviour:
   cannonDamage: 0
   gravityScale: 0
   impactFX: {fileID: 0}
-  waterSplashFX: {fileID: 0}
---- !u!114 &-1368424690190948709
+  smallImpactFX: {fileID: 0}
+  parentPos: {fileID: 0}
+--- !u!114 &2479378417221411100
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -187,7 +188,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2531187543609453393}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb803efbe62c34d7baece46c9ffebad9, type: 3}
+  m_Script: {fileID: 11500000, guid: 8ff3ba0becae47b8b9381191598957c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   syncDirection: 1
