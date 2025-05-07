@@ -14,7 +14,7 @@ public class CannonCollision : NetworkBehaviour
     private Rigidbody rb;
 
     public GameObject impactFX;
-    public GameObject waterSplashFX;
+    public GameObject smallImpactFX;
 
     private float lifeTotal;
 
@@ -51,18 +51,29 @@ public class CannonCollision : NetworkBehaviour
     {
         //if (!isServer) return;
 
+   /*     float percentage = cannonLifeSpan / lifeTotal;
 
-        if ((cannonLifeSpan / lifeTotal) >= 0.99f)
+        if (percentage >= 0.99f)
         {
             Debug.Log("Skipping early collision.");
             return;
-        }
+        }*/
+
+
 
         GameObject target = collision.gameObject;
 
 
         if (target.CompareTag("Player"))
         {
+
+            //Another method
+             if(target.transform.position != this.transform.position)
+            {
+                Debug.Log("Avoided self hit");
+                return;
+            }
+           
             PlayerHealthUI playerHealth = target.GetComponent<PlayerHealthUI>();
             if (playerHealth != null)
             {
@@ -108,19 +119,24 @@ public class CannonCollision : NetworkBehaviour
                 islandBig.TakeDamage((int)cannonDamage);
 
                 //Impact 
-                GameObject hit = Instantiate(impactFX, this.transform.position, Quaternion.identity);
+                GameObject hit = Instantiate(impactFX, transform.position, Quaternion.identity);
                 Destroy(hit, 2f);
             }
         }
 
-        else if (target.CompareTag("Water"))
+        else if (target.CompareTag("Rocks"))
         {
-            //Impact Splash
-            GameObject splash = Instantiate(waterSplashFX, this.transform.position, Quaternion.identity);
-            Destroy(splash, 1f);
+            //just for whatever we may collide with without tags
+
+            GameObject hit = Instantiate(impactFX, transform.position, Quaternion.identity);
+            Destroy(hit, 2f);
         }
 
+      
 
+        GameObject noSpecific = Instantiate(smallImpactFX, transform.position, Quaternion.identity);
+        Destroy(noSpecific, 2f);
+        
         NetworkServer.Destroy(gameObject);
     }
 }

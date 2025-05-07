@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 6774839909526340973}
   m_Layer: 0
   m_Name: Normal
-  m_TagString: Untagged
+  m_TagString: Cannonball
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -155,7 +155,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!114 &821979197306556164
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -126,7 +126,7 @@ GameObject:
   - component: {fileID: -4137233514992345469}
   m_Layer: 0
   m_Name: ChainCannonBall
-  m_TagString: Untagged
+  m_TagString: Cannonball
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -247,7 +247,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!114 &369162863000528693
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -267,6 +267,8 @@ MonoBehaviour:
   cannonLifeSpan: 0
   cannonDamage: 0
   gravityScale: 0
+  impactFX: {fileID: 0}
+  waterSplashFX: {fileID: 0}
 --- !u!114 &8917825751627585611
 MonoBehaviour:
   m_ObjectHideFlags: 0

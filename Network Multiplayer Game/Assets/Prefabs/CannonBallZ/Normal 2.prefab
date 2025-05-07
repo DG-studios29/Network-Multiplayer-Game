@@ -139,7 +139,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!114 &779918811357772916
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -176,6 +176,8 @@ MonoBehaviour:
   cannonLifeSpan: 0
   cannonDamage: 0
   gravityScale: 0
+  impactFX: {fileID: 0}
+  waterSplashFX: {fileID: 0}
 --- !u!114 &-1368424690190948709
 MonoBehaviour:
   m_ObjectHideFlags: 0
