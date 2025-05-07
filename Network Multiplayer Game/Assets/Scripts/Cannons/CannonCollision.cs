@@ -46,6 +46,7 @@ public class CannonCollision : NetworkBehaviour
         }
     }
 
+    //Place Command and Client Rcp
     private void OnCollisionEnter(Collision collision)
     {
         //if (!isServer) return;
@@ -108,7 +109,7 @@ public class CannonCollision : NetworkBehaviour
 
                 //Impact 
                 GameObject hit = Instantiate(impactFX, this.transform.position, Quaternion.identity);
-                Destroy(hit, 1.5f);
+                Destroy(hit, 2f);
             }
         }
 

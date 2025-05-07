@@ -15,6 +15,7 @@ public class CannonData : ScriptableObject
 
     [SerializeField] private float gravityScale; //customise flight 
     [SerializeField] private GameObject particleFX; //instantiate on impact
+    [SerializeField] private GameObject splashFX;
     //[SerializeField] private AudioClip soundFX;  //play on collision
 
     public GameObject BallPrefab => ballPrefab;
@@ -26,6 +27,8 @@ public class CannonData : ScriptableObject
     public float Damage => damage;
     public float GravityScale => gravityScale;
     public GameObject ParticleFX => particleFX;
+    public GameObject SplashFX => splashFX;
+
     //public AudioClip SoundFX => soundFX;
 
 
