@@ -6,12 +6,11 @@ using UnityEngine.AI;
 
 [RequireComponent(typeof(NetworkAnimator))]
 [RequireComponent(typeof(NavMeshAgent))]
+[RequireComponent(typeof(NetworkTransformReliable))]
+[RequireComponent(typeof(PlayerTracker))]
 public class KrakenAI : NetworkBehaviour
 {
     public Transform[] patrolPoints;
-
-    private Transform player;
-    private PlayerHealthUI playerHealth;
 
     public int attackDamage = 30;
     public float attackCooldown = 1.5f;
@@ -32,32 +31,31 @@ public class KrakenAI : NetworkBehaviour
     private Animator animator;
     private NetworkAnimator netAnimator;
     private KrakenHealth krakenHealth;
+    private PlayerTracker tracker;
     private int currentPatrolIndex;
+
+    private bool isDistracted = false;
+    private float distractionEndTime = 0f;
+
 
     void Start()
     {
         if (!isServer) return;
+
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         netAnimator = GetComponent<NetworkAnimator>();
         krakenHealth = GetComponent<KrakenHealth>();
-        GoToNextPatrolPoint();
-        AssignPlayer();
-    }
+        tracker = GetComponent<PlayerTracker>();
 
-    void AssignPlayer()
-    {
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-        player = players.OrderBy(p => Vector3.Distance(p.transform.position, transform.position)).FirstOrDefault()?.transform;
-        playerHealth = player?.GetComponent<PlayerHealthUI>();
+        GoToNextPatrolPoint();
     }
 
     void Update()
     {
-        if (!isServer) return;
-        if (player == null || playerHealth == null) { AssignPlayer(); return; }
+        if (!isServer || tracker.currentTarget == null || tracker.playerHealth == null) return;
 
-        bool playerIsDead = playerHealth.currentHealth <= 0;
+        bool playerIsDead = tracker.playerHealth.currentHealth <= 0;
         if (playerIsDead)
         {
             if (!isReturningToPortal)
@@ -74,7 +72,7 @@ public class KrakenAI : NetworkBehaviour
 
         if (playerIsDead) return;
 
-        float distance = Vector3.Distance(player.position, transform.position);
+        float distance = Vector3.Distance(tracker.currentTarget.position, transform.position);
 
         if (distance <= attackRange)
         {
@@ -95,7 +93,7 @@ public class KrakenAI : NetworkBehaviour
             isChasing = true;
             isAttacking = false;
             hasAttacked = false;
-            agent.SetDestination(player.position);
+            agent.SetDestination(tracker.currentTarget.position);
         }
         else
         {
@@ -103,7 +101,7 @@ public class KrakenAI : NetworkBehaviour
             if (!agent.pathPending && agent.remainingDistance < 0.5f) GoToNextPatrolPoint();
         }
 
-        Vector3 direction = isAttacking ? (player.position - transform.position).normalized :
+        Vector3 direction = isAttacking ? (tracker.currentTarget.position - transform.position).normalized :
                               agent.velocity.sqrMagnitude > 0.01f ? agent.velocity.normalized :
                               transform.forward;
 
@@ -113,15 +111,29 @@ public class KrakenAI : NetworkBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
         }
 
+        if (isDistracted)
+        {
+            if (Time.time >= distractionEndTime)
+            {
+                isDistracted = false;
+            }
+            else
+            {
+                agent.SetDestination(transform.position); 
+                return;
+            }
+        }
+
+
         animator.SetBool("isChasing", isChasing);
     }
 
     IEnumerator DelayedAttack()
     {
         yield return new WaitForSeconds(0.6f);
-        if (player != null && playerHealth.currentHealth > 0)
+        if (tracker.currentTarget != null && tracker.playerHealth.currentHealth > 0)
         {
-            playerHealth.TakeDamage(attackDamage);
+            tracker.playerHealth.TakeDamage(attackDamage);
         }
     }
 
@@ -164,4 +176,15 @@ public class KrakenAI : NetworkBehaviour
         agent.SetDestination(nearest.position);
         isChasing = false;
     }
+
+
+    public void Distract(float duration)
+    {
+        isDistracted = true;
+        distractionEndTime = Time.time + duration;
+        ResetAttackState();
+        agent.SetDestination(transform.position);
+        animator.SetBool("isChasing", false);
+    }
+
 }

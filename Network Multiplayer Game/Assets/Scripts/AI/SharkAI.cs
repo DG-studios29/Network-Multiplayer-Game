@@ -4,16 +4,15 @@ using Mirror;
 using System.Linq;
 
 [RequireComponent(typeof(NetworkAnimator))]
+[RequireComponent(typeof(NetworkTransformReliable))]
+[RequireComponent(typeof(NavMeshAgent))]
+[RequireComponent(typeof(PlayerTracker))]
 public class SharkAI : NetworkBehaviour
 {
     public Transform[] patrolPoints;
 
-    private Transform player;
-    private PlayerHealthUI playerHealth;
-    private float lastAttackTime;
     public int attackDamage = 10;
     public float attackCooldown = 5f;
-    public bool playerIsDead = false;
 
     public float chaseRange = 100f;
     public float attackRange = 3f;
@@ -24,6 +23,7 @@ public class SharkAI : NetworkBehaviour
     private NavMeshAgent agent;
     private Animator animator;
     private NetworkAnimator netAnimator;
+    private PlayerTracker tracker;
 
     private int currentPatrolIndex;
     private bool hasAttacked;
@@ -37,35 +37,31 @@ public class SharkAI : NetworkBehaviour
     void Start()
     {
         if (!isServer) return;
+
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         netAnimator = GetComponent<NetworkAnimator>();
-        GoToNextPatrolPoint();
+        tracker = GetComponent<PlayerTracker>();
 
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-        player = players.OrderBy(p => Vector3.Distance(p.transform.position, transform.position)).FirstOrDefault()?.transform;
-        playerHealth = player?.GetComponent<PlayerHealthUI>();
+        GoToNextPatrolPoint();
     }
 
     void Update()
     {
         if (!isServer) return;
+
         if (isDistracted)
         {
             distractionTimer -= Time.deltaTime;
-            if (distractionTimer <= 0f) isDistracted = false;
-            else return;
+            if (distractionTimer <= 0f)
+                isDistracted = false;
+            else
+                return;
         }
 
-        if (player == null || playerHealth == null)
-        {
-            GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-            player = players.OrderBy(p => Vector3.Distance(p.transform.position, transform.position)).FirstOrDefault()?.transform;
-            playerHealth = player?.GetComponent<PlayerHealthUI>();
-        }
-        if (player == null || playerHealth == null) return;
+        if (tracker.currentTarget == null || tracker.playerHealth == null) return;
 
-        playerIsDead = playerHealth.currentHealth <= 0;
+        bool playerIsDead = tracker.playerHealth.currentHealth <= 0;
         if (playerIsDead && !isReturningToPortal)
         {
             ResetAttack();
@@ -76,9 +72,10 @@ public class SharkAI : NetworkBehaviour
 
         targetOffset = isAttacking ? attackOffset : chaseOffset;
         agent.baseOffset = Mathf.Lerp(agent.baseOffset, targetOffset, Time.deltaTime * offsetSmoothSpeed);
+
         if (playerIsDead) return;
 
-        float dist = Vector3.Distance(transform.position, player.position);
+        float dist = Vector3.Distance(transform.position, tracker.currentTarget.position);
 
         if (dist <= attackRange)
         {
@@ -91,14 +88,14 @@ public class SharkAI : NetworkBehaviour
                 lastAttackTime = Time.time;
                 hasAttacked = true;
                 netAnimator.SetTrigger("Attack");
-                playerHealth.TakeDamage(attackDamage);
+                tracker.playerHealth.TakeDamage(attackDamage);
             }
         }
         else if (dist <= chaseRange)
         {
             isAttacking = false;
             isChasing = true;
-            agent.SetDestination(player.position);
+            agent.SetDestination(tracker.currentTarget.position);
             agent.speed = 15f;
         }
         else
@@ -106,7 +103,9 @@ public class SharkAI : NetworkBehaviour
             isAttacking = false;
             isChasing = false;
             agent.speed = 10f;
-            if (!agent.pathPending && agent.remainingDistance < 0.5f) GoToNextPatrolPoint();
+
+            if (!agent.pathPending && agent.remainingDistance < 0.5f)
+                GoToNextPatrolPoint();
         }
 
         Quaternion targetRot = Quaternion.LookRotation(agent.velocity.normalized) * Quaternion.Euler(0, 180f, 0);
@@ -117,7 +116,9 @@ public class SharkAI : NetworkBehaviour
 
     void ResetAttack()
     {
-        isChasing = false; isAttacking = false; hasAttacked = false;
+        isChasing = false;
+        isAttacking = false;
+        hasAttacked = false;
         animator.ResetTrigger("Attack");
         animator.SetBool("isChasing", false);
     }
@@ -150,4 +151,6 @@ public class SharkAI : NetworkBehaviour
         agent.SetDestination(nearest.position);
         isChasing = false;
     }
+
+    private float lastAttackTime = 0f;
 }

@@ -130,6 +130,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ThrowSmoke",
+                    "type": "Button",
+                    "id": "ed0c1185-c0db-4a8b-9362-1fbfa00d90ea",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -636,6 +645,28 @@
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "MainMapToggle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "414d5a03-b8be-4d47-80b8-1051f5da87a5",
+                    "path": "<Keyboard>/g",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "ThrowSmoke",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "90c51521-59f3-48bc-9c8b-702e9a52c7ec",
+                    "path": "<Gamepad>/dpad/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "ThrowSmoke",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

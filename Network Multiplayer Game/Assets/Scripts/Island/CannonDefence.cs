@@ -1,15 +1,22 @@
 using UnityEngine;
 using Mirror;
 
+
+[RequireComponent(typeof(NetworkTransformReliable))]
 public class CannonDefence : NetworkBehaviour
 {
+    [Header("Detection Settings")]
     public float detectionRadius = 70f;
     public float fieldOfView = 150f;
     public float rotationSpeed = 5f;
+
+    [Header("Firing Settings")]
     public float fireInterval = 3f;
     public GameObject projectilePrefab;
     public Transform firePoint;
     public float fireForce = 2f;
+
+    [Header("Vision Settings")]
     public LayerMask visionBlockingLayers;
 
     private float fireTimer;
@@ -19,40 +26,47 @@ public class CannonDefence : NetworkBehaviour
     {
         if (!isServer) return;
 
-        if (player == null)
-        {
-            GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-            float closestDistance = Mathf.Infinity;
-            foreach (var go in players)
-            {
-                float dist = Vector3.Distance(go.transform.position, transform.position);
-                if (dist < closestDistance)
-                {
-                    closestDistance = dist;
-                    player = go.transform;
-                }
-            }
-            if (player == null) return;
-        }
+        FindClosestPlayer();
+
+        if (player == null) return;
 
         Vector3 dirToPlayer = player.position - transform.position;
         float distance = dirToPlayer.magnitude;
         float angle = Vector3.Angle(transform.forward, dirToPlayer);
-        if (CanSeePlayer(player.transform))
-        {
-            if (distance < detectionRadius && angle < fieldOfView / 2f)
-            {
-                Quaternion targetRotation = Quaternion.LookRotation(dirToPlayer);
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
 
-                fireTimer += Time.deltaTime;
-                if (fireTimer >= fireInterval)
-                {
-                    FireCannon();
-                    fireTimer = 0f;
-                }
+        if (distance < detectionRadius && angle < fieldOfView / 2f && CanSeePlayer(player))
+        {
+            RotateTowards(dirToPlayer);
+
+            fireTimer += Time.deltaTime;
+            if (fireTimer >= fireInterval)
+            {
+                FireCannon();
+                fireTimer = 0f;
             }
         }
+    }
+
+    void FindClosestPlayer()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        float closestDistance = Mathf.Infinity;
+
+        foreach (GameObject go in players)
+        {
+            float dist = Vector3.Distance(go.transform.position, transform.position);
+            if (dist < closestDistance)
+            {
+                closestDistance = dist;
+                player = go.transform;
+            }
+        }
+    }
+
+    void RotateTowards(Vector3 direction)
+    {
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
     }
 
     void FireCannon()
@@ -68,6 +82,7 @@ public class CannonDefence : NetworkBehaviour
             rb.linearVelocity = toTarget.normalized * Random.Range(20f, 30f) + Vector3.up * Random.Range(2f, 5f) * fireForce;
         }
 
+       
         NetworkServer.Spawn(proj);
     }
 

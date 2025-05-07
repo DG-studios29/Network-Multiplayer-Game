@@ -9,6 +9,9 @@ public class LootRadiusVisualizer : NetworkBehaviour
     public float pulseSpeed = 1f;
     public float pulseAmount = 0.5f;
 
+    [SyncVar(hook = nameof(OnRadiusVisibilityChanged))]
+    private bool showRadius;
+
     private LineRenderer line;
     private bool isVisible = false;
     private float pulseTime = 0f;
@@ -20,6 +23,9 @@ public class LootRadiusVisualizer : NetworkBehaviour
         line.loop = true;
         line.positionCount = segments + 1;
         line.enabled = false;
+
+        line.material = new Material(Shader.Find("Unlit/Color"));
+        line.material.color = Color.cyan;
     }
 
     void Update()
@@ -36,8 +42,21 @@ public class LootRadiusVisualizer : NetworkBehaviour
 
     public void SetVisible(bool visible)
     {
-        isVisible = visible;
-        line.enabled = visible;
+        if (isServer)
+        {
+            showRadius = visible;
+        }
+    }
+
+    private void OnRadiusVisibilityChanged(bool oldVal, bool newVal)
+    {
+        isVisible = newVal;
+        line.enabled = newVal;
+
+        if (newVal)
+        {
+            DrawCircle();
+        }
     }
 
     void DrawCircle()

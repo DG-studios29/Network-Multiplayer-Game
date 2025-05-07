@@ -1,16 +1,26 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 using Mirror;
 using System.Collections;
+using UnityEngine.UI;
 
+[RequireComponent(typeof(PlayerInput))]
 public class SharkDistraction : NetworkBehaviour
 {
+    [Header("Distraction Settings")]
     public float distractionRadius = 25f;
     public float distractionDuration = 5f;
     public float cooldownTime = 10f;
-    private bool canUseBait = true;
 
+    [Header("Bait Settings")]
     public GameObject baitPrefab;
+    public Transform baitSpawnPoint;
+
+    [Header("Cooldown UI")]
+    public Image cooldownOverlay;
+
+    private bool canUseBait = true;
+    private float cooldownTimer = 0f;
 
     private PlayerInput playerInput;
     private InputAction dropBaitAction;
@@ -23,8 +33,10 @@ public class SharkDistraction : NetworkBehaviour
     public override void OnStartAuthority()
     {
         base.OnStartAuthority();
+
         dropBaitAction = playerInput.actions["DropBait"];
-        dropBaitAction.performed += OnDropBait;
+        if (dropBaitAction != null)
+            dropBaitAction.performed += OnDropBait;
     }
 
     private void OnDisable()
@@ -33,35 +45,54 @@ public class SharkDistraction : NetworkBehaviour
             dropBaitAction.performed -= OnDropBait;
     }
 
+    private void Update()
+    {
+        if (!isOwned || cooldownOverlay == null) return;
+
+        if (!canUseBait)
+        {
+            if (!cooldownOverlay.gameObject.activeSelf)
+                cooldownOverlay.gameObject.SetActive(true);
+
+            cooldownTimer -= Time.deltaTime;
+            cooldownOverlay.fillAmount = cooldownTimer / cooldownTime;
+
+            if (cooldownTimer <= 0f)
+            {
+                canUseBait = true;
+                cooldownOverlay.fillAmount = 0f;
+                cooldownOverlay.gameObject.SetActive(false);
+            }
+        }
+    }
+
     private void OnDropBait(InputAction.CallbackContext ctx)
     {
         if (!canUseBait) return;
-        canUseBait = false;
-        StartCoroutine(BaitCooldownRoutine());
-        CmdDropBait(transform.position);
-    }
 
-    IEnumerator BaitCooldownRoutine()
-    {
-        yield return new WaitForSeconds(cooldownTime);
-        canUseBait = true;
+        canUseBait = false;
+        cooldownTimer = cooldownTime;
+        cooldownOverlay.fillAmount = 1f;
+
+        Vector3 spawnPos = baitSpawnPoint != null ? baitSpawnPoint.position : transform.position;
+        CmdDropBait(spawnPos);
     }
 
     [Command]
-    void CmdDropBait(Vector3 baitPosition)
+    private void CmdDropBait(Vector3 baitPosition)
     {
-        RpcDistractSharks(baitPosition);
-
         if (baitPrefab != null)
         {
             GameObject bait = Instantiate(baitPrefab, baitPosition, Quaternion.identity);
             NetworkServer.Spawn(bait);
             Destroy(bait, distractionDuration);
         }
+
+        RpcDistractSharks(baitPosition);
     }
 
     [ClientRpc]
-    void RpcDistractSharks(Vector3 center)
+    private void RpcDistractSharks(Vector3 center)
     {
         Collider[] colliders = Physics.OverlapSphere(center, distractionRadius);
         foreach (var col in colliders)
@@ -72,5 +103,14 @@ public class SharkDistraction : NetworkBehaviour
                 shark.Distract(distractionDuration);
             }
         }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+
+        Gizmos.color = new Color(0.2f, 0.8f, 1f, 0.4f); // light blue
+        Vector3 center = baitSpawnPoint != null ? baitSpawnPoint.position : transform.position;
+        Gizmos.DrawWireSphere(center, distractionRadius);
+
     }
 }
