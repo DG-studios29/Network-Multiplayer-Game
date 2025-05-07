@@ -8,6 +8,9 @@ public class Boat_Controller : NetworkBehaviour
     [SerializeField] private PirateInput pirateInput;
     private Rigidbody rb;
 
+    [Header("Health Settings")]
+    [SerializeField] private PlayerHealthUI playerHealthUI;
+
     [Header("Floats/ numbers"), Space(5f)]
     [SerializeField] private float shipSpeed = 5f;
     [SerializeField] private float shipSteerMultiplier = 3f;
@@ -30,7 +33,6 @@ public class Boat_Controller : NetworkBehaviour
     [SerializeField] private Transform windDirIndicatorUI;
     [SerializeField] private Transform sailIndicatorUI;
 
-
     [Header("Audio"), Space(5f)]
     [SerializeField] private AudioSource waterSFx, sailSFx;
 
@@ -43,18 +45,20 @@ public class Boat_Controller : NetworkBehaviour
     #endregion
 
     #region Built-In Methods
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
-
-        if (rb == null) { Debug.Log("No RD"); }
+        if (rb == null) { Debug.Log("No Rigidbody found."); }
     }
+
     void OnEnable()
     {
         if (!isLocalPlayer) return;
 
-        //pirateInput = GetComponent<PirateInput>();
+        playerHealthUI = GetComponent<PlayerHealthUI>();
         Debug.Log("Local is Connected");
+
         if (waterSFx != null)
             waterSFx.volume = .01f;
     }
@@ -62,10 +66,10 @@ public class Boat_Controller : NetworkBehaviour
     [ClientCallback]
     void FixedUpdate()
     {
-        if (!isLocalPlayer) return;
+        if (!isLocalPlayer || playerHealthUI == null || playerHealthUI.currentHealth <= 0) return;
+
         ShipSail();
         HandleSailing();
-
     }
 
     #endregion
@@ -74,23 +78,20 @@ public class Boat_Controller : NetworkBehaviour
 
     private void ShipSail()
     {
-        if (rb == null || pirateInput == null || waterSFx == null) return;
+        if (rb == null || pirateInput == null || waterSFx == null || playerHealthUI == null || playerHealthUI.currentHealth <= 0) return;
 
         float v = pirateInput.sailInput.y;
         float h = pirateInput.sailInput.x;
 
-
-        //speed Evaluation
+        // Speed evaluation
         switch (Mathf.Abs(sailAngle))
         {
             case < acceptableAngle:
                 speed = speedCurve.Evaluate(Mathf.Abs(sailAngle)) + shipSpeed;
                 break;
-
             case >= acceptableAngle:
                 speed = shipSpeed;
                 break;
-
             default:
                 speed = shipSpeed;
                 break;
@@ -103,9 +104,8 @@ public class Boat_Controller : NetworkBehaviour
 
         rb.AddForce(forward * v * speed, ForceMode.Acceleration);
 
-        //seed gauge
+        // Speed gauge
         speedInKm = Mathf.Abs(Mathf.Ceil(rb.linearVelocity.magnitude));
-
         speedNeedleUI.localRotation = Quaternion.Euler(0f, 0f, Mathf.Lerp(minNeedleRot, maxNeedleRot, speedInKm / 64));
 
         float sqrSpeed = Mathf.Max(rb.linearVelocity.sqrMagnitude, 0.0001f);
@@ -114,14 +114,13 @@ public class Boat_Controller : NetworkBehaviour
 
         float shipDir = Vector3.Dot(shipVel, forward);
 
-        if (shipVel.sqrMagnitude != 0 && v > 0.2f || v < -0.2f)
+        if (shipVel.sqrMagnitude != 0 && (v > 0.2f || v < -0.2f))
         {
-            rb.AddRelativeTorque(new Vector3(0, turnCurve.Evaluate(Mathf.Abs(shipDir))
-                * shipSteerMultiplier, 0) * h, ForceMode.Acceleration);
+            rb.AddRelativeTorque(new Vector3(0, turnCurve.Evaluate(Mathf.Abs(shipDir)) * shipSteerMultiplier, 0) * h, ForceMode.Acceleration);
         }
 
-        //Non-Physics Steer
-        if (shipVel.sqrMagnitude <= Mathf.Abs(1) && v < 0.1f || v > -0.1f)
+        // Non-physics steer
+        if (shipVel.sqrMagnitude <= Mathf.Abs(1) && (v < 0.1f || v > -0.1f))
         {
             nonPhysicsSteerFactor += Time.fixedDeltaTime * h * nonPhysicsSteerMltiplier;
             transform.rotation = Quaternion.Euler(0f, nonPhysicsSteerFactor, 0f);
@@ -132,21 +131,19 @@ public class Boat_Controller : NetworkBehaviour
     {
         Quaternion playerInverseEulerAngles = Quaternion.Inverse(Quaternion.Euler(0f, transform.eulerAngles.y, 0f));
         Quaternion normalizedWindDir = Quaternion.LookRotation(WindManager.instance.GetWindDirection());
-
         Quaternion windDirRelativeToPlayer = playerInverseEulerAngles * normalizedWindDir;
 
         if (sailIndicatorUI && windDirIndicatorUI)
         {
             windDirIndicatorUI.localRotation = Quaternion.Euler(0f, 0f, -windDirRelativeToPlayer.eulerAngles.y);
 
-            sailAngle = Quaternion.Angle(sailIndicatorUI.localRotation,
-                windDirIndicatorUI.localRotation) * Mathf.Deg2Rad;
+            sailAngle = Quaternion.Angle(sailIndicatorUI.localRotation, windDirIndicatorUI.localRotation) * Mathf.Deg2Rad;
 
             sailsAssist += sailMultiplier * pirateInput.sailingInput;
             sailIndicatorUI.localRotation = Quaternion.Euler(0f, 0f, -sailsAssist);
 
             if (sailSFx != null)
-                sailSFx.volume = pirateInput.sailingInput > 0.5f || pirateInput.sailingInput < -0.5f ? .06f : 0f;
+                sailSFx.volume = (pirateInput.sailingInput > 0.5f || pirateInput.sailingInput < -0.5f) ? .06f : 0f;
         }
     }
 

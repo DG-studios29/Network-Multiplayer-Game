@@ -2708,6 +2708,10 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: d6b2ee6b-b763-4628-96fe-c5e20e8461be
     m_ActionName: 'Player/MainMapToggle[/XInputControllerWindows/start,/Keyboard/m]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 010dde9b-b719-4efa-bd54-eeb33bc5a1b8
+    m_ActionName: 'Player/Repair[/DualShock4GamepadHID/rightTrigger,/Keyboard/o]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -2760,6 +2764,7 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
+  playerHealthUI: {fileID: 6751560860948979733}
   playerInput: {fileID: 6200132072751145265}
 --- !u!114 &5424925223759254863
 MonoBehaviour:
@@ -2777,6 +2782,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   pirateInput: {fileID: 3336482206297351787}
+  playerHealthUI: {fileID: 6751560860948979733}
   shipSpeed: 75
   shipSteerMultiplier: 20
   turningThreshhold: 0.1
@@ -2905,7 +2911,7 @@ MonoBehaviour:
   healthBar: {fileID: 5646099330164864323}
   playerHUD: {fileID: 8169501183209960833}
   repairDuration: 5
-  repairKey: 114
+  inputActions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
 --- !u!114 &1973298273717188077
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3144,7 +3150,6 @@ MonoBehaviour:
   syncInterval: 0
   myCam: {fileID: 3812161623772365489}
   minimap: {fileID: 8687959199587896623}
-  Mainmap: {fileID: 0}
 --- !u!1 &737519942678181188
 GameObject:
   m_ObjectHideFlags: 0

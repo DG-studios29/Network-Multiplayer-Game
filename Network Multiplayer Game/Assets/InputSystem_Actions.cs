@@ -216,6 +216,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Repair"",
+                    ""type"": ""Button"",
+                    ""id"": ""010dde9b-b719-4efa-bd54-eeb33bc5a1b8"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -722,6 +731,28 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""MainMapToggle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""20259388-ad2f-4565-a158-7726be9ebcb3"",
+                    ""path"": ""<Gamepad>/rightStickPress"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Repair"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5ce214e3-1330-4879-a6d1-ec77bedeb37d"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Repair"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1489,6 +1520,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_DropBait = m_Player.FindAction("DropBait", throwIfNotFound: true);
         m_Player_Newaction = m_Player.FindAction("New action", throwIfNotFound: true);
         m_Player_MainMapToggle = m_Player.FindAction("MainMapToggle", throwIfNotFound: true);
+        m_Player_Repair = m_Player.FindAction("Repair", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1601,6 +1633,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_DropBait;
     private readonly InputAction m_Player_Newaction;
     private readonly InputAction m_Player_MainMapToggle;
+    private readonly InputAction m_Player_Repair;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -1669,6 +1702,10 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @MainMapToggle => m_Wrapper.m_Player_MainMapToggle;
         /// <summary>
+        /// Provides access to the underlying input action "Player/Repair".
+        /// </summary>
+        public InputAction @Repair => m_Wrapper.m_Player_Repair;
+        /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
         public InputActionMap Get() { return m_Wrapper.m_Player; }
@@ -1736,6 +1773,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @MainMapToggle.started += instance.OnMainMapToggle;
             @MainMapToggle.performed += instance.OnMainMapToggle;
             @MainMapToggle.canceled += instance.OnMainMapToggle;
+            @Repair.started += instance.OnRepair;
+            @Repair.performed += instance.OnRepair;
+            @Repair.canceled += instance.OnRepair;
         }
 
         /// <summary>
@@ -1789,6 +1829,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @MainMapToggle.started -= instance.OnMainMapToggle;
             @MainMapToggle.performed -= instance.OnMainMapToggle;
             @MainMapToggle.canceled -= instance.OnMainMapToggle;
+            @Repair.started -= instance.OnRepair;
+            @Repair.performed -= instance.OnRepair;
+            @Repair.canceled -= instance.OnRepair;
         }
 
         /// <summary>
@@ -2242,6 +2285,13 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnMainMapToggle(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Repair" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnRepair(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.
