@@ -22,4 +22,4 @@ MonoBehaviour:
   damage: 10
   gravityScale: 1.1
   particleFX: {fileID: 5511184213081609800, guid: 3a82b2b9d6814144d9bb459f48a48e8d, type: 3}
-  splashFX: {fileID: 6445449595309164409, guid: afa801e09402c9b4b80013e260a30e8a, type: 3}
+  smallHitFX: {fileID: 5511184213081609800, guid: bf23e5c4952bc694c8ee00a93a7af5c5, type: 3}

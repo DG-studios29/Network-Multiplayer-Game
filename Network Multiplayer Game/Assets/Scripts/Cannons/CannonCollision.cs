@@ -16,6 +16,8 @@ public class CannonCollision : NetworkBehaviour
     public GameObject impactFX;
     public GameObject smallImpactFX;
 
+    public Transform parentPos;
+
     private float lifeTotal;
 
     void Start()
@@ -47,6 +49,7 @@ public class CannonCollision : NetworkBehaviour
     }
 
     //Place Command and Client Rcp
+  
     private void OnCollisionEnter(Collision collision)
     {
         //if (!isServer) return;
@@ -66,12 +69,14 @@ public class CannonCollision : NetworkBehaviour
 
         if (target.CompareTag("Player"))
         {
+            NetworkIdentity targetNetID = target.gameObject.GetComponent<NetworkIdentity>();
 
             //Another method
-             if(target.transform.position != this.transform.position)
+            if (targetNetID.netId.ToString() == parentNetID.netId.ToString())
             {
                 Debug.Log("Avoided self hit");
                 return;
+               
             }
            
             PlayerHealthUI playerHealth = target.GetComponent<PlayerHealthUI>();
@@ -82,6 +87,7 @@ public class CannonCollision : NetworkBehaviour
                 //Impact 
                 GameObject hit = Instantiate(impactFX,this.transform.position,Quaternion.identity);
                 Destroy(hit, 2f);
+                NetworkServer.Destroy(gameObject);
             }
         }
 
@@ -95,6 +101,7 @@ public class CannonCollision : NetworkBehaviour
                 //Impact 
                 GameObject hit = Instantiate(impactFX, this.transform.position, Quaternion.identity);
                 Destroy(hit, 2f);
+                NetworkServer.Destroy(gameObject);
             }
         }
 
@@ -108,6 +115,7 @@ public class CannonCollision : NetworkBehaviour
                 //Impact 
                 GameObject hit = Instantiate(impactFX, this.transform.position, Quaternion.identity);
                 Destroy(hit, 2f);
+                NetworkServer.Destroy(gameObject);
             }
         }
 
@@ -121,6 +129,7 @@ public class CannonCollision : NetworkBehaviour
                 //Impact 
                 GameObject hit = Instantiate(impactFX, transform.position, Quaternion.identity);
                 Destroy(hit, 2f);
+                NetworkServer.Destroy(gameObject);
             }
         }
 
@@ -130,6 +139,7 @@ public class CannonCollision : NetworkBehaviour
 
             GameObject hit = Instantiate(impactFX, transform.position, Quaternion.identity);
             Destroy(hit, 2f);
+            NetworkServer.Destroy(gameObject);
         }
 
       
@@ -140,3 +150,5 @@ public class CannonCollision : NetworkBehaviour
         NetworkServer.Destroy(gameObject);
     }
 }
+
+

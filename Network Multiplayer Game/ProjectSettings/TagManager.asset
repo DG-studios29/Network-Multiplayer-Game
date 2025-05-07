@@ -11,6 +11,8 @@ TagManager:
   - KrakenAI
   - BigIsland
   - Water
+  - FxTemporaire
+  - Rocks
   layers:
   - Default
   - TransparentFX

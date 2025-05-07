@@ -145,6 +145,8 @@ public class CannonFire : NetworkBehaviour
         cannonCtrl.gravityScale = gravityScale * gravityScale;
         cannonCtrl.impactFX = hitVFX;
         cannonCtrl.smallImpactFX = smallImpactVFX;
+        
+       
 
 
         rb = cannonObj.GetComponent<Rigidbody>();
