@@ -58,7 +58,7 @@ public class ScoreboardManager : NetworkBehaviour
             CmdRequestScoreboardUpdate();
         }
 
-        // ✅ Always try local UI update on client (helps host too)
+       
         StartCoroutine(ForceLocalUIRefresh());
     }
 
@@ -121,7 +121,7 @@ public class ScoreboardManager : NetworkBehaviour
 
         RpcUpdateScoreboardUI(sortedList);
 
-        // ✅ Always force local update on host (manually call)
+       
         if (isClient)
         {
             Debug.Log("[Host] Forcing scoreboard UI update locally on host.");
@@ -170,7 +170,7 @@ public class ScoreboardManager : NetworkBehaviour
 
     private IEnumerator ForceLocalUIRefresh()
     {
-        // ✅ Helps the host to update UI after all components are initialized
+       
         yield return new WaitForSeconds(1f);
         CmdRequestScoreboardUpdate();
     }
