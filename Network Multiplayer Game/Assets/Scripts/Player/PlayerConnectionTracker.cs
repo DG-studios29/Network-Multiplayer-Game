@@ -34,14 +34,14 @@ public class PlayerConnectionTracker : NetworkBehaviour
         }
         else
         {
-            Debug.LogWarning("[CLIENT] PlayerIslandUI not found!");
+            Debug.LogWarning("PlayerIslandUI not found!");
         }
     }
 
     [TargetRpc]
     private void TargetAssignBigIslandUI(NetworkConnection target, NetworkIdentity bigIslandIdentity)
     {
-        Debug.Log("[CLIENT] TargetAssignBigIslandUI called");
+        Debug.Log("TargetAssignBigIslandUI called");
 
         if (!isLocalPlayer) return;
 
@@ -51,11 +51,11 @@ public class PlayerConnectionTracker : NetworkBehaviour
         if (ui != null)
         {
             ui.SetTargetBigIsland(bigIsland);
-            Debug.Log($"[UI] SetTargetBigIsland with health: {bigIsland.currentHealth}/{bigIsland.maxHealth}");
+            Debug.Log($"SetTargetBigIsland with health: {bigIsland.currentHealth}/{bigIsland.maxHealth}");
         }
         else
         {
-            Debug.LogWarning("[CLIENT] PlayerIslandUI not found for BigIsland!");
+            Debug.LogWarning("PlayerIslandUI not found for BigIsland!");
         }
     }
 

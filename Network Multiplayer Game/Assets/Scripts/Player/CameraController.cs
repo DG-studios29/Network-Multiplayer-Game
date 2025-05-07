@@ -1,58 +1,55 @@
-using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
-using Unity.Cinemachine;
 
 public class CameraController : NetworkBehaviour
 {
+    [Header("Camera References")]
     public Camera myCam;
     public Camera minimap;
-    private Camera MainmapCam;
-    //public override void OnStartAuthority()
-    //{
-    //    Camera.SetActive(true);
-    //}
+    private Camera mainMapCam;
 
-    private void Start()
+    void Start()
     {
-        GameObject Mainmap = GameObject.Find("MapCamera");
-        MainmapCam = Mainmap.GetComponent<Camera>();
+        // Assign main map camera if not already assigned
+        if (!mainMapCam)
+        {
+            GameObject mapCamObj = GameObject.Find("MapCamera");
+            if (mapCamObj)
+                mainMapCam = mapCamObj.GetComponent<Camera>();
+        }
+
+        // Deactivate all cameras if not the local player
+        if (!isLocalPlayer)
+        {
+            DeactivateAllCameras();
+        }
     }
 
-    public void Update()
+    void Update()
     {
-        //if (isLocalPlayer)
-        //{
-        //    if (!cinemachine) { cinemachine = Object.FindAnyObjectByType<CinemachineCamera>(); }
+        if (!isLocalPlayer) return;
 
-        //    cinemachine.Follow = transform;
+        // Assign cameras only if null (can be set in inspector or runtime)
+        if (!myCam)
+            myCam = Camera.main;
 
+        if (!minimap)
+            minimap = GameObject.Find("MinimapCamera")?.GetComponent<Camera>();
 
-        //}
-        //else
-        //{
-        //    if (cinemachine) { cinemachine.gameObject.SetActive(false); }
-        //}
-
-
-
-        if (isLocalPlayer)
-        {
-            if (!myCam) { myCam = Camera.main; }
-            if (!minimap) { minimap = Camera.main; }
-            if (!MainmapCam) { MainmapCam = Camera.main; }
-            //myCam.transform.SetParent(transform);
-
-        }
-        else
-        {
-            if (myCam) { myCam.gameObject.SetActive(false); }
-            if (minimap) { minimap.gameObject.SetActive(false); }
-            if (MainmapCam) { MainmapCam.gameObject.SetActive(false); }
-        }
-
-        
+        if (!mainMapCam)
+            mainMapCam = GameObject.Find("MapCamera")?.GetComponent<Camera>();
 
     }
 
+    private void DeactivateAllCameras()
+    {
+        if (myCam)
+            myCam.gameObject.SetActive(false);
+
+        if (minimap)
+            minimap.gameObject.SetActive(false);
+
+        if (mainMapCam)
+            mainMapCam.gameObject.SetActive(false);
+    }
 }

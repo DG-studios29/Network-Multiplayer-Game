@@ -2,6 +2,7 @@
 using TMPro;
 using UnityEngine.UI;
 using Mirror;
+using System.Collections;
 
 public class PlayerIslandUI : NetworkBehaviour
 {
@@ -13,10 +14,19 @@ public class PlayerIslandUI : NetworkBehaviour
     private Island targetIsland;
     private BigIslandHealth targetBigIsland;
 
+    private ScoreboardManager scoreboardManager;
+
     private void Start()
     {
         if (!isLocalPlayer) return;
+
         ShowUI(false);
+
+        scoreboardManager = GetComponent<ScoreboardManager>();
+        if (scoreboardManager == null)
+        {
+            Debug.LogWarning("ScoreboardManager not found on player!");
+        }
     }
 
     private void Update()
@@ -35,7 +45,6 @@ public class PlayerIslandUI : NetworkBehaviour
         }
     }
 
-    // Set Island target (standard island)
     public void SetTargetIsland(Island island)
     {
         targetIsland = island;
@@ -53,7 +62,6 @@ public class PlayerIslandUI : NetworkBehaviour
         }
     }
 
-    // Set BigIsland target (boss island)
     public void SetTargetBigIsland(BigIslandHealth bigIsland)
     {
         targetBigIsland = bigIsland;
@@ -73,17 +81,14 @@ public class PlayerIslandUI : NetworkBehaviour
 
     public void ShowUI(bool show)
     {
-        Debug.Log($"[UI] ShowUI({show}) called");
         if (islandUIRoot != null)
             islandUIRoot.SetActive(show);
         else
-            Debug.LogWarning("[UI] islandUIRoot is NOT assigned!");
+            Debug.LogWarning("islandUIRoot is NOT assigned!");
     }
 
     public void UpdateIslandHealth(float current, float max)
     {
-        Debug.Log($"[UI] Slider updated to: {current}/{max}");
-
         if (islandHealthSlider != null)
         {
             islandHealthSlider.maxValue = max;
@@ -91,21 +96,19 @@ public class PlayerIslandUI : NetworkBehaviour
         }
         else
         {
-            Debug.LogWarning("[UI] islandHealthSlider is NOT assigned!");
+            Debug.LogWarning("islandHealthSlider is NOT assigned!");
         }
     }
 
     public void UpdateLootProgress(float progress)
     {
-        Debug.Log($"[UI] Setting loot progress: {progress}");
-
         if (lootingProgressSlider != null)
         {
             lootingProgressSlider.value = progress;
         }
         else
         {
-            Debug.LogWarning("[UI] lootingProgressSlider is NOT assigned!");
+            Debug.LogWarning("lootingProgressSlider is NOT assigned!");
         }
     }
 
@@ -120,6 +123,34 @@ public class PlayerIslandUI : NetworkBehaviour
     public void ShowLootPopup(int amount)
     {
         UpdateLootCollected(amount);
-        Debug.Log($"[CLIENT] Loot popup: {amount}");
+
+        
+        if (isLocalPlayer && NetworkClient.connection?.identity != null)
+        {
+            var scoreboard = NetworkClient.connection.identity.GetComponent<ScoreboardManager>();
+            if (scoreboard != null)
+            {
+                scoreboard.CmdIncreaseScore(amount);
+            }
+            else
+            {
+                Debug.LogWarning("ScoreboardManager not found on player identity!");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("Not local player or missing connection identity!");
+        }
+
+        StartCoroutine(ClearLootTextAfterDelay(2f));
+    }
+
+    private IEnumerator ClearLootTextAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (lootCollectedText != null)
+        {
+            lootCollectedText.text = "Loot: 0";
+        }
     }
 }

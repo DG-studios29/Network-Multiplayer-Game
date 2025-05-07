@@ -11,7 +11,7 @@ public class SpawnManager : NetworkBehaviour
     public float minDistanceBetweenObjects = 50f;
     public List<Vector3> occupiedPositions = new List<Vector3>();
 
-    [Header("Avoid These (can be networked Transforms)")]
+    [Header("Avoid These")]
     public Transform bigIsland;
     public List<Transform> playerSpawnPoints;  
     public List<Transform> islands;            

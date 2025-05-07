@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 1554786154710159575}
   - component: {fileID: -2387296427687565261}
   - component: {fileID: 7246514747483636089}
-  - component: {fileID: 8889694971571921417}
   - component: {fileID: -3161706780961318167}
+  - component: {fileID: 1963420120025300878}
   m_Layer: 0
   m_Name: Bullet
   m_TagString: Cannonball
@@ -151,32 +151,10 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  parentNetID: {fileID: 0}
+  parentNetID: {fileID: -2387296427687565261}
   cannonLifeSpan: 0
   cannonDamage: 0
   gravityScale: 0
---- !u!64 &8889694971571921417
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4193620958866771453}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 1
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -7204647971529134275, guid: cd528468d8d6de741829c9d640296279, type: 3}
 --- !u!114 &-3161706780961318167
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -211,3 +189,24 @@ MonoBehaviour:
   rotationSensitivity: 0.01
   positionPrecision: 0.01
   scalePrecision: 0.01
+--- !u!135 &1963420120025300878
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4193620958866771453}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 1.3180176
+  m_Center: {x: 0.007159263, y: 0.00000035762787, z: 0.32870856}

@@ -25,17 +25,17 @@ public class IslandTriggerWatcher : NetworkBehaviour
         }
         else if (other.CompareTag("BigIsland"))
         {
-            Debug.Log("[DEBUG] BigIsland trigger logic hit!");
+            Debug.Log("BigIsland trigger logic hit!");
 
             BigIslandHealth bigIsland = other.GetComponentInParent<BigIslandHealth>();
             if (bigIsland != null)
             {
-                Debug.Log("[DEBUG] BigIslandHealth component found, assigning UI.");
+                Debug.Log("BigIslandHealth component found, assigning UI.");
                 tracker.CmdAssignBigIslandUI(bigIsland.netIdentity);
             }
             else
             {
-                Debug.LogWarning("[DEBUG] BigIslandHealth component NOT found!");
+                Debug.LogWarning("BigIslandHealth component NOT found!");
             }
         }
     }

@@ -12,7 +12,7 @@ public class RockSpawner : NetworkBehaviour
 
     private List<Vector3> spawnedPositions = new List<Vector3>();
 
-    public override void OnStartServer() // ? Only runs on server
+    public override void OnStartServer() 
     {
         base.OnStartServer();
         SpawnRocks();

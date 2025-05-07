@@ -683,7 +683,7 @@ MonoBehaviour:
   manager: {fileID: 0}
   islandPrefab: {fileID: 0}
   isLooted: 0
-  maxHealth: 10
+  maxHealth: 30
   treasureCollectionTime: 5
   cannons:
   - {fileID: 6977327108796206934}

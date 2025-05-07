@@ -1,209 +1,165 @@
-using UnityEngine;
-using Mirror;
-using TMPro;
+﻿using Mirror;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
+using UnityEngine;
 
 public class ScoreboardManager : NetworkBehaviour
 {
-
     [Header("Scoreboard UI")]
-    [SerializeField] private TMP_Text[] playerNameTexts; 
-    [SerializeField] private TMP_Text[] playerScoreTexts; 
-    [SerializeField] private Color highlightColor = Color.yellow; 
-    [SerializeField] private Color defaultColor = Color.black; 
+    [SerializeField] private TMP_Text[] playerNameTexts;
+    [SerializeField] private TMP_Text[] playerScoreTexts;
+    [SerializeField] private Color highlightColor = Color.yellow;
+    [SerializeField] private Color defaultColor = Color.black;
 
     [Header("Player Settings")]
-    [SyncVar(hook = nameof(OnScoreChanged))] public string playerName; 
+    [SyncVar(hook = nameof(OnNameChanged))] public string playerName;
     [SyncVar(hook = nameof(OnScoreChanged))] public int playerScore;
 
-    //[SerializeField] private PlayerInputTemp playerData;
-    [SerializeField] private CannonHUD hud;
+    private static readonly List<ScoreboardManager> allPlayers = new();
 
-    private static List<ScoreboardManager> allPlayers = new List<ScoreboardManager>(); 
+    [System.Serializable]
+    public struct PlayerInfo
+    {
+        public string name;
+        public int score;
+
+        public PlayerInfo(string name, int score)
+        {
+            this.name = name;
+            this.score = score;
+        }
+    }
+
+    #region Unity + Mirror Hooks
 
     public override void OnStartServer()
     {
         base.OnStartServer();
         allPlayers.Add(this);
+        StartCoroutine(DelayedRefresh());
     }
 
     public override void OnStopServer()
     {
-        base.OnStopServer();
         allPlayers.Remove(this);
-    }
-
-    public override void OnStartLocalPlayer()
-    {
-        base.OnStartLocalPlayer();
-
-        playerName = $"Player {netId}";
-        //playerName = playerData.CaptainName;
-
-        //PlayerInputTemp playerDat = NetworkClient.localPlayer.gameObject.GetComponent<PlayerInputTemp>();
-        //playerName = playerDat.CaptainName;
-
-        if (isLocalPlayer)
-        {
-            
-        }
-        // = this.GetComponentInParent<PlayerInputTemp>();
-
-      /*  if (playerData != null)
-        {
-            playerName = playerData.CaptainName;
-            RefreshScoreboard();
-
-        }*/
-       
-      
-    }
-
-
-    
-    public void ScoreNameChange()
-    {
-
-        //playerName = hud.GetCustomName();
-        //Debug.Log("Back and forth");
-        clientScoreNameChange();
-    }
-
-    
-    public void clientScoreNameChange()
-    {
-
-        playerName = hud.GetCustomName();
-        Debug.Log("Back and forth");
+        base.OnStopServer();
         RefreshScoreboard();
     }
 
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
 
+        if (isLocalPlayer)
+        {
+            CmdSetPlayerName($"Player {netId}");
+            CmdRequestScoreboardUpdate();
+        }
 
+        // ✅ Always try local UI update on client (helps host too)
+        StartCoroutine(ForceLocalUIRefresh());
+    }
 
+    #endregion
 
+    #region SyncVar Hooks
+
+    private void OnNameChanged(string _, string __)
+    {
+        RefreshScoreboard();
+    }
+
+    private void OnScoreChanged(int _, int __)
+    {
+        RefreshScoreboard();
+    }
+
+    #endregion
+
+    #region Commands
 
     [Command]
     public void CmdIncreaseScore(int amount)
     {
+        Debug.Log($"[Server] Increasing score for {playerName} by {amount}");
         playerScore += amount;
-        Debug.Log($"[Server] {playerName} score increased to {playerScore}");
-    }
-
-    private void OnScoreChanged(string oldValue, string newValue)
-    {
-        Debug.Log($"[Client] Player name changed from {oldValue} to {newValue}");
         RefreshScoreboard();
     }
 
-    private void OnScoreChanged(int oldValue, int newValue)
+    [Command]
+    public void CmdSetPlayerName(string name)
     {
-        Debug.Log($"[Client] Player score changed from {oldValue} to {newValue}");
+        playerName = name;
+    }
+
+    [Command]
+    public void CmdRequestScoreboardUpdate()
+    {
+        RefreshScoreboard();
+    }
+
+    #endregion
+
+    #region Scoreboard Logic
+
+    private IEnumerator DelayedRefresh()
+    {
+        yield return new WaitForSeconds(0.2f);
         RefreshScoreboard();
     }
 
     private void RefreshScoreboard()
     {
-        if (isServer)
+        if (!isServer) return;
+
+        var sortedList = allPlayers
+            .Select(p => new PlayerInfo(p.playerName, p.playerScore))
+            .OrderByDescending(p => p.score)
+            .ToArray();
+
+        RpcUpdateScoreboardUI(sortedList);
+
+        // ✅ Always force local update on host (manually call)
+        if (isClient)
         {
-            UpdateScoreboard();
+            Debug.Log("[Host] Forcing scoreboard UI update locally on host.");
+            UpdateScoreboardUI(sortedList);
         }
-        else
-        {
-            CmdRequestScoreboardUpdate();
-        }
-    }
-
-    [Server]
-    private void UpdateScoreboard()
-    {
-      
-        var sortedPlayers = allPlayers.OrderByDescending(p => p.playerScore).ToList();
-
-        for (int i = 0; i < playerNameTexts.Length; i++)
-        {
-            if (i < sortedPlayers.Count)
-            {
-                var player = sortedPlayers[i];
-
-              
-                playerNameTexts[i].text = player.playerName;
-                playerScoreTexts[i].text = player.playerScore.ToString();
-
-        
-                if (i == 0)
-                {
-                    playerNameTexts[i].color = highlightColor;
-                    playerScoreTexts[i].color = highlightColor;
-                }
-                else
-                {
-                    playerNameTexts[i].color = defaultColor;
-                    playerScoreTexts[i].color = defaultColor;
-                }
-            }
-            else
-            {
-              
-                playerNameTexts[i].text = "Waiting...";
-                playerScoreTexts[i].text = "0";
-                playerNameTexts[i].color = defaultColor;
-                playerScoreTexts[i].color = defaultColor;
-            }
-        }
-
-  
-        RpcUpdateScoreboardUI();
-    }
-
-
-
-
-
-
-
-
-
-
-
-    [Command]
-    private void CmdRequestScoreboardUpdate()
-    {
-        UpdateScoreboard();
     }
 
     [ClientRpc]
-    private void RpcUpdateScoreboardUI()
+    private void RpcUpdateScoreboardUI(PlayerInfo[] playerInfos)
     {
-        
-        var sortedPlayers = allPlayers.OrderByDescending(p => p.playerScore).ToList();
+        Debug.Log("[Client] Updating scoreboard UI via RPC");
+        UpdateScoreboardUI(playerInfos);
+    }
+
+    private void UpdateScoreboardUI(PlayerInfo[] playerInfos)
+    {
+        if (playerNameTexts == null || playerScoreTexts == null || playerNameTexts.Length == 0)
+        {
+            Debug.LogWarning("[UI] Text arrays not assigned!");
+            return;
+        }
+
+        Debug.Log($"[UI] Updating scoreboard locally. Player count: {playerInfos.Length}");
 
         for (int i = 0; i < playerNameTexts.Length; i++)
         {
-            if (i < sortedPlayers.Count)
+            if (i < playerInfos.Length)
             {
-                var player = sortedPlayers[i];
+                var p = playerInfos[i];
+                playerNameTexts[i].text = p.name;
+                playerScoreTexts[i].text = p.score.ToString();
 
-              
-                playerNameTexts[i].text = player.playerName;
-                playerScoreTexts[i].text = player.playerScore.ToString();
-
-              
-                if (i == 0)
-                {
-                    playerNameTexts[i].color = highlightColor;
-                    playerScoreTexts[i].color = highlightColor;
-                }
-                else
-                {
-                    playerNameTexts[i].color = defaultColor;
-                    playerScoreTexts[i].color = defaultColor;
-                }
+                bool isLeader = (i == 0);
+                playerNameTexts[i].color = isLeader ? highlightColor : defaultColor;
+                playerScoreTexts[i].color = isLeader ? highlightColor : defaultColor;
             }
             else
             {
-          
                 playerNameTexts[i].text = "Waiting...";
                 playerScoreTexts[i].text = "0";
                 playerNameTexts[i].color = defaultColor;
@@ -212,11 +168,12 @@ public class ScoreboardManager : NetworkBehaviour
         }
     }
 
-    
-    [ContextMenu("Manual Refresh Scoreboard")]
-    public void ManualRefreshScoreboard()
+    private IEnumerator ForceLocalUIRefresh()
     {
-        Debug.Log("[Inspector] Manual refresh triggered.");
-        RefreshScoreboard();
+        // ✅ Helps the host to update UI after all components are initialized
+        yield return new WaitForSeconds(1f);
+        CmdRequestScoreboardUpdate();
     }
+
+    #endregion
 }

@@ -11,11 +11,11 @@ GameObject:
   - component: {fileID: 8418374692403084202}
   - component: {fileID: 8035406970473281650}
   - component: {fileID: 2330833429197121709}
-  - component: {fileID: 7104139797243862985}
   - component: {fileID: 9193080164514647532}
   - component: {fileID: 583916742203292211}
   - component: {fileID: 3543004508833584816}
   - component: {fileID: 3421304612360713006}
+  - component: {fileID: -3346466950412981351}
   m_Layer: 0
   m_Name: Rocket
   m_TagString: Cannonball
@@ -92,28 +92,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &7104139797243862985
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8026786210976124078}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 1
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 1988216149656743765, guid: 6dcee821f76b1aa45849ca01a0458588, type: 3}
 --- !u!54 &9193080164514647532
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -173,7 +151,7 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  parentNetID: {fileID: 0}
+  parentNetID: {fileID: 583916742203292211}
   cannonLifeSpan: 0
   cannonDamage: 0
   gravityScale: 0
@@ -211,3 +189,24 @@ MonoBehaviour:
   rotationSensitivity: 0.01
   positionPrecision: 0.01
   scalePrecision: 0.01
+--- !u!135 &-3346466950412981351
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8026786210976124078}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 1.3180182
+  m_Center: {x: -0.020531634, y: 0.00000027925773, z: 0.32870865}

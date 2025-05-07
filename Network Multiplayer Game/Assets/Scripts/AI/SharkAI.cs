@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
 using Mirror;
-using System.Linq;
 
 [RequireComponent(typeof(NetworkAnimator))]
 [RequireComponent(typeof(NetworkTransformReliable))]
@@ -33,6 +32,7 @@ public class SharkAI : NetworkBehaviour
     private bool isDistracted = false;
     private float distractionTimer = 0f;
     private float targetOffset;
+    private float lastAttackTime = 0f;
 
     void Start()
     {
@@ -43,12 +43,18 @@ public class SharkAI : NetworkBehaviour
         netAnimator = GetComponent<NetworkAnimator>();
         tracker = GetComponent<PlayerTracker>();
 
+        if (!agent.isOnNavMesh)
+        {
+            Debug.LogWarning($"{name} is not on NavMesh at Start()", this);
+            return;
+        }
+
         GoToNextPatrolPoint();
     }
 
     void Update()
     {
-        if (!isServer) return;
+        if (!isServer || !IsAgentReady()) return;
 
         if (isDistracted)
         {
@@ -108,8 +114,11 @@ public class SharkAI : NetworkBehaviour
                 GoToNextPatrolPoint();
         }
 
-        Quaternion targetRot = Quaternion.LookRotation(agent.velocity.normalized) * Quaternion.Euler(0, 180f, 0);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, Time.deltaTime * 5f);
+        if (agent.velocity != Vector3.zero)
+        {
+            Quaternion targetRot = Quaternion.LookRotation(agent.velocity.normalized) * Quaternion.Euler(0, 180f, 0);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, Time.deltaTime * 5f);
+        }
 
         animator.SetBool("isChasing", isChasing);
     }
@@ -125,6 +134,8 @@ public class SharkAI : NetworkBehaviour
 
     public void Distract(float duration)
     {
+        if (!IsAgentReady()) return;
+
         isDistracted = true;
         distractionTimer = duration;
         agent.SetDestination(transform.position);
@@ -133,24 +144,33 @@ public class SharkAI : NetworkBehaviour
 
     void GoToNextPatrolPoint()
     {
-        if (patrolPoints.Length == 0) return;
+        if (patrolPoints.Length == 0 || !IsAgentReady()) return;
+
         currentPatrolIndex = Random.Range(0, patrolPoints.Length);
         agent.SetDestination(patrolPoints[currentPatrolIndex].position);
     }
 
     void GoToNearestPortal()
     {
-        if (patrolPoints.Length == 0) return;
+        if (patrolPoints.Length == 0 || !IsAgentReady()) return;
+
         Transform nearest = patrolPoints[0];
         float minDist = Vector3.Distance(transform.position, nearest.position);
         foreach (var point in patrolPoints)
         {
             float d = Vector3.Distance(transform.position, point.position);
-            if (d < minDist) { nearest = point; minDist = d; }
+            if (d < minDist)
+            {
+                nearest = point;
+                minDist = d;
+            }
         }
         agent.SetDestination(nearest.position);
         isChasing = false;
     }
 
-    private float lastAttackTime = 0f;
+    private bool IsAgentReady()
+    {
+        return agent != null && agent.isOnNavMesh && agent.isActiveAndEnabled;
+    }
 }

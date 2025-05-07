@@ -134,12 +134,12 @@ public class PlayerHealthUI : NetworkBehaviour
             RpcHandleDeath();
         }
 
-        Debug.Log($"{gameObject.name} took {damage} damage. Now at {currentHealth}/{maxHealth}.");
+        
     }
 
     private void OnHealthChanged(int oldHealth, int newHealth)
     {
-        Debug.Log($"{gameObject.name} health changed: {oldHealth} → {newHealth}");
+        
 
         if (healthBar != null)
         {
@@ -183,7 +183,7 @@ public class PlayerHealthUI : NetworkBehaviour
                 Debug.LogWarning($"{gameObject.name} has no health bar assigned!");
             }
 
-            Debug.Log($"{gameObject.name} took {10} damage. Now at {currentHealth}/{maxHealth}.");
+            
         }
     }
 }

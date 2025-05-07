@@ -40,7 +40,7 @@ public class BigIslandHealth : NetworkBehaviour
             currentHealth = 0;
             bigLootGiven = true;
 
-            Debug.Log("[SERVER] BigIsland destroyed!");
+            Debug.Log(" BigIsland destroyed!");
 
             foreach (var player in playersInside)
             {
@@ -49,7 +49,7 @@ public class BigIslandHealth : NetworkBehaviour
 
             RpcOnDestroyed();
 
-            GameTimer timer = FindObjectOfType<GameTimer>();
+            GameTimer timer = Object.FindAnyObjectByType<GameTimer>();
             if (timer != null)
             {
                 timer.EndGameEarly("Big Island destroyed!");
@@ -147,7 +147,7 @@ public class BigIslandHealth : NetworkBehaviour
     private void GivePartialLoot(GameObject player)
     {
         int lootAmount = Random.Range(300, 700);
-        Debug.Log($"[SERVER] Partial loot: {lootAmount} to {player.name}");
+        Debug.Log($" Partial loot: {lootAmount} to {player.name}");
 
         ScoreboardManager scoreboard = player.GetComponent<ScoreboardManager>();
         scoreboard?.CmdIncreaseScore(lootAmount);
@@ -161,7 +161,7 @@ public class BigIslandHealth : NetworkBehaviour
     private void GiveBigLoot(GameObject player)
     {
         int lootAmount = Random.Range(1000, 5000);
-        Debug.Log($"[SERVER] Big loot: {lootAmount} to {player.name}");
+        Debug.Log($" Big loot: {lootAmount} to {player.name}");
 
         ScoreboardManager scoreboard = player.GetComponent<ScoreboardManager>();
         scoreboard?.CmdIncreaseScore(lootAmount);
@@ -182,7 +182,7 @@ public class BigIslandHealth : NetworkBehaviour
             {
                 ui.ShowUI(true);
                 ui.UpdateLootCollected(amount);
-                Debug.Log($"[CLIENT] Loot UI updated: {amount}");
+                Debug.Log($" Loot UI updated: {amount}");
             }
         }
     }

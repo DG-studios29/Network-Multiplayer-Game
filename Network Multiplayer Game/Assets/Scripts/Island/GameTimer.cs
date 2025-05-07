@@ -2,6 +2,7 @@
 using UnityEngine;
 using TMPro;
 using System.Collections;
+using System.Linq;
 
 public class GameTimer : NetworkBehaviour
 {
@@ -47,17 +48,19 @@ public class GameTimer : NetworkBehaviour
     public override void OnStartClient()
     {
         base.OnStartClient();
+        StartCoroutine(WaitForTimerSync());
+    }
+
+    IEnumerator WaitForTimerSync()
+    {
+        // Wait until SyncVar has synced properly
+        while (remainingTime <= 0f)
+            yield return null;
+
         if (timerText == null)
             FindTimerText();
 
-        OnTimerChanged(0, remainingTime);
-    }
-
-    IEnumerator RetryFindTimerText()
-    {
-        yield return null;
-        FindTimerText();
-        OnTimerChanged(0, remainingTime);
+        OnTimerChanged(0, remainingTime); // Safe to update UI now
     }
 
     void FindTimerText()
@@ -69,14 +72,22 @@ public class GameTimer : NetworkBehaviour
         }
         else
         {
-            Debug.LogWarning("[GameTimer] Couldn't find TimerText; retrying.");
+            Debug.LogWarning("[GameTimer] Couldn't find TimerText; will retry.");
             StartCoroutine(RetryFindTimerText());
         }
+    }
+
+    IEnumerator RetryFindTimerText()
+    {
+        yield return null;
+        FindTimerText();
+        OnTimerChanged(0, remainingTime);
     }
 
     void OnTimerChanged(float oldTime, float newTime)
     {
         if (timerText == null) return;
+
         int minutes = Mathf.FloorToInt(newTime / 60f);
         int seconds = Mathf.FloorToInt(newTime % 60f);
         timerText.text = $"{minutes:00}:{seconds:00}";
@@ -85,7 +96,23 @@ public class GameTimer : NetworkBehaviour
     [ClientRpc]
     void RpcOnGameOver(string reason)
     {
-        Debug.Log(reason);
-        // TODO: show end-game UI
+        Debug.Log($"[Game Over] {reason}");
+
+        var allPlayers = Object.FindObjectsOfType<ScoreboardManager>();
+        var winner = allPlayers.OrderByDescending(p => p.playerScore).FirstOrDefault();
+
+        if (winner != null)
+        {
+            Debug.Log($"Winner is {winner.playerName} with {winner.playerScore} points!");
+            var winnerText = GameObject.Find("WinnerText")?.GetComponent<TextMeshProUGUI>();
+            if (winnerText != null)
+            {
+                winnerText.text = $"Winner: {winner.playerName} ({winner.playerScore} pts)";
+            }
+        }
+        else
+        {
+            Debug.Log("No players found.");
+        }
     }
 }

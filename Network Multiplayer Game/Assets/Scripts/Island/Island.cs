@@ -189,7 +189,7 @@ public class Island : NetworkBehaviour
         while (playersInside.Count == 1 && currentLootProgress < treasureCollectionTime)
         {
             currentLootProgress += Time.deltaTime;
-            syncedLootProgress = currentLootProgress; // sync value to all clients
+            syncedLootProgress = currentLootProgress; 
             yield return null;
         }
 
@@ -242,7 +242,7 @@ public class Island : NetworkBehaviour
 
         int lootAmount = Random.Range(100, 1001);
         GameObject player = playersInside.FirstOrDefault();
-        Debug.Log($"[SERVER] LootIsland: Found player = {player?.name}");
+        Debug.Log($" LootIsland: Found player = {player?.name}");
         if (player != null)
         {
             // Try to get ScoreboardManager
@@ -271,6 +271,7 @@ public class Island : NetworkBehaviour
                 Debug.Log("Updating loot collected UI");
                 ui.ShowUI(true);
                 ui.UpdateLootCollected(amount);
+                ui.ShowLootPopup(amount);
             }
             else
             {

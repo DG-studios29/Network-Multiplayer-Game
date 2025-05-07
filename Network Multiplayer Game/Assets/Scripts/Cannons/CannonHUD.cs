@@ -122,14 +122,18 @@ public class CannonHUD : NetworkBehaviour
         netMessagesPopUp.SetActive(false);
     }
 
-    
+
     public void ResetLocalName()
     {
-        if (!isLocalPlayer) { return; }
-        ScoreboardManager scoreboardManager = GetComponentInParent<ScoreboardManager>();
+        if (!isLocalPlayer) return;
 
-        scoreboardManager.ScoreNameChange();
+        ScoreboardManager scoreboardManager = GetComponentInParent<ScoreboardManager>();
+        if (scoreboardManager != null)
+        {
+            scoreboardManager.CmdSetPlayerName(GetCustomName());
+        }
     }
+
 
     public string GetCustomName()
     {

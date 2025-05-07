@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 1378924988091586008}
   - component: {fileID: 5517143626049416634}
   - component: {fileID: 158283390876371446}
-  - component: {fileID: 569678184253457983}
   - component: {fileID: 7759772080923267702}
+  - component: {fileID: -7159781685861783479}
   m_Layer: 0
   m_Name: BigBoy
   m_TagString: Cannonball
@@ -151,32 +151,10 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  parentNetID: {fileID: 0}
+  parentNetID: {fileID: 5517143626049416634}
   cannonLifeSpan: 0
   cannonDamage: 0
   gravityScale: 0
---- !u!64 &569678184253457983
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1031877994345043545}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 1
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 6367453870239658456, guid: 27bd33db0f024474890f69a9c558ebda, type: 3}
 --- !u!114 &7759772080923267702
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -211,3 +189,24 @@ MonoBehaviour:
   rotationSensitivity: 0.01
   positionPrecision: 0.01
   scalePrecision: 0.01
+--- !u!135 &-7159781685861783479
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1031877994345043545}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 1.2465827
+  m_Center: {x: 0.00000005960467, y: -0.000000058789787, z: 0.24658227}

@@ -36,10 +36,10 @@ public class Scoreboard : NetworkBehaviour
     public TextMeshProUGUI player3NameText;
     public TextMeshProUGUI player4NameText;
 
-    public Button incrementPlayer1Button;
-    public Button incrementPlayer2Button;
-    public Button incrementPlayer3Button;
-    public Button incrementPlayer4Button;
+    //public Button incrementPlayer1Button;
+    //public Button incrementPlayer2Button;
+    //public Button incrementPlayer3Button;
+    //public Button incrementPlayer4Button;
 
     public override void OnStartClient()
     {
@@ -52,10 +52,10 @@ public class Scoreboard : NetworkBehaviour
         
         if (isLocalPlayer)
         {
-            incrementPlayer1Button.onClick.AddListener(() => CmdIncrementScore(1));
-            incrementPlayer2Button.onClick.AddListener(() => CmdIncrementScore(2));
-            incrementPlayer3Button.onClick.AddListener(() => CmdIncrementScore(3));
-            incrementPlayer4Button.onClick.AddListener(() => CmdIncrementScore(4));
+            //incrementPlayer1Button.onClick.AddListener(() => CmdIncrementScore(1));
+            //incrementPlayer2Button.onClick.AddListener(() => CmdIncrementScore(2));
+            //incrementPlayer3Button.onClick.AddListener(() => CmdIncrementScore(3));
+            //incrementPlayer4Button.onClick.AddListener(() => CmdIncrementScore(4));
         }
     }
 

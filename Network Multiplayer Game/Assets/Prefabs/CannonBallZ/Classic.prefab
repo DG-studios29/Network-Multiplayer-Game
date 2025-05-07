@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 5383234161085727148}
   - component: {fileID: 4952747241055939096}
   - component: {fileID: 2274302151019830717}
-  - component: {fileID: 3952454330096837420}
   - component: {fileID: 5765044136319024848}
   - component: {fileID: -5149768218395883028}
+  - component: {fileID: -8813568608114961744}
   m_Layer: 0
   m_Name: Classic
   m_TagString: Untagged
@@ -118,28 +118,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!64 &3952454330096837420
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3915456565134772288}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 1
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -4357937143496853524, guid: e557cc205f4f5a64dae314634742d362, type: 3}
 --- !u!114 &5765044136319024848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -191,3 +169,24 @@ MonoBehaviour:
   rotationSensitivity: 0.01
   positionPrecision: 0.01
   scalePrecision: 0.01
+--- !u!135 &-8813568608114961744
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3915456565134772288}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 1.21297
+  m_Center: {x: 0.000000059604645, y: 0.21297002, z: 0}
