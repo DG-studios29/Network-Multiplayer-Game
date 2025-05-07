@@ -20,6 +20,13 @@ public class PresetsHolder : MonoBehaviour
     {
         presetsArray = new PresetsBtn[6];
 
+        presetsArray[0] = preset1;
+        presetsArray[1] = preset2;
+        presetsArray[2] = preset3;
+        presetsArray[3] = preset4;
+        presetsArray[4] = preset5;
+        presetsArray[5] = preset6;
+
     }
 
 
@@ -29,12 +36,7 @@ public class PresetsHolder : MonoBehaviour
         //may break on multiplayer
         //presetsArray = GameObject.FindObjectsByType<PresetsBtn>(FindObjectsSortMode.InstanceID);
 
-        presetsArray[0] = preset1;
-        presetsArray[1] = preset2;
-        presetsArray[2] = preset3;
-        presetsArray[3] = preset4;
-        presetsArray[4] = preset5;
-        presetsArray[5] = preset6;
+     
     }
 
     // Update is called once per frame

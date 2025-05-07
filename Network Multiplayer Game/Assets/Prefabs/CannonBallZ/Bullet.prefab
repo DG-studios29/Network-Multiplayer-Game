@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 1554786154710159575}
   - component: {fileID: -2387296427687565261}
   - component: {fileID: 7246514747483636089}
-  - component: {fileID: -3161706780961318167}
-  - component: {fileID: 1963420120025300878}
+  - component: {fileID: 8889694971571921417}
+  - component: {fileID: -6409978426736527866}
   m_Layer: 0
   m_Name: Bullet
   m_TagString: Cannonball
@@ -118,7 +118,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!114 &-2387296427687565261
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -151,11 +151,35 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  parentNetID: {fileID: -2387296427687565261}
+  parentNetID: {fileID: 0}
   cannonLifeSpan: 0
   cannonDamage: 0
   gravityScale: 0
---- !u!114 &-3161706780961318167
+  impactFX: {fileID: 0}
+  waterSplashFX: {fileID: 0}
+--- !u!64 &8889694971571921417
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4193620958866771453}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 1
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -7204647971529134275, guid: cd528468d8d6de741829c9d640296279, type: 3}
+--- !u!114 &-6409978426736527866
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -164,7 +188,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4193620958866771453}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ff3ba0becae47b8b9381191598957c8, type: 3}
+  m_Script: {fileID: 11500000, guid: cb803efbe62c34d7baece46c9ffebad9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   syncDirection: 1
@@ -189,24 +213,3 @@ MonoBehaviour:
   rotationSensitivity: 0.01
   positionPrecision: 0.01
   scalePrecision: 0.01
---- !u!135 &1963420120025300878
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4193620958866771453}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 1.3180176
-  m_Center: {x: 0.007159263, y: 0.00000035762787, z: 0.32870856}

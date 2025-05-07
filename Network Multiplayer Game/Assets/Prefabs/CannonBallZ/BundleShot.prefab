@@ -123,10 +123,10 @@ GameObject:
   - component: {fileID: 1105093071063550021}
   - component: {fileID: 1584030366363676609}
   - component: {fileID: 7135923674721157474}
-  - component: {fileID: -4498977520947219218}
+  - component: {fileID: -1648888571744531200}
   m_Layer: 0
   m_Name: BundleShot
-  m_TagString: Untagged
+  m_TagString: Cannonball
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -249,7 +249,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!114 &1584030366363676609
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -269,6 +269,8 @@ MonoBehaviour:
   cannonLifeSpan: 0
   cannonDamage: 0
   gravityScale: 0
+  impactFX: {fileID: 0}
+  waterSplashFX: {fileID: 0}
 --- !u!114 &7135923674721157474
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -286,7 +288,7 @@ MonoBehaviour:
   serverOnly: 0
   visibility: 0
   hasSpawned: 0
---- !u!114 &-4498977520947219218
+--- !u!114 &-1648888571744531200
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -295,7 +297,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5920491971407651685}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ff3ba0becae47b8b9381191598957c8, type: 3}
+  m_Script: {fileID: 11500000, guid: cb803efbe62c34d7baece46c9ffebad9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   syncDirection: 1

@@ -80,6 +80,7 @@ public class PlayerInputTemp : NetworkBehaviour
         {
             playerHUD.SetActive(false);
             cannonMenu.SetActive(false);
+            NetID = netID;
             return;
         }
 

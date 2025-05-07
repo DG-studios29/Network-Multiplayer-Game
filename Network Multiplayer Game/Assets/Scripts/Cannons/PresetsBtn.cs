@@ -81,6 +81,11 @@ public class PresetsBtn : SelectableBtn
 
     public bool GetAllHighlightStatus()
     {
+        if(presetHolder == null)
+        {
+            presetHolder = GetComponentInParent<PresetsHolder>();
+        }
+
         return presetHolder.CheckHighlight();
     }
 

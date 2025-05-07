@@ -13,6 +13,11 @@ public class CannonCollision : NetworkBehaviour
     private float globalGravity = -9.81f;
     private Rigidbody rb;
 
+    public GameObject impactFX;
+    public GameObject smallImpactFX;
+
+    public Transform parentPos;
+
     private float lifeTotal;
 
     private bool hasCollided = false;
@@ -46,21 +51,45 @@ public class CannonCollision : NetworkBehaviour
         }
     }
 
+    //Place Command and Client Rcp
+  
     private void OnCollisionEnter(Collision collision)
     {
-       
-        
+        //if (!isServer) return;
 
-        Debug.Log($"Hit: {collision.gameObject.name}");
+   /*     float percentage = cannonLifeSpan / lifeTotal;
+
+        if (percentage >= 0.99f)
+        {
+            Debug.Log("Skipping early collision.");
+            return;
+        }*/
+
+
 
         GameObject target = collision.gameObject;
 
         if (target.CompareTag("Player"))
         {
+            NetworkIdentity targetNetID = target.gameObject.GetComponent<NetworkIdentity>();
+
+            //Another method
+            if (targetNetID.netId.ToString() == parentNetID.netId.ToString())
+            {
+                Debug.Log("Avoided self hit");
+                return;
+               
+            }
+           
             PlayerHealthUI playerHealth = target.GetComponent<PlayerHealthUI>();
             if (playerHealth != null)
             {
                 playerHealth.TakeDamage((int)cannonDamage);
+
+                //Impact 
+                GameObject hit = Instantiate(impactFX,this.transform.position,Quaternion.identity);
+                Destroy(hit, 2f);
+                NetworkServer.Destroy(gameObject);
             }
         }
         else if (target.CompareTag("Island"))
@@ -69,6 +98,11 @@ public class CannonCollision : NetworkBehaviour
             if (island != null)
             {
                 island.TakeDamage(cannonDamage);
+
+                //Impact 
+                GameObject hit = Instantiate(impactFX, this.transform.position, Quaternion.identity);
+                Destroy(hit, 2f);
+                NetworkServer.Destroy(gameObject);
             }
         }
         else if (target.CompareTag("KrakenAI"))
@@ -77,6 +111,11 @@ public class CannonCollision : NetworkBehaviour
             if (kraken != null)
             {
                 kraken.TakeDamage((int)cannonDamage);
+
+                //Impact 
+                GameObject hit = Instantiate(impactFX, this.transform.position, Quaternion.identity);
+                Destroy(hit, 2f);
+                NetworkServer.Destroy(gameObject);
             }
         }
         else if (target.CompareTag("BigIsland"))
@@ -85,14 +124,35 @@ public class CannonCollision : NetworkBehaviour
             if (islandBig != null)
             {
                 islandBig.TakeDamage((int)cannonDamage);
+
+                //Impact 
+                GameObject hit = Instantiate(impactFX, transform.position, Quaternion.identity);
+                Destroy(hit, 2f);
+                NetworkServer.Destroy(gameObject);
             }
+        }
+
+       
+
+       
+        else if (target.CompareTag("Rocks"))
+        {
+            //just for whatever we may collide with without tags
+
+            GameObject hit = Instantiate(impactFX, transform.position, Quaternion.identity);
+            Destroy(hit, 2f);
+            NetworkServer.Destroy(gameObject);
         }
 
         hasCollided = true; 
 
-       
+        GameObject noSpecific = Instantiate(smallImpactFX, transform.position, Quaternion.identity);
+        Destroy(noSpecific, 2f);
+        
         NetworkServer.Destroy(gameObject);
     }
 
 
 }
+
+

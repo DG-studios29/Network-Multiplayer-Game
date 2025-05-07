@@ -13,12 +13,14 @@ MonoBehaviour:
   m_Name: BulletCannon
   m_EditorClassIdentifier: 
   cannonName: Bullet
+  cannonIcon: {fileID: 21300000, guid: 65fa56523adb8744181dfdf1964b4075, type: 3}
   ballPrefab: {fileID: 4193620958866771453, guid: 72730504b4608c04884b56042b14e795, type: 3}
-  launchAngle: 0
-  rangeZ: 0
+  launchAngle: 10
+  rangeZ: 100
   heightY: 0
-  timeTaken: 0
-  lifespan: 0
-  damage: 0
-  gravityScale: 0
-  particleFX: {fileID: 0}
+  timeTaken: 1
+  lifespan: 20
+  damage: 10
+  gravityScale: 1
+  particleFX: {fileID: 5511184213081609800, guid: 3a82b2b9d6814144d9bb459f48a48e8d, type: 3}
+  smallHitFX: {fileID: 5511184213081609800, guid: bf23e5c4952bc694c8ee00a93a7af5c5, type: 3}

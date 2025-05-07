@@ -81,6 +81,7 @@ public class HandleEvent : MonoBehaviour
 
             PresetsBtn preset = button.GetComponent<PresetsBtn>();
             preset.SwitchSelection();
+            //preset.HighlightFirst();
 
 
             if (!preset.GetAllHighlightStatus())
@@ -98,6 +99,7 @@ public class HandleEvent : MonoBehaviour
 
             PresetsBtn preset = button.GetComponent<PresetsBtn>();
             preset.SwitchSelection();
+            //preset.Highlight
 
 
             if (!preset.GetAllHighlightStatus())

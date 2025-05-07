@@ -11,11 +11,11 @@ GameObject:
   - component: {fileID: 8273327541813563771}
   - component: {fileID: 7973309258783294775}
   - component: {fileID: 3649061557005043201}
+  - component: {fileID: 6141405551372641634}
   - component: {fileID: 7316859051158636532}
   - component: {fileID: 7452701030924549923}
   - component: {fileID: 5615754416512750221}
-  - component: {fileID: -9041165713124482720}
-  - component: {fileID: 7147936517708644189}
+  - component: {fileID: 3594862211709710300}
   m_Layer: 0
   m_Name: Spikes
   m_TagString: Cannonball
@@ -92,6 +92,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &6141405551372641634
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7986884217874321437}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 1
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 9188603553798411242, guid: ffb786b455383b24490d78aa3dcc37cf, type: 3}
 --- !u!54 &7316859051158636532
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -118,7 +140,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!114 &7452701030924549923
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -151,11 +173,13 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  parentNetID: {fileID: 7452701030924549923}
+  parentNetID: {fileID: 0}
   cannonLifeSpan: 0
   cannonDamage: 0
   gravityScale: 0
---- !u!114 &-9041165713124482720
+  impactFX: {fileID: 0}
+  waterSplashFX: {fileID: 0}
+--- !u!114 &3594862211709710300
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -164,7 +188,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7986884217874321437}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ff3ba0becae47b8b9381191598957c8, type: 3}
+  m_Script: {fileID: 11500000, guid: cb803efbe62c34d7baece46c9ffebad9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   syncDirection: 1
@@ -189,24 +213,3 @@ MonoBehaviour:
   rotationSensitivity: 0.01
   positionPrecision: 0.01
   scalePrecision: 0.01
---- !u!135 &7147936517708644189
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7986884217874321437}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 1.2556984
-  m_Center: {x: 0.1226868, y: 0.000000012430208, z: -0.052136075}

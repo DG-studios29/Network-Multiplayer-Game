@@ -10,6 +10,9 @@ TagManager:
   - Cannonball
   - KrakenAI
   - BigIsland
+  - Water
+  - FxTemporaire
+  - Rocks
   layers:
   - Default
   - TransparentFX

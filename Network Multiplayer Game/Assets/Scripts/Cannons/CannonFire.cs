@@ -38,6 +38,9 @@ public class CannonFire : NetworkBehaviour
 
     public AudioSource cannonSFX;
 
+    private GameObject hitVFX;
+    private GameObject smallImpactVFX;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -71,6 +74,8 @@ public class CannonFire : NetworkBehaviour
             timeTaken = ballType.TimeTaken;
             lifespan = ballType.Lifespan;
             damage = ballType.Damage;
+            hitVFX = ballType.ParticleFX;
+            smallImpactVFX = ballType.SmallHitFX;
 
 
             gravityScale = ballType.GravityScale;
@@ -138,6 +143,10 @@ public class CannonFire : NetworkBehaviour
         cannonCtrl.gravityScale = 2f;
         cannonCtrl.parentNetID = netID;
         cannonCtrl.gravityScale = gravityScale * gravityScale;
+        cannonCtrl.impactFX = hitVFX;
+        cannonCtrl.smallImpactFX = smallImpactVFX;
+        
+       
 
 
         rb = cannonObj.GetComponent<Rigidbody>();

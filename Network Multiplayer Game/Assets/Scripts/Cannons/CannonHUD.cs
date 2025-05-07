@@ -145,7 +145,7 @@ public class CannonHUD : NetworkBehaviour
     public void SyncAmmoChange(CannonData cnData)
     {
         ballType = cnData;
-
+        ballImage.sprite = cnData.CannonIcon;
         ballName.text = ballType.name.ToString();
 
     }

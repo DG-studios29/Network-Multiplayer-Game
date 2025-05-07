@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: BaseCannonBall
   m_EditorClassIdentifier: 
   cannonName: BaseCannonBall
-  ballPrefab: {fileID: 3630204142601734126, guid: 1fed68ae8fe134042aa5758f58748c57, type: 3}
+  cannonIcon: {fileID: 21300000, guid: 670b1d144da82cb4fb00ae98a9cbaf90, type: 3}
+  ballPrefab: {fileID: 2531187543609453393, guid: 9d2617af281a7a64ba0bd2e42cd925fc, type: 3}
   launchAngle: 30
   rangeZ: 90
   heightY: 0
@@ -21,4 +22,5 @@ MonoBehaviour:
   lifespan: 20
   damage: 10
   gravityScale: 1
-  particleFX: {fileID: 0}
+  particleFX: {fileID: 5511184213081609800, guid: 3a82b2b9d6814144d9bb459f48a48e8d, type: 3}
+  smallHitFX: {fileID: 5511184213081609800, guid: bf23e5c4952bc694c8ee00a93a7af5c5, type: 3}

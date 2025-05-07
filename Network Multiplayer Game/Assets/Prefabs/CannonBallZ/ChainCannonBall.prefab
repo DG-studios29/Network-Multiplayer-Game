@@ -123,10 +123,10 @@ GameObject:
   - component: {fileID: 4426338417933069712}
   - component: {fileID: 369162863000528693}
   - component: {fileID: 8917825751627585611}
-  - component: {fileID: 5669338575516316087}
+  - component: {fileID: -4137233514992345469}
   m_Layer: 0
   m_Name: ChainCannonBall
-  m_TagString: Untagged
+  m_TagString: Cannonball
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -247,7 +247,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!114 &369162863000528693
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -267,6 +267,8 @@ MonoBehaviour:
   cannonLifeSpan: 0
   cannonDamage: 0
   gravityScale: 0
+  impactFX: {fileID: 0}
+  waterSplashFX: {fileID: 0}
 --- !u!114 &8917825751627585611
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -284,7 +286,7 @@ MonoBehaviour:
   serverOnly: 0
   visibility: 0
   hasSpawned: 0
---- !u!114 &5669338575516316087
+--- !u!114 &-4137233514992345469
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -293,7 +295,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 9169663764427705552}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ff3ba0becae47b8b9381191598957c8, type: 3}
+  m_Script: {fileID: 11500000, guid: cb803efbe62c34d7baece46c9ffebad9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   syncDirection: 1
