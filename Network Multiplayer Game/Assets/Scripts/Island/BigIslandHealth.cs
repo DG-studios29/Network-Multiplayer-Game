@@ -49,7 +49,7 @@ public class BigIslandHealth : NetworkBehaviour
 
             RpcOnDestroyed();
 
-            GameTimer timer = Object.FindAnyObjectByType<GameTimer>();
+            GameTimer timer = FindObjectOfType<GameTimer>();
             if (timer != null)
             {
                 timer.EndGameEarly("Big Island destroyed!");
@@ -59,6 +59,8 @@ public class BigIslandHealth : NetworkBehaviour
 
     void OnHealthChanged(int oldVal, int newVal)
     {
+        if (!isClient) return;
+
         var player = NetworkClient.localPlayer;
         if (player != null)
         {
@@ -184,6 +186,7 @@ public class BigIslandHealth : NetworkBehaviour
             }
         }
     }
+
     public float GetLootProgress()
     {
         float duration = isDestroyed ? bigLootDuration : partialLootDuration;

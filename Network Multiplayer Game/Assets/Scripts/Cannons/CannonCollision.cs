@@ -25,7 +25,7 @@ public class CannonCollision : NetworkBehaviour
 
     void Update()
     {
-        if (!isServer) return; 
+        if (!isServer) return;
 
         cannonLifeSpan -= Time.deltaTime;
         if (cannonLifeSpan <= 0f)
@@ -45,9 +45,9 @@ public class CannonCollision : NetworkBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (!isServer) return; 
+        if (!isServer) return;
 
-        
+
         if ((cannonLifeSpan / lifeTotal) >= 0.99f)
         {
             Debug.Log("Skipping early collision.");
@@ -55,6 +55,7 @@ public class CannonCollision : NetworkBehaviour
         }
 
         GameObject target = collision.gameObject;
+
 
         if (target.CompareTag("Player"))
         {
@@ -64,6 +65,7 @@ public class CannonCollision : NetworkBehaviour
                 playerHealth.TakeDamage((int)cannonDamage);
             }
         }
+
         else if (target.CompareTag("Island"))
         {
             Island island = target.GetComponent<Island>();
@@ -72,6 +74,7 @@ public class CannonCollision : NetworkBehaviour
                 island.TakeDamage(cannonDamage);
             }
         }
+
         else if (target.CompareTag("KrakenAI"))
         {
             KrakenHealth kraken = target.GetComponent<KrakenHealth>();
@@ -80,6 +83,7 @@ public class CannonCollision : NetworkBehaviour
                 kraken.TakeDamage((int)cannonDamage);
             }
         }
+
         else if (target.CompareTag("BigIsland"))
         {
             BigIslandHealth islandBig = target.GetComponent<BigIslandHealth>();
@@ -89,7 +93,7 @@ public class CannonCollision : NetworkBehaviour
             }
         }
 
-        // Destroy cannonball after hitting any valid target
+
         NetworkServer.Destroy(gameObject);
     }
 }

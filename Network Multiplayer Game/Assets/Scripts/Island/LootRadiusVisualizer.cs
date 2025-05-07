@@ -4,7 +4,7 @@ using Mirror;
 [RequireComponent(typeof(LineRenderer))]
 public class LootRadiusVisualizer : NetworkBehaviour
 {
-    public float radius = 100f;
+    public float radius = 80f;
     public int segments = 64;
     public float pulseSpeed = 1f;
     public float pulseAmount = 0.5f;

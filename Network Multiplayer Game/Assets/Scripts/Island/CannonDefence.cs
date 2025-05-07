@@ -1,7 +1,6 @@
 using UnityEngine;
 using Mirror;
 
-
 public class CannonDefence : NetworkBehaviour
 {
     public float detectionRadius = 70f;
@@ -18,14 +17,22 @@ public class CannonDefence : NetworkBehaviour
 
     void Update()
     {
-        // Only the server runs this logic
         if (!isServer) return;
 
         if (player == null)
         {
-            GameObject target = GameObject.FindGameObjectWithTag("Player");
-            if (target) player = target.transform;
-            else return;
+            GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+            float closestDistance = Mathf.Infinity;
+            foreach (var go in players)
+            {
+                float dist = Vector3.Distance(go.transform.position, transform.position);
+                if (dist < closestDistance)
+                {
+                    closestDistance = dist;
+                    player = go.transform;
+                }
+            }
+            if (player == null) return;
         }
 
         Vector3 dirToPlayer = player.position - transform.position;
@@ -55,13 +62,12 @@ public class CannonDefence : NetworkBehaviour
         GameObject proj = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
         Rigidbody rb = proj.GetComponent<Rigidbody>();
 
-        if (rb != null)
+        if (rb != null && player != null)
         {
             Vector3 toTarget = (player.position + Vector3.up * 2f) - firePoint.position;
             rb.linearVelocity = toTarget.normalized * Random.Range(20f, 30f) + Vector3.up * Random.Range(2f, 5f) * fireForce;
         }
 
-        // Spawn it on the network
         NetworkServer.Spawn(proj);
     }
 

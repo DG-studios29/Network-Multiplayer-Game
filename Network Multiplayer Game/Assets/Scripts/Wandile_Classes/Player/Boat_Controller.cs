@@ -12,9 +12,9 @@ public class Boat_Controller : NetworkBehaviour
     [SerializeField] private float shipSpeed = 5f;
     [SerializeField] private float shipSteerMultiplier = 3f;
 
-    [SyncVar]private float speed;
-    [SyncVar]private float sailsAssist = 0f;
-    [SyncVar]private float sailAngle = 0f;
+    [SyncVar] private float speed;
+    [SyncVar] private float sailsAssist = 0f;
+    [SyncVar] private float sailAngle = 0f;
     private const float acceptableAngle = .7f;
 
     [Header("Sliders && numbers"), Space(5f)]
@@ -65,7 +65,7 @@ public class Boat_Controller : NetworkBehaviour
         if (!isLocalPlayer) return;
         ShipSail();
         HandleSailing();
-        
+
     }
 
     #endregion
@@ -114,14 +114,14 @@ public class Boat_Controller : NetworkBehaviour
 
         float shipDir = Vector3.Dot(shipVel, forward);
 
-        if (shipVel.sqrMagnitude != 0 && v> 0.2f || v< -0.2f)
+        if (shipVel.sqrMagnitude != 0 && v > 0.2f || v < -0.2f)
         {
             rb.AddRelativeTorque(new Vector3(0, turnCurve.Evaluate(Mathf.Abs(shipDir))
                 * shipSteerMultiplier, 0) * h, ForceMode.Acceleration);
         }
 
         //Non-Physics Steer
-        if(shipVel.sqrMagnitude<= Mathf.Abs(1) && v < 0.1f || v > -0.1f)
+        if (shipVel.sqrMagnitude <= Mathf.Abs(1) && v < 0.1f || v > -0.1f)
         {
             nonPhysicsSteerFactor += Time.fixedDeltaTime * h * nonPhysicsSteerMltiplier;
             transform.rotation = Quaternion.Euler(0f, nonPhysicsSteerFactor, 0f);
@@ -145,8 +145,8 @@ public class Boat_Controller : NetworkBehaviour
             sailsAssist += sailMultiplier * pirateInput.sailingInput;
             sailIndicatorUI.localRotation = Quaternion.Euler(0f, 0f, -sailsAssist);
 
-            if(sailSFx!= null)
-            sailSFx.volume = pirateInput.sailingInput > 0.5f || pirateInput.sailingInput < -0.5f ? .06f : 0f;
+            if (sailSFx != null)
+                sailSFx.volume = pirateInput.sailingInput > 0.5f || pirateInput.sailingInput < -0.5f ? .06f : 0f;
         }
     }
 

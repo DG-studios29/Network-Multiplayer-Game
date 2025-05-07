@@ -3,20 +3,21 @@ using UnityEngine;
 using Mirror;
 using Unity.Cinemachine;
 
-/*
-	Documentation: https://mirror-networking.gitbook.io/docs/guides/networkbehaviour
-	API Reference: https://mirror-networking.com/docs/api/Mirror.NetworkBehaviour.html
-*/
-
 public class CameraController : NetworkBehaviour
 {
-  
-    
     public Camera myCam;
+    public Camera minimap;
+    private Camera MainmapCam;
     //public override void OnStartAuthority()
     //{
     //    Camera.SetActive(true);
     //}
+
+    private void Start()
+    {
+        GameObject Mainmap = GameObject.Find("MapCamera");
+        MainmapCam = Mainmap.GetComponent<Camera>();
+    }
 
     public void Update()
     {
@@ -38,14 +39,19 @@ public class CameraController : NetworkBehaviour
         if (isLocalPlayer)
         {
             if (!myCam) { myCam = Camera.main; }
-
+            if (!minimap) { minimap = Camera.main; }
+            if (!MainmapCam) { MainmapCam = Camera.main; }
             //myCam.transform.SetParent(transform);
 
         }
         else
         {
             if (myCam) { myCam.gameObject.SetActive(false); }
+            if (minimap) { minimap.gameObject.SetActive(false); }
+            if (MainmapCam) { MainmapCam.gameObject.SetActive(false); }
         }
+
+        
 
     }
 

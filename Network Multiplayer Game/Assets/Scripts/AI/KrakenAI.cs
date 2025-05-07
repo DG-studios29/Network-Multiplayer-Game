@@ -1,5 +1,6 @@
 using Mirror;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -7,14 +8,11 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class KrakenAI : NetworkBehaviour
 {
-    [Header("Waypoints")]
     public Transform[] patrolPoints;
 
-    [Header("Player Info")]
     private Transform player;
     private PlayerHealthUI playerHealth;
 
-    [Header("Attacking")]
     public int attackDamage = 30;
     public float attackCooldown = 1.5f;
     public float chaseRange = 100f;
@@ -24,10 +22,10 @@ public class KrakenAI : NetworkBehaviour
     public float offsetLerpSpeed = 2f;
 
     private float lastAttackTime;
-    private bool hasAttacked = false;
-    private bool isChasing = false;
-    private bool isAttacking = false;
-    private bool isReturningToPortal = false;
+    private bool hasAttacked;
+    private bool isChasing;
+    private bool isAttacking;
+    private bool isReturningToPortal;
     private float targetOffset;
 
     private NavMeshAgent agent;
@@ -38,39 +36,28 @@ public class KrakenAI : NetworkBehaviour
 
     void Start()
     {
+        if (!isServer) return;
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         netAnimator = GetComponent<NetworkAnimator>();
         krakenHealth = GetComponent<KrakenHealth>();
-
         GoToNextPatrolPoint();
+        AssignPlayer();
+    }
 
-        GameObject foundPlayer = GameObject.FindGameObjectWithTag("Player");
-        if (foundPlayer)
-        {
-            player = foundPlayer.transform;
-            playerHealth = player.GetComponent<PlayerHealthUI>();
-        }
+    void AssignPlayer()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        player = players.OrderBy(p => Vector3.Distance(p.transform.position, transform.position)).FirstOrDefault()?.transform;
+        playerHealth = player?.GetComponent<PlayerHealthUI>();
     }
 
     void Update()
     {
-        if (!isServer) return; // Only server handles AI logic
-
-        if (player == null || playerHealth == null)
-        {
-            GameObject foundPlayer = GameObject.FindGameObjectWithTag("Player");
-            if (foundPlayer)
-            {
-                player = foundPlayer.transform;
-                playerHealth = player.GetComponent<PlayerHealthUI>();
-            }
-            return;
-        }
+        if (!isServer) return;
+        if (player == null || playerHealth == null) { AssignPlayer(); return; }
 
         bool playerIsDead = playerHealth.currentHealth <= 0;
-
-        // Handle returning to portal if player is dead
         if (playerIsDead)
         {
             if (!isReturningToPortal)
@@ -82,7 +69,6 @@ public class KrakenAI : NetworkBehaviour
             }
         }
 
-        // Smooth vertical movement
         targetOffset = isAttacking ? attackOffset : patrolOffset;
         agent.baseOffset = Mathf.Lerp(agent.baseOffset, targetOffset, Time.deltaTime * offsetLerpSpeed);
 
@@ -100,9 +86,8 @@ public class KrakenAI : NetworkBehaviour
             {
                 lastAttackTime = Time.time;
                 hasAttacked = true;
-
-                netAnimator.SetTrigger("Attack"); // Sync across clients
-                StartCoroutine(DelayedAttack());  // Deal damage after animation starts
+                netAnimator.SetTrigger("Attack");
+                StartCoroutine(DelayedAttack());
             }
         }
         else if (distance <= chaseRange)
@@ -115,12 +100,9 @@ public class KrakenAI : NetworkBehaviour
         else
         {
             ResetAttackState();
-
-            if (!agent.pathPending && agent.remainingDistance < 0.5f)
-                GoToNextPatrolPoint();
+            if (!agent.pathPending && agent.remainingDistance < 0.5f) GoToNextPatrolPoint();
         }
 
-        // Rotate Kraken
         Vector3 direction = isAttacking ? (player.position - transform.position).normalized :
                               agent.velocity.sqrMagnitude > 0.01f ? agent.velocity.normalized :
                               transform.forward;
@@ -136,8 +118,8 @@ public class KrakenAI : NetworkBehaviour
 
     IEnumerator DelayedAttack()
     {
-        yield return new WaitForSeconds(0.6f); // Match your animation's hit timing
-        if (player != null && !playerHealth.currentHealth.Equals(0))
+        yield return new WaitForSeconds(0.6f);
+        if (player != null && playerHealth.currentHealth > 0)
         {
             playerHealth.TakeDamage(attackDamage);
         }
@@ -155,11 +137,10 @@ public class KrakenAI : NetworkBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (!isServer) return;
-
         if (other.CompareTag("Cannonball"))
         {
             krakenHealth?.TakeDamage(20);
-            Destroy(other.gameObject);
+            NetworkServer.Destroy(other.gameObject);
         }
     }
 
@@ -173,20 +154,13 @@ public class KrakenAI : NetworkBehaviour
     void GoToNearestPortal()
     {
         if (patrolPoints.Length == 0) return;
-
         Transform nearest = patrolPoints[0];
         float nearestDist = Vector3.Distance(transform.position, nearest.position);
-
         foreach (Transform point in patrolPoints)
         {
             float dist = Vector3.Distance(transform.position, point.position);
-            if (dist < nearestDist)
-            {
-                nearest = point;
-                nearestDist = dist;
-            }
+            if (dist < nearestDist) { nearest = point; nearestDist = dist; }
         }
-
         agent.SetDestination(nearest.position);
         isChasing = false;
     }

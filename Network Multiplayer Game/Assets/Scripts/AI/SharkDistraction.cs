@@ -5,13 +5,11 @@ using System.Collections;
 
 public class SharkDistraction : NetworkBehaviour
 {
-    [Header("Distraction Settings")]
     public float distractionRadius = 25f;
     public float distractionDuration = 5f;
     public float cooldownTime = 10f;
     private bool canUseBait = true;
 
-    [Header("Prefab")]
     public GameObject baitPrefab;
 
     private PlayerInput playerInput;
@@ -24,24 +22,23 @@ public class SharkDistraction : NetworkBehaviour
 
     public override void OnStartAuthority()
     {
+        base.OnStartAuthority();
         dropBaitAction = playerInput.actions["DropBait"];
         dropBaitAction.performed += OnDropBait;
     }
 
     private void OnDisable()
     {
-        if (dropBaitAction != null)
+        if (isOwned && dropBaitAction != null)
             dropBaitAction.performed -= OnDropBait;
     }
 
     private void OnDropBait(InputAction.CallbackContext ctx)
     {
-        if (canUseBait)
-        {
-            canUseBait = false;
-            StartCoroutine(BaitCooldownRoutine());
-            CmdDropBait(transform.position);
-        }
+        if (!canUseBait) return;
+        canUseBait = false;
+        StartCoroutine(BaitCooldownRoutine());
+        CmdDropBait(transform.position);
     }
 
     IEnumerator BaitCooldownRoutine()
@@ -54,6 +51,7 @@ public class SharkDistraction : NetworkBehaviour
     void CmdDropBait(Vector3 baitPosition)
     {
         RpcDistractSharks(baitPosition);
+
         if (baitPrefab != null)
         {
             GameObject bait = Instantiate(baitPrefab, baitPosition, Quaternion.identity);

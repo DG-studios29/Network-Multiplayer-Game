@@ -1,5 +1,5 @@
-using UnityEngine;
 using Mirror;
+using UnityEngine;
 
 [RequireComponent(typeof(NetworkIdentity))]
 public class Cannonball : NetworkBehaviour
@@ -8,19 +8,14 @@ public class Cannonball : NetworkBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        // Only the server should process collisions to avoid desync
         if (!isServer) return;
 
         if (collision.gameObject.CompareTag("Player"))
         {
-            PlayerHealthUI playerHealth = collision.gameObject.GetComponent<PlayerHealthUI>();
-            if (playerHealth != null)
-            {
-                playerHealth.TakeDamage(damage);
-            }
+            PlayerHealthUI health = collision.gameObject.GetComponent<PlayerHealthUI>();
+            if (health != null) health.TakeDamage(damage);
         }
 
-        // Destroy the cannonball on all clients
         NetworkServer.Destroy(gameObject);
     }
 }

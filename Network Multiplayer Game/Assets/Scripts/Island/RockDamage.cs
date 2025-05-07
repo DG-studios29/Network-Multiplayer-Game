@@ -7,16 +7,15 @@ public class RockDamage : NetworkBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (!isServer) return; 
+        if (!isServer) return;
 
         if (collision.gameObject.CompareTag("Player"))
         {
             Debug.Log("Hit Rock");
-
             PlayerHealthUI playerHealth = collision.gameObject.GetComponent<PlayerHealthUI>();
             if (playerHealth != null)
             {
-                playerHealth.TakeDamage(damageAmount); 
+                playerHealth.TakeDamage(damageAmount);
             }
         }
     }
