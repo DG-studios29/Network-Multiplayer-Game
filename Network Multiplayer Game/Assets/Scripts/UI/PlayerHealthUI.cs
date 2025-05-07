@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using Mirror;
+using UnityEngine.InputSystem;
 
 public class PlayerHealthUI : NetworkBehaviour
 {
@@ -16,11 +17,27 @@ public class PlayerHealthUI : NetworkBehaviour
 
     [Header("Repair Settings")]
     [SerializeField] private float repairDuration = 5f;
-    [SerializeField] private KeyCode repairKey = KeyCode.R;
 
+    [Header("Input Settings")]
+    [SerializeField] private InputActionAsset inputActions;
+
+    private InputAction repairAction;
     private bool isRepairing = false;
     private float repairTimer = 0f;
     private float repairProgress = 0f;
+
+    private void Awake()
+    {
+        if (inputActions != null)
+        {
+            var map = inputActions.FindActionMap("Player", true);
+            repairAction = map.FindAction("Repair", true);
+        }
+        else
+        {
+            Debug.LogWarning($"{gameObject.name} is missing InputActionAsset!");
+        }
+    }
 
     public override void OnStartLocalPlayer()
     {
@@ -37,9 +54,18 @@ public class PlayerHealthUI : NetworkBehaviour
             healthBar.maxValue = maxHealth;
             healthBar.value = currentHealth;
         }
-        else
+
+        if (repairAction != null)
         {
-            Debug.LogWarning($"{gameObject.name} has no health bar assigned!");
+            repairAction.Enable();
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (isLocalPlayer && repairAction != null)
+        {
+            repairAction.Disable();
         }
     }
 
@@ -58,10 +84,9 @@ public class PlayerHealthUI : NetworkBehaviour
 
     private void Update()
     {
-        if (!isLocalPlayer) return;
+        if (!isLocalPlayer || repairAction == null) return;
 
-
-        if (currentHealth <= 0 && Input.GetKey(repairKey) && !isRepairing)
+        if (currentHealth <= 0 && repairAction.IsPressed() && !isRepairing)
         {
             isRepairing = true;
             repairTimer = 0f;
@@ -69,8 +94,7 @@ public class PlayerHealthUI : NetworkBehaviour
             Debug.Log("Repair started.");
         }
 
-        // If repair key is released, stop repairing
-        if (isRepairing && Input.GetKeyUp(repairKey))
+        if (isRepairing && !repairAction.IsPressed())
         {
             isRepairing = false;
             repairTimer = 0f;
@@ -83,7 +107,6 @@ public class PlayerHealthUI : NetworkBehaviour
             repairTimer += Time.deltaTime;
             repairProgress = Mathf.Clamp01(repairTimer / repairDuration);
 
-            // This is just for visuals, not actual health value.
             if (healthBar != null)
             {
                 healthBar.value = Mathf.Lerp(currentHealth, maxHealth, repairProgress);

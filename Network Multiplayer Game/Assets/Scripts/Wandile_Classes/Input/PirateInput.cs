@@ -6,6 +6,7 @@ public class PirateInput : NetworkBehaviour
 {
     #region Custom Variables
 
+    [SerializeField] private PlayerHealthUI playerHealthUI;
     [SerializeField] private PlayerInput playerInput;
 
     private InputActionMap currentMap;
@@ -14,7 +15,7 @@ public class PirateInput : NetworkBehaviour
     public InputAction CamAction { get; set; }
     public Vector2 sailInput { get; set; }
     public Vector2 camInput { get; set; }
-    public float sailingInput {  get; set; }
+    public float sailingInput { get; set; }
 
     #endregion
 
@@ -22,11 +23,7 @@ public class PirateInput : NetworkBehaviour
 
     private void Awake()
     {
-        //if (!isLocalPlayer) return;
-        //playerInput = GetComponent<PlayerInput>();
         currentMap = playerInput.currentActionMap;
-
-        //playerInput.defaultControlScheme = currentMap.controlSchemes[0].name;
 
         SailAction = currentMap.FindAction("Sail");
         SailingAction = currentMap.FindAction("Sailing");
@@ -44,23 +41,34 @@ public class PirateInput : NetworkBehaviour
 
     private void OnEnable()
     {
-        
         currentMap.Enable();
     }
 
     private void OnDisable()
     {
-        
         currentMap.Disable();
+    }
+
+    private void Update()
+    {
+        if (!isLocalPlayer || playerHealthUI == null) return;
+
+        // If health is 0 or less, forcibly stop all input
+        if (playerHealthUI.currentHealth <= 0)
+        {
+            sailInput = Vector2.zero;
+            sailingInput = 0f;
+            camInput = Vector2.zero;
+        }
     }
 
     #endregion
 
-    #region Custom Variables
+    #region Custom Input Callbacks
 
     public void OnSail(InputAction.CallbackContext context)
     {
-        if (!isLocalPlayer) return;
+        if (!isLocalPlayer || playerHealthUI == null || playerHealthUI.currentHealth <= 0) return;
         sailInput = context.ReadValue<Vector2>();
     }
 
@@ -72,7 +80,7 @@ public class PirateInput : NetworkBehaviour
 
     public void OnCamera(InputAction.CallbackContext context)
     {
-        if (!isLocalPlayer) return;
+        if (!isLocalPlayer || playerHealthUI == null || playerHealthUI.currentHealth <= 0) return;
         camInput = context.ReadValue<Vector2>();
     }
 
@@ -84,7 +92,7 @@ public class PirateInput : NetworkBehaviour
 
     public void OnSailing(InputAction.CallbackContext context)
     {
-        if (!isLocalPlayer) return;
+        if (!isLocalPlayer || playerHealthUI == null || playerHealthUI.currentHealth <= 0) return;
         sailingInput = context.ReadValue<float>();
     }
 

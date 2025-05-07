@@ -24,7 +24,7 @@ public class CannonDefence : NetworkBehaviour
 
     void Update()
     {
-        if (!isServer) return;
+        //if (!isServer) return;
 
         FindClosestPlayer();
 
