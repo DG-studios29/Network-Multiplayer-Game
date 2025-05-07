@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: RocketCannonData
   m_EditorClassIdentifier: 
   cannonName: Rocket
+  cannonIcon: {fileID: 21300000, guid: 945d114e5f62fbe45b8baeab8289cfbc, type: 3}
   ballPrefab: {fileID: 8026786210976124078, guid: 6915723adf4c49a49a64bb4a76685ebb, type: 3}
   launchAngle: 10
   rangeZ: 50

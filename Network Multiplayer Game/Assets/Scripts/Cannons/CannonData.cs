@@ -6,7 +6,7 @@ public class CannonData : ScriptableObject
 {
 
     [SerializeField] private string cannonName;
-    [SerializeField] private Image cannonIcon;
+    [SerializeField] private Sprite cannonIcon;
     [SerializeField] private GameObject ballPrefab;
     [SerializeField] private float launchAngle; //will say in inspector
     [SerializeField] private float rangeZ;  //will say in inspector
@@ -20,7 +20,7 @@ public class CannonData : ScriptableObject
     [SerializeField] private GameObject smallHitFX;
     //[SerializeField] private AudioClip soundFX;  //play on collision
 
-    public Image CannonIcon => cannonIcon;
+    public Sprite CannonIcon => cannonIcon;
     public GameObject BallPrefab => ballPrefab;
     public float LaunchAngle => launchAngle;
     public float RangeZ => rangeZ;

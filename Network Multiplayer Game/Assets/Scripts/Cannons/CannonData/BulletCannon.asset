@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: BulletCannon
   m_EditorClassIdentifier: 
   cannonName: Bullet
+  cannonIcon: {fileID: 21300000, guid: 65fa56523adb8744181dfdf1964b4075, type: 3}
   ballPrefab: {fileID: 4193620958866771453, guid: 72730504b4608c04884b56042b14e795, type: 3}
   launchAngle: 10
   rangeZ: 100

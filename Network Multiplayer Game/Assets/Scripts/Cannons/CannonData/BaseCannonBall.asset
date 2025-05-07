@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: BaseCannonBall
   m_EditorClassIdentifier: 
   cannonName: BaseCannonBall
+  cannonIcon: {fileID: 21300000, guid: 670b1d144da82cb4fb00ae98a9cbaf90, type: 3}
   ballPrefab: {fileID: 2531187543609453393, guid: 9d2617af281a7a64ba0bd2e42cd925fc, type: 3}
   launchAngle: 30
   rangeZ: 90
