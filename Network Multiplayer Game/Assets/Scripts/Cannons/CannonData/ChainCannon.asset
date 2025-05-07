@@ -15,10 +15,10 @@ MonoBehaviour:
   cannonName: ChainCannon
   ballPrefab: {fileID: 7714745663990363299, guid: 6e5dae929cf2fe547937c5f5f6a9dc30, type: 3}
   launchAngle: 70
-  rangeZ: 30
+  rangeZ: 20
   heightY: 0
   timeTaken: 1
   lifespan: 20
   damage: 10
-  gravityScale: 1.4
+  gravityScale: 1.5
   particleFX: {fileID: 0}

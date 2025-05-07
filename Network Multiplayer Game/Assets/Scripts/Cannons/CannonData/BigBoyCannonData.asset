@@ -15,10 +15,10 @@ MonoBehaviour:
   cannonName: Big Boy
   ballPrefab: {fileID: 1031877994345043545, guid: bbd050c5ecce13e478b305c0a4cba064, type: 3}
   launchAngle: 50
-  rangeZ: 90
+  rangeZ: 40
   heightY: 20
   timeTaken: 3
   lifespan: 20
   damage: 10
-  gravityScale: 1
+  gravityScale: 1.4
   particleFX: {fileID: 0}

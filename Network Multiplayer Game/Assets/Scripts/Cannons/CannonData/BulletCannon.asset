@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cannonName: Bullet
   ballPrefab: {fileID: 4193620958866771453, guid: 72730504b4608c04884b56042b14e795, type: 3}
-  launchAngle: 0
-  rangeZ: 0
+  launchAngle: 10
+  rangeZ: 100
   heightY: 0
-  timeTaken: 0
-  lifespan: 0
-  damage: 0
-  gravityScale: 0
+  timeTaken: 1
+  lifespan: 20
+  damage: 10
+  gravityScale: 1
   particleFX: {fileID: 0}
