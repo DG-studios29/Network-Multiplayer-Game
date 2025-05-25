@@ -1,8 +1,9 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System;
+using Mirror;
 
-public class CannonHolder : MonoBehaviour
+public class CannonHolder : NetworkBehaviour
 {
 
     [SerializeField]private CannonSlot cannon1;

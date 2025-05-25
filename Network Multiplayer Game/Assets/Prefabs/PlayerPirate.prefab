@@ -2998,6 +2998,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 558258c464b2e7a449e6072008f7d3e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
   cannon1: {fileID: 8432232185467710974}
   cannon2: {fileID: 1879019944522013331}
   cannon3: {fileID: 8722515113220516362}
@@ -3313,6 +3316,7 @@ MonoBehaviour:
   cooldownTime: 12
   smokeBombPrefab: {fileID: 3915456565134772288, guid: 904bc4b62810a8641b11e59ec6592a4d, type: 3}
   smokeSpawnPoint: {fileID: 4040457907229973052}
+  impactFX: {fileID: 5511184213081609800, guid: 3a82b2b9d6814144d9bb459f48a48e8d, type: 3}
   cooldownOverlay: {fileID: 8403775277329583309}
 --- !u!1 &737519942678181188
 GameObject:
@@ -34677,6 +34681,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db81ced927ef57349a204064be18ce49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
   cannon1: {fileID: 35063576242576408}
   cannon2: {fileID: 605983465590414809}
   cannon3: {fileID: 2916803902881040786}

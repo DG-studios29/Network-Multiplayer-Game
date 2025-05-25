@@ -6,6 +6,7 @@ using UnityEngine;
 public class Cannonball : NetworkBehaviour
 {
     public int damage = 2;
+    public GameObject impactFX;
 
     private void Start()
     {
@@ -29,15 +30,16 @@ public class Cannonball : NetworkBehaviour
 
             if (health != null)
             {
-                
+
                 health.TakeDamage(damage);
+               
             }
             else
             {
                 Debug.LogWarning("PlayerHealthUI not found on hit player object.");
             }
         }
-
+        GameObject hit = Instantiate(impactFX, this.transform.position, Quaternion.identity);
         NetworkServer.Destroy(gameObject);
     }
 }

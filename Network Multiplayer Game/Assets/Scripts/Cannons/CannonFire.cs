@@ -137,7 +137,7 @@ public class CannonFire : NetworkBehaviour
         GameObject cannonObj = Instantiate(ballPrefab,spawnPoint.position,spawnPoint.transform.rotation);
 
         CannonCollision cannonCtrl = cannonObj.GetComponent<CannonCollision>();
-
+        NetworkServer.Spawn(cannonObj);
         cannonCtrl.cannonLifeSpan = lifespan;
         cannonCtrl.cannonDamage = damage;
         cannonCtrl.gravityScale = 2f;

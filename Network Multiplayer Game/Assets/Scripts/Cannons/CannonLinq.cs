@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
-public class CannonLinq : MonoBehaviour
+public class CannonLinq : NetworkBehaviour
 {
 
     private CannonFire[] realCannons;
@@ -115,6 +116,7 @@ public class CannonLinq : MonoBehaviour
         cannonHolder.FireLoadedCannon();
     }
 
+    
     public void FireCannonCalled(int callIndex)
     {
 

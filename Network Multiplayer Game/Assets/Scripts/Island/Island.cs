@@ -49,7 +49,7 @@ public class Island : NetworkBehaviour
         currentHealth = maxHealth;
 
         myCollider = GetComponent<SphereCollider>();
-        myCollider.radius = 80f;
+        myCollider.radius = 85f;
         myCollider.isTrigger = true;
     }
 

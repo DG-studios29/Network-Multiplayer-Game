@@ -129,6 +129,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   damage: 2
+  impactFX: {fileID: 5511184213081609800, guid: 3a82b2b9d6814144d9bb459f48a48e8d, type: 3}
 --- !u!54 &7644810898767305488
 Rigidbody:
   m_ObjectHideFlags: 0

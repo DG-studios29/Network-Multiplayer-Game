@@ -14,7 +14,8 @@ public class KrakenDistraction : NetworkBehaviour
 
     [Header("Smoke Bomb")]
     public GameObject smokeBombPrefab;
-    public Transform smokeSpawnPoint; 
+    public Transform smokeSpawnPoint;
+    public GameObject impactFX;
 
     [Header("Cooldown UI")]
     public Image cooldownOverlay;
@@ -84,6 +85,7 @@ public class KrakenDistraction : NetworkBehaviour
         if (smokeBombPrefab != null)
         {
             GameObject smoke = Instantiate(smokeBombPrefab, position, Quaternion.identity);
+            GameObject hit = Instantiate(impactFX, this.transform.position, Quaternion.identity);
             NetworkServer.Spawn(smoke);
             Destroy(smoke, smokeDuration);
         }

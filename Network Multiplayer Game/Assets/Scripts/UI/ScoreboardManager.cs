@@ -10,7 +10,7 @@ public class ScoreboardManager : NetworkBehaviour
     [Header("Scoreboard UI")]
     [SerializeField] private TMP_Text[] playerNameTexts;
     [SerializeField] private TMP_Text[] playerScoreTexts;
-    [SerializeField] private Color highlightColor = Color.yellow;
+    [SerializeField] private Color highlightColor = Color.red;
     [SerializeField] private Color defaultColor = Color.black;
 
     [Header("Player Settings")]
